@@ -1,0 +1,10 @@
+current_time 0
+final_time 100000
+arrive_min 10
+arrive_max 100
+cpu_min 60
+cpu_max 100
+disk1_min 30
+disk2_min 20
+dist1_max 180
+dist2_max 190

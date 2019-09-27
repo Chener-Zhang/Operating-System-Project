@@ -1,0 +1,147 @@
+[-------------------------------Run #1-------------------------------]
+
+current_time 0
+final_time 100000
+arrive_min 20
+arrive_max 80
+cpu_min 5
+cpu_max 50
+disk1_min 50
+disk2_min 50
+dist1_max 200
+dist2_max 200
+
+---------Queues-----
+Average size of CPU Queue: 0.145537
+Max size of CPU Queue: 2
+Average size of DISK 1 Queue: 101.373785
+Max size of CPU Queue: 206
+Average size of DISK 2 Queue: 100.854802
+Max size of CPU Queue: 206
+---------Utilization-----
+The time spend in CPU total is 0.471240
+The time spend in DISK1 total is 0.753580
+The time spend in DISK2 total is 0.626160
+---------Response_time-----
+CPU average response time: 27.966766
+CPU max response time: 50
+DISK1 average response time: 126.227806
+DISK1 max response time: 200
+DISK2 average response time: 123.017682
+DISK2 max response time: 200
+---------Throughput-----
+Throughput of CPU:  0.016828 Jobs per Unit of Time
+Throughput of DISK1:  0.005962 Jobs per Unit of Time
+Throughput of DISK2:  0.005083 Jobs per Unit of Time
+[-------------------------------Run #1-------------------------------]
+
+[-------------------------------Run #2-------------------------------]
+current_time 0
+final_time 100000
+arrive_min 10
+arrive_max 80
+cpu_min 5
+cpu_max 50
+disk1_min 20
+disk2_min 20
+dist1_max 50
+dist2_max 50
+
+---------Queues-----
+Average size of CPU Queue: 0.229400
+Max size of CPU Queue: 3
+Average size of DISK 1 Queue: 0.315300
+Max size of CPU Queue: 1
+Average size of DISK 2 Queue: 0.000000
+Max size of CPU Queue: 1
+---------Utilization-----
+The time spend in CPU total is 0.478510
+The time spend in DISK1 total is 0.457490
+The time spend in DISK2 total is 0.076130
+---------Response_time-----
+CPU average response time: 27.755800
+CPU max response time: 50
+DISK1 average response time: 34.949580
+DISK1 max response time: 50
+DISK2 average response time: 35.741784
+DISK2 max response time: 50
+---------Throughput-----
+Throughput of CPU:  0.017236 Jobs per Unit of Time
+Throughput of DISK1:  0.013087 Jobs per Unit of Time
+Throughput of DISK2:  0.002130 Jobs per Unit of Time
+[-------------------------------Run #2-------------------------------]
+
+[-------------------------------Run #3-------------------------------]
+current_time 0
+final_time 100000
+arrive_min 100
+arrive_max 150
+cpu_min 50
+cpu_max 100
+disk1_min 100
+disk2_min 120
+dist1_max 400
+dist2_max 300
+
+---------Queues-----
+Average size of CPU Queue: 0.000000
+Max size of CPU Queue: 0
+Average size of DISK 1 Queue: 38.280476
+Max size of CPU Queue: 73
+Average size of DISK 2 Queue: 37.819286
+Max size of CPU Queue: 73
+---------Utilization-----
+The time spend in CPU total is 0.607540
+The time spend in DISK1 total is 0.754720
+The time spend in DISK2 total is 0.565300
+---------Response_time-----
+CPU average response time: 75.564677
+CPU max response time: 100
+DISK1 average response time: 252.414716
+DISK1 max response time: 398
+DISK2 average response time: 210.932836
+DISK2 max response time: 300
+---------Throughput-----
+Throughput of CPU:  0.008031 Jobs per Unit of Time
+Throughput of DISK1:  0.002987 Jobs per Unit of Time
+Throughput of DISK2:  0.002677 Jobs per Unit of Time
+
+[-------------------------------Run #3-------------------------------]
+
+[-------------------------------Run #4-------------------------------]
+
+current_time 0
+final_time 100000
+arrive_min 10
+arrive_max 100
+cpu_min 60
+cpu_max 100
+disk1_min 30
+disk2_min 20
+dist1_max 180
+dist2_max 190
+
+---------Queues-----
+Average size of CPU Queue: 21.484349
+Max size of CPU Queue: 56
+Average size of DISK 1 Queue: 0.172323
+Max size of CPU Queue: 1
+Average size of DISK 2 Queue: 0.000000
+Max size of CPU Queue: 1
+---------Utilization-----
+The time spend in CPU total is 0.705680
+The time spend in DISK1 total is 0.578430
+The time spend in DISK2 total is 0.231770
+---------Response_time-----
+CPU average response time: 79.468468
+CPU max response time: 100
+DISK1 average response time: 101.657293
+DISK1 max response time: 180
+DISK2 average response time: 103.008889
+DISK2 max response time: 190
+---------Throughput-----
+Throughput of CPU:  0.008880 Jobs per Unit of Time
+Throughput of DISK1:  0.005690 Jobs per Unit of Time
+Throughput of DISK2:  0.002250 Jobs per Unit of Time
+
+[-------------------------------Run #4-------------------------------]
