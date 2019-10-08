@@ -138,14 +138,15 @@ int begin(){
 
 //[<,<<<,|,>,>>>]
 int bash_checking(char* arguments){
+
     char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,arguments);
     
     char* cmd_string = strtok(copy, " ");
-    
-    
+        
     while(cmd_string != NULL){
         cmd_string = strtok(NULL," ");
+	cmd_string[strcspn(cmd_string,"\n")] = 0;
         printf("%s\n",cmd_string);
         
         
@@ -155,7 +156,28 @@ int bash_checking(char* arguments){
 
     return 0;
 }
+int bash_checking(char* arguments){
+    char* copy = (char *)malloc(sizeof(char));
+    strcpy(copy,arguments);
+    
+    
+    
+    
+    while(copy != NULL){
+        copy = strtok(NULL," ");
+        printf("%s\n",copy);
+        /*
+        if(strcmp(copy,l) == 0){
+            printf("same");
+        }*/
+        
+        
+    }
+    
+    free(copy);
 
+    return 0;
+}
 //how many hours you spend on it?
 
 char* f_get_line(void){
