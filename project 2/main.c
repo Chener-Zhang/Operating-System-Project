@@ -112,25 +112,16 @@ void case_checking(char* cmd,char* arg){
 
 int begin(){
     
-  //  /*
-    lists = malloc(sizeof(char)*bufsize);
-    char *input = f_get_line();
-     char *cmd = f_parse_cmd(input);
-     char *arg = f_parse_arg(input);
-     bash_checking(arg);
-    if(is_bash == 1){
-        
-    
-    }else{
-          case_checking(cmd, arg);
-         printf("The comand is : [%s] \nThe argument is : [%s] \n",cmd,arg);
-    }
 
-       // case_checking(cmd,arg);
-//    */
+    lists = malloc(sizeof(char)*bufsize);
+/*
+    char *input = f_get_line();
+    char *cmd = f_parse_cmd(input);;
+    char *arg = f_parse_arg(input);;
+    is_bash = bash_checking(arg);
+*/
     
     
-   /*
     while(user_status == 0){
         lists = malloc(sizeof(char)*1026);
         char *input = f_get_line();
@@ -138,9 +129,12 @@ int begin(){
         char *arg = f_parse_arg(input);
         case_checking(cmd, arg);
         free(lists);
-     //   printf("while loop : %s\n",current_route);
+     
     }
-    */
+                 
+    
+     
+
     
 
         return 0;
@@ -202,7 +196,8 @@ char* f_get_line(void){
 }
 
 char * f_parse_cmd(char *words_line){
-    char* copy = (char *)malloc(sizeof(char)*bufsize);
+    char* copy = (char *)malloc(sizeof(char));
+    
     strcpy(copy,words_line);
     char* cmd_string = strtok(copy, " ");
     cmd_string[strcspn(cmd_string,"\n")] = 0;
@@ -211,7 +206,7 @@ char * f_parse_cmd(char *words_line){
 }
 
 char * f_parse_arg(char *words_line){
-    char* copy = (char *)malloc(sizeof(char)*bufsize);
+    char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,words_line);
     for (int i = 0; i < strlen(copy)-2; i++) {
         if(copy[i] == ' '){
@@ -258,7 +253,8 @@ char* f_ls(char* arg){
     // There is something
     else{
         char* route_for_ls = NULL;
-        route_for_ls = (char *) malloc(strlen(current_route)+strlen(arg)*bufsize);
+        route_for_ls = (char *) malloc(strlen(current_route)+strlen(arg)+5);
+        
         strcpy(route_for_ls, current_route);
         strcat(route_for_ls, "/");
         strcat(route_for_ls, arg);
@@ -268,13 +264,17 @@ char* f_ls(char* arg){
                 if(dir){
                     while( (sd = readdir(dir)) != NULL){
                             printf("%s\n",sd->d_name);
-                        
+                            strcat(lists,sd->d_name);
+                            strcat(lists,"\n");
+
                         
                                             }
                         }
         free(route_for_ls);
         }
-    printf("%s",lists);
+    printf("The lists : %s\n",lists);
+    
+    
     return lists;
 }
 
@@ -286,7 +286,7 @@ int f_cd(char* arg){
     if(strcmp(arg, "NULL") == 0){
         //do nothing
     }else{
-        new_route = (char *) malloc(strlen(current_route)+strlen(arg)*bufsize);
+        new_route = (char *) malloc(strlen(current_route)+strlen(arg));
         strcpy(new_route, current_route);
         strcat(new_route, "/");
         
