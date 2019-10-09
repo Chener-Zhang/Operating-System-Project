@@ -148,15 +148,18 @@ int bash_checking(char* arguments){
     char* cmd_string = strtok(copy, " ");
         
     while(cmd_string != NULL){
-        if(strcmp(cmd_string, ">>") == 0){
-        printf("The special is: %s\n",cmd_string);
-            
+        if(strcmp(cmd_string, ">") == 0){
+        //printf("The special is: %s\n",cmd_string);
+            return 1;
+        }else if(strcmp(cmd_string, ">>") == 0){
+        //printf("The special is: %s\n",cmd_string);
+            return 1;
         }else if(strcmp(cmd_string, "<") == 0){
-        printf("The special is: %s\n",cmd_string);
-            
+        //printf("The special is: %s\n",cmd_string);
+            return 1;
         }else if(strcmp(cmd_string, "|") == 0){
-        printf("The special is: %s\n",cmd_string);
-            
+        //printf("The special is: %s\n",cmd_string);
+            return 1;
         }
         
         cmd_string = strtok(NULL," ");
