@@ -148,7 +148,17 @@ int bash_checking(char* arguments){
     char* cmd_string = strtok(copy, " ");
         
     while(cmd_string != NULL){
-        printf("%s\n",cmd_string);
+        if(strcmp(cmd_string, ">>") == 0){
+        printf("The special is: %s\n",cmd_string);
+            
+        }else if(strcmp(cmd_string, "<") == 0){
+        printf("The special is: %s\n",cmd_string);
+            
+        }else if(strcmp(cmd_string, "|") == 0){
+        printf("The special is: %s\n",cmd_string);
+            
+        }
+        
         cmd_string = strtok(NULL," ");
         
     }
@@ -186,7 +196,7 @@ char * f_parse_cmd(char *words_line){
     strcpy(copy,words_line);
     char* cmd_string = strtok(copy, " ");
     cmd_string[strcspn(cmd_string,"\n")] = 0;
-    free(copy);
+        
     return cmd_string;
 }
 
@@ -196,7 +206,7 @@ char * f_parse_arg(char *words_line){
     for (int i = 0; i < strlen(copy)-2; i++) {
         if(copy[i] == ' '){
         i++;
-            printf("%c", copy[i]);
+            //printf("%c", copy[i]);
             copy = &copy[i];
             copy[strcspn(copy,"\n")] = 0;
             return copy;
