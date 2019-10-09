@@ -145,25 +145,6 @@ int bash_checking(char* arguments){
     char* cmd_string = strtok(copy, " ");
         
     while(cmd_string != NULL){
-        cmd_string = strtok(NULL," ");
-	cmd_string[strcspn(cmd_string,"\n")] = 0;
-        printf("%s\n",cmd_string);
-        
-        
-    }
-    
-    free(copy);
-
-    return 0;
-}
-int bash_checking(char* arguments){
-
-    char* copy = (char *)malloc(sizeof(char));
-    strcpy(copy,arguments);
-    
-    char* cmd_string = strtok(copy, " ");
-        
-    while(cmd_string != NULL){
         printf("%s\n",cmd_string);
         cmd_string = strtok(NULL," ");
         
