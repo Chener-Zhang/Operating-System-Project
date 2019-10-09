@@ -40,8 +40,10 @@ int is_bash = 0; // whether call the external command 0 -> no bash, 1-> yes bash
 char *current_route  = "/Users/chenerzhang";;
 char *new_route;
 char *cwd_path = NULL;
+int size = 256;
 
 char* lists;
+size_t bufsize = 32;
 //////////////////////////////
 
 
@@ -111,6 +113,7 @@ void case_checking(char* cmd,char* arg){
 int begin(){
     
   //  /*
+        lists = malloc(sizeof(char)*bufsize);
         char *input = f_get_line();
          char *cmd = f_parse_cmd(input);
          char *arg = f_parse_arg(input);
@@ -139,7 +142,7 @@ int begin(){
 //[<,<<<,|,>,>>>]
 int bash_checking(char* arguments){
 
-    char* copy = (char *)malloc(sizeof(char));
+    char* copy = (char *)malloc(sizeof(char)*bufsize);
     strcpy(copy,arguments);
     
     char* cmd_string = strtok(copy, " ");
@@ -161,10 +164,9 @@ int bash_checking(char* arguments){
 
 char* f_get_line(void){
    char *buffer;
-       size_t bufsize = 32;
        size_t characters;
 
-       buffer = (char *)malloc(bufsize * sizeof(char));
+       buffer = (char *)malloc(sizeof(char)*bufsize);
        if( buffer == NULL)
        {
            perror("Unable to allocate buffer");
@@ -180,25 +182,27 @@ char* f_get_line(void){
 }
 
 char * f_parse_cmd(char *words_line){
-    char* copy = (char *)malloc(sizeof(char));
+    char* copy = (char *)malloc(sizeof(char)*bufsize);
     strcpy(copy,words_line);
     char* cmd_string = strtok(copy, " ");
     cmd_string[strcspn(cmd_string,"\n")] = 0;
+    free(copy);
     return cmd_string;
 }
 
 char * f_parse_arg(char *words_line){
-    char* copy = (char *)malloc(sizeof(char)-1);
+    char* copy = (char *)malloc(sizeof(char)*bufsize);
     strcpy(copy,words_line);
     for (int i = 0; i < strlen(copy)-2; i++) {
         if(copy[i] == ' '){
-		i++;
+        i++;
             printf("%c", copy[i]);
             copy = &copy[i];
             copy[strcspn(copy,"\n")] = 0;
             return copy;
         }
     }
+    free(copy);
     return "NULL";
 }
 
@@ -234,7 +238,7 @@ char* f_ls(char* arg){
     // There is something
     else{
         char* route_for_ls = NULL;
-        route_for_ls = (char *) malloc(3 + strlen(current_route)+strlen(arg));
+        route_for_ls = (char *) malloc(strlen(current_route)+strlen(arg)*bufsize);
         strcpy(route_for_ls, current_route);
         strcat(route_for_ls, "/");
         strcat(route_for_ls, arg);
@@ -262,7 +266,7 @@ int f_cd(char* arg){
     if(strcmp(arg, "NULL") == 0){
         //do nothing
     }else{
-        new_route = (char *) malloc(10 + strlen(current_route)+strlen(arg));
+        new_route = (char *) malloc(strlen(current_route)+strlen(arg)*bufsize);
         strcpy(new_route, current_route);
         strcat(new_route, "/");
         
@@ -280,7 +284,7 @@ int f_cd(char* arg){
         }else{
             printf("change unsuccess\n");
         }
-
+        free(new_route);
     }
     
     return 0;
