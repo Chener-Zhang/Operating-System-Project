@@ -26,7 +26,7 @@ int f_cd(char* arg);
 void f_clear(void);
 char* f_environ(void);
 char* f_echo(char* string);
-void f_help(void);
+char* f_help(void);
 void f_pause(void);
 void f_quit(void);
 int bash_checking(char* cmd);
@@ -343,8 +343,11 @@ char* f_echo(char* string){
     printf("%s\n",string);
     return string;
 }
-void f_help(){
-    printf("This is help function\n");
+char* f_help(){
+    char content[100] = "That all for the help";
+    strcat(lists, content);
+    printf("%s\n",lists);
+    return lists;
 }
 void f_pause(){
     printf("This is pause function\n");
