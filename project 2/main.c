@@ -127,7 +127,13 @@ int begin(){
         char *input = f_get_line();
         char *cmd = f_parse_cmd(input);
         char *arg = f_parse_arg(input);
-        case_checking(cmd, arg);
+                
+        is_bash = bash_checking(arg);
+        if(is_bash == 0){
+            case_checking(cmd, arg);
+        }else{
+            printf("special letter here!\n");
+        }
         free(lists);
      
     }
