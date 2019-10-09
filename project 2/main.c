@@ -25,7 +25,7 @@ char* f_ls(char* arg);
 int f_cd(char* arg);
 void f_clear(void);
 char* f_environ(void);
-void f_echo(char* string);
+char* f_echo(char* string);
 void f_help(void);
 void f_pause(void);
 void f_quit(void);
@@ -339,9 +339,9 @@ char* f_environ(){
     printf("%s :\n",lists);
     return lists;
 }
-void f_echo(char* string){
+char* f_echo(char* string){
     printf("%s\n",string);
-    
+    return string;
 }
 void f_help(){
     printf("This is help function\n");
