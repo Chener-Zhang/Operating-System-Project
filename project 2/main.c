@@ -24,7 +24,7 @@ int begin(void);
 char* f_ls(char* arg);
 int f_cd(char* arg);
 void f_clear(void);
-void f_environ(void);
+char* f_environ(void);
 void f_echo(char* string);
 void f_help(void);
 void f_pause(void);
@@ -40,6 +40,7 @@ int is_bash = 0; // whether call the external command 0 -> no bash, 1-> yes bash
 char *current_route  = "/Users/chenerzhang";;
 char *new_route;
 char *cwd_path = NULL;
+
 int size = 256;
 
 char* lists;
@@ -330,8 +331,13 @@ void f_clear(){
     system("clear");
 }
 
-void f_environ(){
-    printf("This is environ function\n");
+char* f_environ(){
+    
+    
+    strcat(lists,getenv("PATH"));
+    strcat(lists,getenv("HOME"));
+    printf("%s :\n",lists);
+    return lists;
 }
 void f_echo(char* string){
     printf("%s\n",string);
