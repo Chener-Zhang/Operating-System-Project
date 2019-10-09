@@ -242,6 +242,7 @@ char* f_ls(char* arg){
     
     // If there is nothing in arg. arg = NULL
     // Just print what we have;
+    
     if(strcmp(arg, "NULL") == 0){
         dir = opendir(current_route);
         printf("the route is :%s\n",current_route);
@@ -266,19 +267,22 @@ char* f_ls(char* arg){
         strcat(route_for_ls, arg);
         
         dir = opendir(route_for_ls);
-            printf("the route is :%s\n",route_for_ls);
                 if(dir){
+                    printf("the route is :%s\n",route_for_ls);
                     while( (sd = readdir(dir)) != NULL){
                             printf("%s\n",sd->d_name);
                             strcat(lists,sd->d_name);
                             strcat(lists,"\n");
-
-                        
-                                            }
                         }
-        free(route_for_ls);
+                    free(route_for_ls);
+                }else{
+                    printf("error!\n");
+                }
+        
         }
-    printf("The lists : %s\n",lists);
+    
+    
+    printf("Files are : %s\n",lists);
     
     
     return lists;
