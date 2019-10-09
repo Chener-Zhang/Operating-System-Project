@@ -113,12 +113,19 @@ void case_checking(char* cmd,char* arg){
 int begin(){
     
   //  /*
-        lists = malloc(sizeof(char)*bufsize);
-        char *input = f_get_line();
-         char *cmd = f_parse_cmd(input);
-         char *arg = f_parse_arg(input);
-         bash_checking(arg);
+    lists = malloc(sizeof(char)*bufsize);
+    char *input = f_get_line();
+     char *cmd = f_parse_cmd(input);
+     char *arg = f_parse_arg(input);
+     bash_checking(arg);
+    if(is_bash == 1){
+        
+    
+    }else{
+          case_checking(cmd, arg);
          printf("The comand is : [%s] \nThe argument is : [%s] \n",cmd,arg);
+    }
+
        // case_checking(cmd,arg);
 //    */
     
