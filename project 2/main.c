@@ -31,7 +31,7 @@ void f_pause(void);
 void f_quit(void);
 int bash_checking(char* cmd);
 void case_checking(char* cmd,char* arg);
-
+void RD_function(char* line);
 
 //////////////////////////////
 int user_status = 0; // 0 -> user did not quit 1 -> user quit;
@@ -50,10 +50,18 @@ size_t bufsize = 32;
 
 int main(int argc, const char * argv[]) {
 
-    begin();
+    char* words = "hello";
+    
+    RD_function(words);
+    //begin();
     return 0;
 }
 
+void RD_function(char* line){
+    char *args[]={"ls",NULL};
+    execvp(args[0],args);
+    
+}
 
 
 void case_checking(char* cmd,char* arg){
@@ -165,19 +173,17 @@ int bash_checking(char* arguments){
         }else if(strcmp(cmd_string, "<") == 0){
         //printf("The special is: %s\n",cmd_string);
             return 1;
-        }else if(strcmp(cmd_string, "|") == 0){
-        //printf("The special is: %s\n",cmd_string);
-            return 1;
         }
-        
         cmd_string = strtok(NULL," ");
         
     }
-    
     free(copy);
-
     return 0;
 }
+
+//Redirection
+
+
   
 
 
