@@ -33,13 +33,16 @@ int bash_checking(char* cmd);
 void case_checking(char* cmd,char* arg);
 void RD_function(char* line);
 
+
+
 //////////////////////////////
 int user_status = 0; // 0 -> user did not quit 1 -> user quit;
 int is_bash = 0; // whether call the external command 0 -> no bash, 1-> yes bash;
-
 char *current_route  = "/Users/chenerzhang";;
 char *new_route;
 char *cwd_path = NULL;
+
+
 
 int size = 256;
 
@@ -50,17 +53,41 @@ size_t bufsize = 32;
 
 int main(int argc, const char * argv[]) {
 
-    char* words = "hello";
-    printf("1");
-    printf("2");
-    RD_function(words);
-    //begin();
-    return 0;
+    
+   
+        lists = malloc(sizeof(char)*bufsize);
+        char *input = f_get_line();
+        char *arg = f_parse_arg(input);
+        RD_function(arg);
+        return 0;
 }
 
 void RD_function(char* line){
-    char *args[]={"ls",NULL};
-    execvp(args[0],args);
+    int counter = 0;
+    int size = 1;
+    char* arr[10];
+    char* token = strtok(line," ");
+    
+    
+    arr[0] = token;
+    while(token!=NULL){
+        counter++;
+        token = strtok(NULL," ");
+        if(token == NULL){
+            break;
+        }else{
+            size++;
+            arr[counter] = token;
+            printf("%s\n",arr[counter]);
+            printf("%d\n",size);
+        }
+        
+    
+    }
+    
+    
+    //char *args[]={"ls",NULL};
+    //execvp(args[0],args);
     
 }
 
@@ -122,9 +149,9 @@ void case_checking(char* cmd,char* arg){
 
 int begin(){
     
-
-    lists = malloc(sizeof(char)*bufsize);
 /*
+    lists = malloc(sizeof(char)*bufsize);
+
     char *input = f_get_line();
     char *cmd = f_parse_cmd(input);;
     char *arg = f_parse_arg(input);;
@@ -193,7 +220,7 @@ int bash_checking(char* arguments){
 char* f_get_line(void){
    char *buffer;
        size_t characters;
-
+        
        buffer = (char *)malloc(sizeof(char)*bufsize);
        if( buffer == NULL)
        {
@@ -231,6 +258,9 @@ char * f_parse_arg(char *words_line){
             return copy;
         }
     }
+    
+    
+    
     free(copy);
     return "NULL";
 }
