@@ -58,7 +58,7 @@ int main(int argc, const char * argv[]) {
 
 void case_checking(char* cmd,char* arg){
     int x = 0;
-    if(strcmp(cmd, "ls") == 0){
+    if(strcmp(cmd, "dir") == 0){
         x = 1;
     }else if((strcmp(cmd, "cd") == 0)){
         x = 2;
