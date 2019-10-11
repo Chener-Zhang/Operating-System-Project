@@ -50,9 +50,15 @@ size_t bufsize = 32;
 
 int main(int argc, const char * argv[]) {
 
-    char* words = "hello";
     
-    RD_function(words);
+    
+    
+    
+    char* arr[] = {"hello","world"};
+    printf("%s\n",arr[0]);
+    
+    //char* words = "hello";
+    //RD_function(words);
     //begin();
     return 0;
 }
