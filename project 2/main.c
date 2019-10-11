@@ -52,6 +52,7 @@ int main(int argc, const char * argv[]) {
 
     char* words = "hello";
     printf("1");
+    printf("2");
     RD_function(words);
     //begin();
     return 0;
