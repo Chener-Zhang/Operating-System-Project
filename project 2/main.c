@@ -67,9 +67,8 @@ void RD_function(char* line){
     int size = 1;
     char* arr[10];
     char* token = strtok(line," ");
-    
-    
     arr[0] = token;
+    printf("%s\n",arr[counter]);
     while(token!=NULL){
         counter++;
         token = strtok(NULL," ");
@@ -79,12 +78,10 @@ void RD_function(char* line){
             size++;
             arr[counter] = token;
             printf("%s\n",arr[counter]);
-            printf("%d\n",size);
         }
-        
-    
+    //
     }
-    
+    printf("%d\n",size);
     
     //char *args[]={"ls",NULL};
     //execvp(args[0],args);
