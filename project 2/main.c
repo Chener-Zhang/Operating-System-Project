@@ -34,32 +34,21 @@ void case_checking(char* cmd,char* arg);
 void RD_function(char* line);
 
 
-
-//////////////////////////////
+//THE GLOBAL VARIABLE
 int user_status = 0; // 0 -> user did not quit 1 -> user quit;
 int is_bash = 0; // whether call the external command 0 -> no bash, 1-> yes bash;
 char *current_route  = "/Users/chenerzhang";;
 char *new_route;
 char *cwd_path = NULL;
-
-
-
 int size = 256;
-
 char* lists;
 size_t bufsize = 32;
-//////////////////////////////
-
+//
 
 int main(int argc, const char * argv[]) {
-            
-
         begin();
-        
-    
         return 0;
 }
-
 
 
 // bash function
@@ -85,13 +74,10 @@ void RD_function(char* line){
     }
     
     arr[size] = NULL;
-    //execvp(arr[0],arr);
-    //--------------------------------------------------------
-    
-
-    //--------------------------------------------------------------------------
+   int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
+   close(1);
+   dup2(fd_file,1);
     int child_process_id = fork();
-    
     if (child_process_id >= 0){
         if(child_process_id == 0){// child
             execvp("ls",arr);
@@ -101,21 +87,11 @@ void RD_function(char* line){
     }else{
         printf("faril\n");
     }
-    //--------------------------------------------------------------------------
-
-    
-    
-    //--------------------------------------------------------
-    //int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
-    //close(1);
-    //dup2(fd_file,1);
-
-
-
+    close(fd_file);
      
 }
 
-
+// CHECKING WHICH CASE IT THE INPUT BELONG;
 void case_checking(char* cmd,char* arg){
     int x = 0;
     if(strcmp(cmd, "dir") == 0){
@@ -170,10 +146,8 @@ void case_checking(char* cmd,char* arg){
             }
     }
 }
-
+// THE BEGIN METHOD
 int begin(){
-    
-        
     while(user_status == 0){
                 
         lists = malloc(sizeof(char)*bufsize);
@@ -191,13 +165,11 @@ int begin(){
         free(lists);
      
     }
-                          
-    
-
         return 0;
 }
 
-//[<,<<<,|,>,>>>]
+
+//[<,<<<,|,>,>>>] CHECKING WHETHER IT IS A BASH
 int bash_checking(char* arguments){
 
     char* copy = (char *)malloc(sizeof(char)*bufsize);
@@ -228,13 +200,7 @@ int bash_checking(char* arguments){
     return 0;
 }
 
-//Redirection
-
-
-  
-
-
-//how many hours you spend on it?
+// ----------------------------------------------------------------------->
 
 char* f_get_line(void){
    char *buffer;
@@ -257,7 +223,6 @@ char* f_get_line(void){
 
 char * f_parse_cmd(char *words_line){
     char* copy = (char *)malloc(sizeof(char));
-    
     strcpy(copy,words_line);
     char* cmd_string = strtok(copy, " ");
     cmd_string[strcspn(cmd_string,"\n")] = 0;
@@ -285,18 +250,14 @@ char * f_parse_arg(char *words_line){
 }
 
 
+// ----------------------------------------------------------------------->
 
-
-
-
-
+//THE DIR FUNCTION
 char* f_ls(char* arg){
 
     DIR *dir;
     struct dirent *sd;
-        
-    
-    
+                
     // If there is nothing in arg. arg = NULL
     // Just print what we have;
     
@@ -341,12 +302,10 @@ char* f_ls(char* arg){
     
     printf("Files are : %s\n",lists);
     
-    
     return lists;
 }
 
-
-
+// ----------------------------------------------------------------------->
 
 int f_cd(char* arg){
     
@@ -378,9 +337,7 @@ int f_cd(char* arg){
 }
 
 
-
-
-
+// ----------------------------------------------------------------------->
 
 void f_clear(){
     printf("\033[H\033[2J");
@@ -406,6 +363,7 @@ char* f_help(){
     return lists;
 }
 void f_pause(){
+    //sleep(100);
     printf("This is pause function\n");
 }
 void f_quit(){
