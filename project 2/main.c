@@ -82,9 +82,10 @@ void RD_function(char* line){
     //
     }
     printf("%d\n",size);
-    
-    //char *args[]={"ls",NULL};
-    //execvp(args[0],args);
+    printf("The second last element is :%s\n",arr[size-1]);
+    arr[size] = NULL;
+    printf("The last element is :%s\n",arr[size]);
+    execvp(arr[0],arr);
     
 }
 
