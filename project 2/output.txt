@@ -1,0 +1,9 @@
+main
+main.c
+output.txt
+sudo_code.txt
+myshell >main
+main.c
+output.txt
+sudo_code.txt
+myshell >
