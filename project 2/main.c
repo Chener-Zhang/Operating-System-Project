@@ -52,23 +52,23 @@ size_t bufsize = 32;
 
 
 int main(int argc, const char * argv[]) {
+    begin();
 
     
-   
-        lists = malloc(sizeof(char)*bufsize);
-        char *input = f_get_line();
-        char *arg = f_parse_arg(input);
-        RD_function(arg);
         return 0;
 }
+
+
+
 // bash function
 void RD_function(char* line){
+    
     int counter = 0;
     int size = 1;
     char* arr[10];
     char* token = strtok(line," ");
     arr[0] = token;
-    printf("%s\n",arr[counter]);
+    //printf("%s\n",arr[counter]);
     while(token!=NULL){
         counter++;
         token = strtok(NULL," ");
@@ -81,10 +81,10 @@ void RD_function(char* line){
         }
     //
     }
-    printf("%d\n",size);
-    printf("The second last element is :%s\n",arr[size-1]);
+    //printf("%d\n",size);
+    //printf("The second last element is :%s\n",arr[size-1]);
     arr[size] = NULL;
-    printf("The last element is :%s\n",arr[size]);
+    //printf("The last element is :%s\n",arr[size]);
 
     
     //fork() ------------>
@@ -118,11 +118,6 @@ void RD_function(char* line){
         printf("Error Occur\n");
         
     }
-    
-    
-    ///////ADDING FORK
-
-    
     ///////ADDING FORK
 }
 
@@ -146,7 +141,7 @@ void case_checking(char* cmd,char* arg){
     }else if((strcmp(cmd, "quit") == 0)){
         x = 8;
     }else{
-        printf("error!\n");
+        printf("Error from case checking!\n");
     }
     
     switch (x) {
@@ -184,35 +179,30 @@ void case_checking(char* cmd,char* arg){
 
 int begin(){
     
-/*
-    lists = malloc(sizeof(char)*bufsize);
 
-    char *input = f_get_line();
-    char *cmd = f_parse_cmd(input);;
-    char *arg = f_parse_arg(input);;
-    is_bash = bash_checking(arg);
-*/
     
     
     while(user_status == 0){
-        lists = malloc(sizeof(char)*1026);
+                
+        lists = malloc(sizeof(char)*bufsize);
         char *input = f_get_line();
         char *cmd = f_parse_cmd(input);
         char *arg = f_parse_arg(input);
-                
-        is_bash = bash_checking(arg);
+        is_bash = bash_checking(input);
+        
+        //printf("%d\n",is_bash);
+        //printf("%s\n",input);
         if(is_bash == 0){
+            
             case_checking(cmd, arg);
         }else{
-            printf("special letter here!\n");
+          //  printf("yes\n");
+            RD_function(input);
         }
         free(lists);
      
     }
-                 
-    
-     
-
+                          
     
 
         return 0;
@@ -225,7 +215,9 @@ int bash_checking(char* arguments){
     strcpy(copy,arguments);
     
     char* cmd_string = strtok(copy, " ");
-        
+    cmd_string[strcspn(cmd_string,"\n")] = 0;
+
+    //printf("The cmd string is : [%s]",cmd_string);
     while(cmd_string != NULL){
         if(strcmp(cmd_string, ">") == 0){
         //printf("The special is: %s\n",cmd_string);
@@ -234,6 +226,9 @@ int bash_checking(char* arguments){
         //printf("The special is: %s\n",cmd_string);
             return 1;
         }else if(strcmp(cmd_string, "<") == 0){
+        //printf("The special is: %s\n",cmd_string);
+            return 1;
+        }else if(strcmp(cmd_string, "ls") == 0){
         //printf("The special is: %s\n",cmd_string);
             return 1;
         }
