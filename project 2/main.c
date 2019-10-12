@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
-
+#include <fcntl.h>
 
 //1 : ls
 //2 : cd
@@ -61,7 +61,7 @@ int main(int argc, const char * argv[]) {
         RD_function(arg);
         return 0;
 }
-
+// bash function
 void RD_function(char* line){
     int counter = 0;
     int size = 1;
@@ -81,12 +81,48 @@ void RD_function(char* line){
         }
     //
     }
-    ///////ADDING FORK
     printf("%d\n",size);
     printf("The second last element is :%s\n",arr[size-1]);
     arr[size] = NULL;
     printf("The last element is :%s\n",arr[size]);
-    execvp(arr[0],arr);
+
+    
+    //fork() ------------>
+    int pid = fork();
+    if(pid >= 0){
+        if(pid == 0){
+            int fd_file = open("output.txt", O_RDONLY|O_WRONLY);
+                    if(fd_file < 0){
+                        printf("Error Occure within open file\n");
+                    }
+            
+                close(1);
+                int check_dup2_success = dup2(fd_file,1);
+                close(fd_file);
+            
+            if(execvp(arr[0],arr) < 0){
+                printf("Error Occure within open file\n");
+                exit(0);
+            }
+            
+
+            
+                }
+        else // It is inside the parent;
+                {
+                    int child_status = 0;
+                    wait(&child_status);
+                            }
+        
+    }else{
+        printf("Error Occur\n");
+        
+    }
+    
+    
+    ///////ADDING FORK
+
+    
     ///////ADDING FORK
 }
 
