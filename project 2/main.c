@@ -81,12 +81,13 @@ void RD_function(char* line){
         }
     //
     }
+    ///////ADDING FORK
     printf("%d\n",size);
     printf("The second last element is :%s\n",arr[size-1]);
     arr[size] = NULL;
     printf("The last element is :%s\n",arr[size]);
     execvp(arr[0],arr);
-    
+    ///////ADDING FORK
 }
 
 
