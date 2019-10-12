@@ -85,8 +85,27 @@ void RD_function(char* line){
     }
     
     arr[size] = NULL;
-    execvp(arr[0],arr);
+    //execvp(arr[0],arr);
+    //--------------------------------------------------------
     
+
+    //--------------------------------------------------------------------------
+    int child_process_id = fork();
+    
+    if (child_process_id >= 0){
+        if(child_process_id == 0){// child
+            execvp("ls",arr);
+        }else{// parent
+            wait(0);
+        }
+    }else{
+        printf("faril\n");
+    }
+    //--------------------------------------------------------------------------
+
+    
+    
+    //--------------------------------------------------------
     //int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
     //close(1);
     //dup2(fd_file,1);
