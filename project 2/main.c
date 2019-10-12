@@ -52,8 +52,10 @@ size_t bufsize = 32;
 
 
 int main(int argc, const char * argv[]) {
-    begin();
+            
 
+        begin();
+        
     
         return 0;
 }
@@ -65,60 +67,33 @@ void RD_function(char* line){
     
     int counter = 0;
     int size = 1;
-    char* arr[10];
+    char *arr[10];
     char* token = strtok(line," ");
     arr[0] = token;
-    //printf("%s\n",arr[counter]);
+    token[strcspn(token,"\n")] = 0;
     while(token!=NULL){
         counter++;
         token = strtok(NULL," ");
+
         if(token == NULL){
             break;
         }else{
             size++;
+            token[strcspn(token,"\n")] = 0;
             arr[counter] = token;
-            printf("%s\n",arr[counter]);
         }
-    //
     }
-    //printf("%d\n",size);
-    //printf("The second last element is :%s\n",arr[size-1]);
-    arr[size] = NULL;
-    //printf("The last element is :%s\n",arr[size]);
-
     
-    //fork() ------------>
-    int pid = fork();
-    if(pid >= 0){
-        if(pid == 0){
-            int fd_file = open("output.txt", O_RDONLY|O_WRONLY);
-                    if(fd_file < 0){
-                        printf("Error Occure within open file\n");
-                    }
-            
-                close(1);
-                int check_dup2_success = dup2(fd_file,1);
-                close(fd_file);
-            
-            if(execvp(arr[0],arr) < 0){
-                printf("Error Occure within open file\n");
-                exit(0);
-            }
-            
+    arr[size] = NULL;
+    execvp(arr[0],arr);
+    
+    //int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
+    //close(1);
+    //dup2(fd_file,1);
 
-            
-                }
-        else // It is inside the parent;
-                {
-                    int child_status = 0;
-                    wait(&child_status);
-                            }
-        
-    }else{
-        printf("Error Occur\n");
-        
-    }
-    ///////ADDING FORK
+
+
+     
 }
 
 
@@ -179,9 +154,7 @@ void case_checking(char* cmd,char* arg){
 
 int begin(){
     
-
-    
-    
+        
     while(user_status == 0){
                 
         lists = malloc(sizeof(char)*bufsize);
@@ -190,13 +163,10 @@ int begin(){
         char *arg = f_parse_arg(input);
         is_bash = bash_checking(input);
         
-        //printf("%d\n",is_bash);
-        //printf("%s\n",input);
         if(is_bash == 0){
             
             case_checking(cmd, arg);
         }else{
-          //  printf("yes\n");
             RD_function(input);
         }
         free(lists);
@@ -213,10 +183,10 @@ int bash_checking(char* arguments){
 
     char* copy = (char *)malloc(sizeof(char)*bufsize);
     strcpy(copy,arguments);
-    
     char* cmd_string = strtok(copy, " ");
+    
     cmd_string[strcspn(cmd_string,"\n")] = 0;
-
+    
     //printf("The cmd string is : [%s]",cmd_string);
     while(cmd_string != NULL){
         if(strcmp(cmd_string, ">") == 0){
