@@ -311,6 +311,8 @@ char* f_echo(char* string){
     return string;
 }
 char* f_help(){
+	printf("type[dir][cd filename][echo input]\n");
+	printf("free to type external command\n");
     return NULL;
 }
 void f_pause(){
