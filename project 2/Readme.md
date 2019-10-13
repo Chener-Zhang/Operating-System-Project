@@ -9,7 +9,7 @@
 
 
 ### works file output redirection
-### The thing cause shell is messup is the execvp and forking part 
+### The most challenging part of this shell in parsing. such as [ls] vs [ls ] if the parsing fail, the entire shell crash.
 
 
 
