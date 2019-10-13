@@ -29,29 +29,99 @@ char* f_echo(char* string);
 char* f_help(void);
 void f_pause(void);
 void f_quit(void);
-int bash_checking(char* cmd);
 void case_checking(char* cmd,char* arg,char* original);
-void RD_function(char* line);
 int bash(char* user_input);
+int piping(char* arg1[], char* arg2[]);
+int pipe_checking(char* orginal);
+int piping_ready(void);
 
-// ----------------------Global Var------------------------------------->
+//----------------------Global Var------------------------------------->
 
 int user_status = 0; // 0 -> user did not quit 1 -> user quit;
 int size = 256;
 size_t bufsize = 32;
-// ----------------------Global Var------------------------------------->
 
 
+
+//----------------------Global Var------------------------------------->
+//---------------------- Main ----------------------------------------->
 int main(int argc, const char * argv[]) {
-        begin();
-        return 0;
+    begin();
+          return 0;
+}
+//---------------------- Main ----------------------------------------->
+
+
+int piping_ready(){
+    printf("type the first arg below add a space: \n");
+     char *input = f_get_line();
+     int counter = 0;
+       
+       char *arr[10];
+       char* token = strtok(input," \t\n");
+       //printf("[%s]\n",token);
+       arr[0] = token;
+       while(token!=NULL){
+           counter++;
+           token = strtok(NULL, " \t\n");
+           //printf("[%s]\n",token);
+           arr[counter] = token;
+       }
+    
+    printf("type the second arg below add a space: \n");
+       char *input2 = f_get_line();
+       int counter1 = 0;
+       char *arr1[10];
+       char* token1 = strtok(input2," \t\n");
+       //printf("[%s]\n",token1);
+       arr1[0] = token1;
+       while(token1!=NULL){
+           counter1++;
+           token1 = strtok(NULL, " \t\n");
+           //printf("[%s]\n",token1);
+           arr1[counter1] = token1;
+       }
+       
+       piping(arr, arr1);
+
+    return 0;
 }
 
-// ----------------------working------------------------------------->
+// ------------------------------------------piping------------------------------------->
+int piping(char* arg1[], char* arg2[]){
+    
+    int pip[2];
+    pipe(pip);
+    int child1 = fork();
+    if(child1 == 0){
+        close(pip[0]);
+        dup2(pip[1], 1);
+        execvp(arg1[0], arg1);
+        printf("fail\n");
+        exit(1);
+    }
+    
+    int child2 = fork();
+    if(child2 == 0){
+        close(pip[1]);
+        dup2(pip[0], 0);
+        execvp(arg2[0], arg2);
+        printf("fail\n");
+        exit(1);
+    }
+    close(pip[0]);
+    close(pip[1]);
+    wait(0);
+    wait(0);
+    
+    return 0;
+}
+// ------------------------------------------piping------------------------------------->
 
 int bash(char *user_input){
     //execvp(arr[0], arr);
     
+         
     int pid = fork();
     
     if(pid >= 0){
@@ -64,8 +134,7 @@ int bash(char *user_input){
                 char* token = strtok(user_input," ");
                 arr[0] = token;
                 token[strcspn(token," \t\n")] = 0;
-                
-                printf("[%s]\n",token);
+                //printf("[%s]\n",token);
                     while(token!=NULL){
                         counter++;
                         token = strtok(NULL," ");
@@ -80,16 +149,18 @@ int bash(char *user_input){
                     }
                  
                 arr[size] = NULL;
-            // ----------------------new parse------------------------------------->
-            printf("arrived\n");
+        // ----------------------new parse------------------------------------->
+        //printf("arrived\n");
+        int fd = open("output.txt", O_CREAT|O_WRONLY|0600);
+        dup2(fd, 1);
+          //  printf("succes\n");
             if(execvp(arr[0], arr) < 0){
                 perror("execvp failed");
             }
             
         }else{//parent
-            
             wait(NULL);
-            printf("Finish waiting\n");
+            //printf("Finish waiting\n");
         }
     }else{
         printf("Fork fail \n");
@@ -109,59 +180,20 @@ int begin(){
         char *input = f_get_line();
         char *cmd = f_parse_cmd(input);
         char *arg = f_parse_arg(input);
-        printf("The cmd is [%s]\n",cmd);
-        printf("The arg is [%s]\n",arg);
+        //printf("The cmd is [%s]\n",cmd);
+        //printf("The arg is [%s]\n",arg);
         case_checking(cmd, arg,input);
      
     }
         return 0;
 }
 
-// bash function
-void RD_function(char* line){
-    
-    int counter = 0;
-    int size = 1;
-    char *arr[10];
-    char* token = strtok(line," ");
-    arr[0] = token;
-    token[strcspn(token,"\n")] = 0;
-    while(token!=NULL){
-        counter++;
-        token = strtok(NULL," ");
-
-        if(token == NULL){
-            break;
-        }else{
-            size++;
-            token[strcspn(token,"\n")] = 0;
-            arr[counter] = token;
-        }
-    }
-    
-    arr[size] = NULL;
-//   int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
-//   close(1);
-//   dup2(fd_file,1);
-    int child_process_id = fork();
-    if (child_process_id >= 0){
-        if(child_process_id == 0){// child
-            execvp("ls",arr);
-        }else{// parent
-            wait(0);
-        }
-    }else{
-        printf("faril\n");
-    }
-    //close(fd_file);
-     
-}
 
 // CHECKING WHICH CASE IT THE INPUT BELONG;
 void case_checking(char* cmd,char* arg,char* original){
     int x = 0;
-    if(strcmp(cmd, "dir") == 0){
-        x = 1;
+    if(cmd  == NULL ){
+       
     }else if((strcmp(cmd, "cd") == 0)){
         x = 2;
     }else if((strcmp(cmd, "clear") == 0)){
@@ -176,7 +208,13 @@ void case_checking(char* cmd,char* arg,char* original){
         x = 7;
     }else if((strcmp(cmd, "quit") == 0)){
         x = 8;
-    }else{
+    }else if (strcmp(cmd, "dir") == 0){
+        x = 1;
+        
+    }else if(strcmp(cmd, "pipe") == 0){
+        piping_ready();
+    }
+    else{
         bash(original);
     }
     
@@ -238,8 +276,8 @@ char* f_get_line(void){
 char * f_parse_cmd(char *words_line){
     char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,words_line);
-    char* cmd_string = strtok(copy, " ");
-    cmd_string[strcspn(cmd_string,"\n")] = 0;
+    char* cmd_string = strtok(copy, " \t\n");
+    //cmd_string[strcspn(cmd_string,"\n")] = 0;
     return cmd_string;
 }
 
@@ -284,7 +322,7 @@ int f_cd(char* arg){
     strcpy(path,arg);
     char cwd[500];
     if(arg[0] != '/'){
-        printf("yes\n");
+        //printf("success\n");
         getcwd(cwd,sizeof(cwd));
         strcat(cwd,"/");
         strcat(cwd,path);
@@ -311,8 +349,6 @@ char* f_echo(char* string){
     return string;
 }
 char* f_help(){
-	printf("type[dir][cd filename][echo input]\n");
-	printf("free to type external command\n");
     return NULL;
 }
 void f_pause(){
