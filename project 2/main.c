@@ -45,6 +45,7 @@ size_t bufsize = 32;
 
 //---------------------- Main ----------------------------------------->
 int main(int argc, const char * argv[]) {
+	printf("Welcome to myshell ----- >\n ");
           begin();
           return 0;
 }
@@ -361,7 +362,7 @@ char* f_echo(char* string){
 }
 char* f_help(){
     printf("when using the pipe, remember to type extral space in the end command \n");
-    printf("[dir] - > ls    [cd] - > cd");
+    printf("[dir] - > ls    [cd] - > cd\n");
     return NULL;
 }
 void f_pause(){
@@ -369,7 +370,7 @@ void f_pause(){
 
 }
 void f_quit(){
-    printf("Bye Bye --------");
+    printf("Bye Bye --------\n");
     exit(1);
 
 }
