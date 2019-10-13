@@ -41,17 +41,16 @@ int user_status = 0; // 0 -> user did not quit 1 -> user quit;
 int size = 256;
 size_t bufsize = 32;
 
-
-
 //----------------------Global Var------------------------------------->
+
 //---------------------- Main ----------------------------------------->
 int main(int argc, const char * argv[]) {
-    begin();
+          begin();
           return 0;
 }
 //---------------------- Main ----------------------------------------->
 
-
+// The parsing function; 
 int piping_ready(){
     printf("type the first arg below add a space: \n");
      char *input = f_get_line();
@@ -101,6 +100,9 @@ int piping(char* arg1[], char* arg2[]){
         exit(1);
     }
     
+    // connected to the pipe 
+    // file_output connect to the pipe input ;
+    // file_input connect with the pipe output;        
     int child2 = fork();
     if(child2 == 0){
         close(pip[1]);
@@ -109,6 +111,7 @@ int piping(char* arg1[], char* arg2[]){
         printf("fail\n");
         exit(1);
     }
+    // close when the file finish
     close(pip[0]);
     close(pip[1]);
     wait(0);
@@ -119,11 +122,9 @@ int piping(char* arg1[], char* arg2[]){
 // ------------------------------------------piping------------------------------------->
 
 int bash(char *user_input){
-    //execvp(arr[0], arr);
-    
-         
+// using the fork function              
     int pid = fork();
-    
+    //  the child 
     if(pid >= 0){
     
         if (pid == 0) {// child
@@ -154,6 +155,8 @@ int bash(char *user_input){
         int fd = open("output.txt", O_CREAT|O_WRONLY|0600);
         dup2(fd, 1);
           //  printf("succes\n");
+            
+            // execute the command which user type in and not build command
             if(execvp(arr[0], arr) < 0){
                 perror("execvp failed");
             }
@@ -171,15 +174,13 @@ int bash(char *user_input){
 }
 
 
-// ----------------------working------------------------------------->
 // THE BEGIN METHOD
 int begin(){
-
     while(user_status == 0){
-
         char *input = f_get_line();
         char *cmd = f_parse_cmd(input);
         char *arg = f_parse_arg(input);
+        // tracking for my user input 
         //printf("The cmd is [%s]\n",cmd);
         //printf("The arg is [%s]\n",arg);
         case_checking(cmd, arg,input);
@@ -252,7 +253,7 @@ void case_checking(char* cmd,char* arg,char* original){
 }
 
 
-// ----------------------------------------------------------------------->
+// -------------------------Parsing------------------------------>
 
 char* f_get_line(void){
    char *buffer;
@@ -291,9 +292,9 @@ char * f_parse_arg(char *words_line){
 }
 
 
-// ----------------------------------------------------------------------->
+// -------------------------Parsing------------------------------>
 
-//THE DIR FUNCTION
+//THE DIR FUNCTION : type dir will shows the list files 
 char* f_ls(char* arg){
     DIR *dir;
     struct dirent *sd;
@@ -316,6 +317,8 @@ char* f_ls(char* arg){
     return 0;
 }
 
+// type the cd will change the direction of the file 
+// cd filename
 
 int f_cd(char* arg){
     char path[500];
@@ -340,7 +343,10 @@ void f_clear(){
 }
 
 char* f_environ(){
-    
+     printf("PATH : %s\n", getenv("PATH"));
+    printf("HOME : %s\n", getenv("HOME"));
+    printf("ROOT : %s\n", getenv("ROOT"));
+    return NULL;
     
     return NULL;
 }
@@ -349,11 +355,13 @@ char* f_echo(char* string){
     return string;
 }
 char* f_help(){
+    printf("when using the pipe, remember to type extral space in the end command \n");
+    printf("[dir] - > ls    [cd] - > cd");
     return NULL;
 }
 void f_pause(){
-    //sleep(100);
-    printf("This is pause function\n");
+    sleep(100);
+
 }
 void f_quit(){
     system("quit");
