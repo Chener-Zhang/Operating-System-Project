@@ -30,26 +30,92 @@ char* f_help(void);
 void f_pause(void);
 void f_quit(void);
 int bash_checking(char* cmd);
-void case_checking(char* cmd,char* arg);
+void case_checking(char* cmd,char* arg,char* original);
 void RD_function(char* line);
+int bash(char* user_input);
 
+// ----------------------Global Var------------------------------------->
 
-//THE GLOBAL VARIABLE
 int user_status = 0; // 0 -> user did not quit 1 -> user quit;
-int is_bash = 0; // whether call the external command 0 -> no bash, 1-> yes bash;
-char *current_route  = "/Users/chenerzhang";;
-char *new_route;
-char *cwd_path = NULL;
 int size = 256;
-char* lists;
 size_t bufsize = 32;
-//
+// ----------------------Global Var------------------------------------->
+
 
 int main(int argc, const char * argv[]) {
         begin();
         return 0;
 }
 
+// ----------------------working------------------------------------->
+
+int bash(char *user_input){
+    //execvp(arr[0], arr);
+    
+    int pid = fork();
+    
+    if(pid >= 0){
+    
+        if (pid == 0) {// child
+            // ----------------------new parse------------------------------------->
+                int counter = 0;
+                int size = 1;
+                char *arr[10];
+                char* token = strtok(user_input," ");
+                arr[0] = token;
+                token[strcspn(token," \t\n")] = 0;
+                
+                printf("[%s]\n",token);
+                    while(token!=NULL){
+                        counter++;
+                        token = strtok(NULL," ");
+
+                        if(token == NULL){
+                            break;
+                        }else{
+                            size++;
+                            token[strcspn(token,"\n")] = 0;
+                            arr[counter] = token;
+                        }
+                    }
+                 
+                arr[size] = NULL;
+            // ----------------------new parse------------------------------------->
+            printf("arrived\n");
+            if(execvp(arr[0], arr) < 0){
+                perror("execvp failed");
+            }
+            
+        }else{//parent
+            
+            wait(NULL);
+            printf("Finish waiting\n");
+        }
+    }else{
+        printf("Fork fail \n");
+    }
+         
+    
+    return 0;
+}
+
+
+// ----------------------working------------------------------------->
+// THE BEGIN METHOD
+int begin(){
+
+    while(user_status == 0){
+
+        char *input = f_get_line();
+        char *cmd = f_parse_cmd(input);
+        char *arg = f_parse_arg(input);
+        printf("The cmd is [%s]\n",cmd);
+        printf("The arg is [%s]\n",arg);
+        case_checking(cmd, arg,input);
+     
+    }
+        return 0;
+}
 
 // bash function
 void RD_function(char* line){
@@ -74,9 +140,9 @@ void RD_function(char* line){
     }
     
     arr[size] = NULL;
-   int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
-   close(1);
-   dup2(fd_file,1);
+//   int fd_file = open("output.txt", O_CREAT|O_APPEND|O_WRONLY);
+//   close(1);
+//   dup2(fd_file,1);
     int child_process_id = fork();
     if (child_process_id >= 0){
         if(child_process_id == 0){// child
@@ -87,12 +153,12 @@ void RD_function(char* line){
     }else{
         printf("faril\n");
     }
-    close(fd_file);
+    //close(fd_file);
      
 }
 
 // CHECKING WHICH CASE IT THE INPUT BELONG;
-void case_checking(char* cmd,char* arg){
+void case_checking(char* cmd,char* arg,char* original){
     int x = 0;
     if(strcmp(cmd, "dir") == 0){
         x = 1;
@@ -111,7 +177,7 @@ void case_checking(char* cmd,char* arg){
     }else if((strcmp(cmd, "quit") == 0)){
         x = 8;
     }else{
-        printf("Error from case checking!\n");
+        bash(original);
     }
     
     switch (x) {
@@ -146,59 +212,7 @@ void case_checking(char* cmd,char* arg){
             }
     }
 }
-// THE BEGIN METHOD
-int begin(){
-    while(user_status == 0){
-                
-        lists = malloc(sizeof(char)*bufsize);
-        char *input = f_get_line();
-        char *cmd = f_parse_cmd(input);
-        char *arg = f_parse_arg(input);
-        is_bash = bash_checking(input);
-        
-        if(is_bash == 0){
-            
-            case_checking(cmd, arg);
-        }else{
-            RD_function(input);
-        }
-        free(lists);
-     
-    }
-        return 0;
-}
 
-
-//[<,<<<,|,>,>>>] CHECKING WHETHER IT IS A BASH
-int bash_checking(char* arguments){
-
-    char* copy = (char *)malloc(sizeof(char)*bufsize);
-    strcpy(copy,arguments);
-    char* cmd_string = strtok(copy, " ");
-    
-    cmd_string[strcspn(cmd_string,"\n")] = 0;
-    
-    //printf("The cmd string is : [%s]",cmd_string);
-    while(cmd_string != NULL){
-        if(strcmp(cmd_string, ">") == 0){
-        //printf("The special is: %s\n",cmd_string);
-            return 1;
-        }else if(strcmp(cmd_string, ">>") == 0){
-        //printf("The special is: %s\n",cmd_string);
-            return 1;
-        }else if(strcmp(cmd_string, "<") == 0){
-        //printf("The special is: %s\n",cmd_string);
-            return 1;
-        }else if(strcmp(cmd_string, "ls") == 0){
-        //printf("The special is: %s\n",cmd_string);
-            return 1;
-        }
-        cmd_string = strtok(NULL," ");
-        
-    }
-    free(copy);
-    return 0;
-}
 
 // ----------------------------------------------------------------------->
 
@@ -226,27 +240,16 @@ char * f_parse_cmd(char *words_line){
     strcpy(copy,words_line);
     char* cmd_string = strtok(copy, " ");
     cmd_string[strcspn(cmd_string,"\n")] = 0;
-        
     return cmd_string;
 }
+
 
 char * f_parse_arg(char *words_line){
     char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,words_line);
-    for (int i = 0; i < strlen(copy)-2; i++) {
-        if(copy[i] == ' '){
-        i++;
-            //printf("%c", copy[i]);
-            copy = &copy[i];
-            copy[strcspn(copy,"\n")] = 0;
-            return copy;
-        }
-    }
-    
-    
-    
-    free(copy);
-    return "NULL";
+    char* arg_string = strtok(copy, " \t\n");
+    arg_string = strtok(NULL, " \t\n");
+    return arg_string;
 }
 
 
@@ -254,90 +257,44 @@ char * f_parse_arg(char *words_line){
 
 //THE DIR FUNCTION
 char* f_ls(char* arg){
-
     DIR *dir;
     struct dirent *sd;
-                
-    // If there is nothing in arg. arg = NULL
-    // Just print what we have;
+    char* route = NULL;
+    char* place = getcwd(route, 1000);
     
-    if(strcmp(arg, "NULL") == 0){
-        dir = opendir(current_route);
-        printf("the route is :%s\n",current_route);
-                if(dir){
-                        while( (sd = readdir(dir)) != NULL){
-                        //printf("%s\n",sd->d_name);
-                            strcat(lists,sd->d_name);
-                            strcat(lists,"\n");
-                                       }
-                }else{
-                    printf("error\n");
-                    return 0;
-                }
+    //printf("%s\n",place);
+    //dir = opendir("/Users/chenerzhang");
+    dir = opendir(place);
+    
+    if (dir == NULL)
+    {
+        printf("Could not open current directory\n" );
+        return 0;
     }
-    // There is something
-    else{
-        char* route_for_ls = NULL;
-        route_for_ls = (char *) malloc(strlen(current_route)+strlen(arg)+5);
-        
-        strcpy(route_for_ls, current_route);
-        strcat(route_for_ls, "/");
-        strcat(route_for_ls, arg);
-        
-        dir = opendir(route_for_ls);
-                if(dir){
-                    printf("the route is :%s\n",route_for_ls);
-                    while( (sd = readdir(dir)) != NULL){
-                            printf("%s\n",sd->d_name);
-                            strcat(lists,sd->d_name);
-                            strcat(lists,"\n");
-                        }
-                    free(route_for_ls);
-                }else{
-                    printf("error!\n");
-                }
-        
-        }
-    
-    
-    printf("Files are : %s\n",lists);
-    
-    return lists;
-}
-
-// ----------------------------------------------------------------------->
-
-int f_cd(char* arg){
-    
-    if(strcmp(arg, "NULL") == 0){
-        //do nothing
-    }else{
-        new_route = (char *) malloc(strlen(current_route)+strlen(arg));
-        strcpy(new_route, current_route);
-        strcat(new_route, "/");
-        
-        strcat(new_route, arg);
-
-        int yes_no = chdir(new_route);
-        if(yes_no == 0){
-            char *temp = NULL; // tracker
-            printf("change success\n");
-            //printf("OLD PATH: %s:\n",cwd_path);
-            cwd_path = getcwd(temp, sizeof(new_route));
-            //printf("NEW PATH: %s:\n",cwd_path);
-            current_route = cwd_path;
-            
-        }else{
-            printf("change unsuccess\n");
-        }
-        free(new_route);
+    while ((sd = readdir(dir)) != NULL){
+           printf("%s\n", sd->d_name);
     }
-    
+    closedir(dir);
     return 0;
 }
 
 
-// ----------------------------------------------------------------------->
+int f_cd(char* arg){
+    char path[500];
+    strcpy(path,arg);
+    char cwd[500];
+    if(arg[0] != '/'){
+        printf("yes\n");
+        getcwd(cwd,sizeof(cwd));
+        strcat(cwd,"/");
+        strcat(cwd,path);
+        chdir(cwd);
+    }else{
+        chdir(arg);
+    }
+    return 0;
+}
+
 
 void f_clear(){
     printf("\033[H\033[2J");
@@ -347,20 +304,14 @@ void f_clear(){
 char* f_environ(){
     
     
-    strcat(lists,getenv("PATH"));
-    strcat(lists,getenv("HOME"));
-    printf("%s :\n",lists);
-    return lists;
+    return NULL;
 }
 char* f_echo(char* string){
     printf("%s\n",string);
     return string;
 }
 char* f_help(){
-    char content[100] = "That all for the help";
-    strcat(lists, content);
-    printf("%s\n",lists);
-    return lists;
+    return NULL;
 }
 void f_pause(){
     //sleep(100);
