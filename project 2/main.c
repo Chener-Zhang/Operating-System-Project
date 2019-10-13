@@ -219,7 +219,7 @@ void case_checking(char* cmd,char* arg,char* original){
         bash(original);
     }
     
-    switch (x) {
+     switch (x) {
             case 1:{
                 f_ls(arg);
                 break;
@@ -246,11 +246,16 @@ void case_checking(char* cmd,char* arg,char* original){
                     break;
             }
             case 7:{
-                f_quit();
+                f_pause();
                     break;
+            }case 8:{
+                f_quit();
             }
+
     }
 }
+
+
 
 
 // -------------------------Parsing------------------------------>
@@ -364,7 +369,9 @@ void f_pause(){
 
 }
 void f_quit(){
-    system("quit");
-    printf("This is quit function\n");
+    printf("Bye Bye --------");
+    exit(1);
+
 }
+
 
