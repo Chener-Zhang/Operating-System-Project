@@ -20,7 +20,6 @@ char * f_parse_cmd(char *words_line);
 char * f_parse_arg(char *words_line);
 char* f_get_line(void);
 int begin(void);
-
 char* f_ls(char* arg);
 int f_cd(char* arg);
 void f_clear(void);
@@ -52,11 +51,14 @@ int main(int argc, const char * argv[]) {
 //---------------------- Main ----------------------------------------->
 
 // The parsing function; 
+// The pipe takes 2 arguments, arg1 is before the | , the arg2 is after the |
+
 int piping_ready(){
-    printf("type the first arg below add a space: \n");
+   printf("type the first arg below add a space: \n");
+	// The first argument 
+	
      char *input = f_get_line();
-     int counter = 0;
-       
+     int counter = 0;       
        char *arr[10];
        char* token = strtok(input," \t\n");
        //printf("[%s]\n",token);
