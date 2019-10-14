@@ -42,6 +42,8 @@ size_t bufsize = 32;
 
 //----------------------Global Var------------------------------------->
 
+
+
 //---------------------- Main ----------------------------------------->
 int main(int argc, const char * argv[]) {
 	printf("Welcome to myshell ----- >\n ");
@@ -50,55 +52,71 @@ int main(int argc, const char * argv[]) {
 }
 //---------------------- Main ----------------------------------------->
 
+
+
+
+
 // The parsing function; 
 // The pipe takes 2 arguments, arg1 is before the | , the arg2 is after the |
 
 int piping_ready(){
-   printf("type the first arg below add a space: \n");
-	// The first argument 
-	
-     char *input = f_get_line();
-     int counter = 0;       
-       char *arr[10];
-       char* token = strtok(input," \t\n");
-       //printf("[%s]\n",token);
-       arr[0] = token;
-       while(token!=NULL){
-           counter++;
-           token = strtok(NULL, " \t\n");
-           //printf("[%s]\n",token);
-           arr[counter] = token;
-       }
-    
-    printf("type the second arg below add a space: \n");
-       char *input2 = f_get_line();
-       int counter1 = 0;
-       char *arr1[10];
-       char* token1 = strtok(input2," \t\n");
-       //printf("[%s]\n",token1);
-       arr1[0] = token1;
-       while(token1!=NULL){
-           counter1++;
-           token1 = strtok(NULL, " \t\n");
-           //printf("[%s]\n",token1);
-           arr1[counter1] = token1;
-       }
-       
-       piping(arr, arr1);
+// The first argument 	
+printf("type the first arg below add a space: \n");
 
-    return 0;
+//----Parsing----------
+	char *input = f_get_line();
+	int counter = 0;       
+	char *arr[10];
+	char* token = strtok(input," \t\n");
+	//printf("[%s]\n",token);
+	arr[0] = token;
+		while(token!=NULL){
+		   counter++;
+		   token = strtok(NULL, " \t\n");
+		   //printf("[%s]\n",token);
+		   arr[counter] = token;
+		}
+//----Parsing----------	
+	
+	
+// The second argument    
+printf("type the second arg below add a space: \n");
+//----Parsing----------	
+	char *input2 = f_get_line();
+	int counter1 = 0;
+	char *arr1[10];
+	char* token1 = strtok(input2," \t\n");
+	//printf("[%s]\n",token1);
+	arr1[0] = token1;
+		while(token1!=NULL){
+		   counter1++;
+		   token1 = strtok(NULL, " \t\n");
+		   //printf("[%s]\n",token1);
+		   arr1[counter1] = token1;
+		}
+//----Parsing----------	
+//calling the piping function;	
+piping(arr, arr1);
+
+return 0;
+	
 }
 
 // ------------------------------------------piping------------------------------------->
 int piping(char* arg1[], char* arg2[]){
-    
+// initialize the pipe    
     int pip[2];
     pipe(pip);
+// create the child 1	
     int child1 = fork();
     if(child1 == 0){
+	// close the output of the pipe
         close(pip[0]);
+	// connect the output of the main.c to the pipe input    
         dup2(pip[1], 1);
+	// execute the arg
         execvp(arg1[0], arg1);
+	// if it fail, it gonna shows this line	    
         printf("fail\n");
         exit(1);
     }
@@ -124,6 +142,7 @@ int piping(char* arg1[], char* arg2[]){
 }
 // ------------------------------------------piping------------------------------------->
 
+//The bash is to execute the command which is not internal command;
 int bash(char *user_input){
 // using the fork function              
     int pid = fork();
@@ -154,6 +173,7 @@ int bash(char *user_input){
                  
                 arr[size] = NULL;
         // ----------------------new parse------------------------------------->
+	// Create a new process here, when  we use the execute it will kill the child. just do not let the parent die		
         //printf("arrived\n");
         int fd = open("output.txt", O_CREAT|O_WRONLY|0600);
         dup2(fd, 1);
@@ -172,13 +192,13 @@ int bash(char *user_input){
         printf("Fork fail \n");
     }
          
-    
     return 0;
 }
 
 
 // THE BEGIN METHOD
 int begin(){
+    // while loop; 
     while(user_status == 0){
         char *input = f_get_line();
         char *cmd = f_parse_cmd(input);
@@ -194,6 +214,7 @@ int begin(){
 
 
 // CHECKING WHICH CASE IT THE INPUT BELONG;
+// check the condition of the internal command from the user input 
 void case_checking(char* cmd,char* arg,char* original){
     int x = 0;
     if(cmd  == NULL ){
@@ -262,7 +283,7 @@ void case_checking(char* cmd,char* arg,char* original){
 
 
 // -------------------------Parsing------------------------------>
-
+// -------------------------Getline------------------------------>
 char* f_get_line(void){
    char *buffer;
        size_t characters;
@@ -281,7 +302,7 @@ char* f_get_line(void){
     free(buffer);
     return buffer;
 }
-
+// -------------------------GET_CMD------------------------------>
 char * f_parse_cmd(char *words_line){
     char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,words_line);
@@ -290,7 +311,7 @@ char * f_parse_cmd(char *words_line){
     return cmd_string;
 }
 
-
+// -------------------------GET_ARGD------------------------------>
 char * f_parse_arg(char *words_line){
     char* copy = (char *)malloc(sizeof(char));
     strcpy(copy,words_line);
@@ -308,16 +329,18 @@ char* f_ls(char* arg){
     struct dirent *sd;
     char* route = NULL;
     char* place = getcwd(route, 1000);
-    
-    //printf("%s\n",place);
-    //dir = opendir("/Users/chenerzhang");
+    //get the current route by getcwd();
+	
+    //printf("%s\n",place); testing
+    //dir = opendir("/Users/chenerzhang"); testing
     dir = opendir(place);
-    
+    // If fail then.....
     if (dir == NULL)
     {
         printf("Could not open current directory\n" );
         return 0;
     }
+    // If it success, then just print out what we have 
     while ((sd = readdir(dir)) != NULL){
            printf("%s\n", sd->d_name);
     }
@@ -325,9 +348,10 @@ char* f_ls(char* arg){
     return 0;
 }
 
+
+// -------------------------cd file------------------------------>
 // type the cd will change the direction of the file 
 // cd filename
-
 int f_cd(char* arg){
     char path[500];
     strcpy(path,arg);
@@ -355,9 +379,8 @@ char* f_environ(){
     printf("HOME : %s\n", getenv("HOME"));
     printf("ROOT : %s\n", getenv("ROOT"));
     return NULL;
-    
-    return NULL;
-}
+    }
+
 char* f_echo(char* string){
     printf("%s\n",string);
     return string;
