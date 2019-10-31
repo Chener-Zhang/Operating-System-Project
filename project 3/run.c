@@ -11,21 +11,17 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include "queue.c"
-#include "hash_table.c"
+
 
 #define MAXCHAR 50
 void* function(void * input);
-
 
 pthread_cond_t producer = PTHREAD_COND_INITIALIZER;
 pthread_cond_t consumer = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-
 int limit = 10;
 int size_counter = 0;
-
-
 
 struct item {
     char* word;
@@ -34,41 +30,10 @@ struct item {
 
 
 
+
 int main(){
     
-    FILE *fp;
-       char str[MAXCHAR];
-       char* filename = "dictionary.txt";
-        
-    int index = 0;
-       fp = fopen(filename, "r");
-    
-       if (fp == NULL){
-           printf("Could not open file %s",filename);
-           return 1;
-       }
-    
-    while (fgets(str, MAXCHAR, fp) != NULL){
-        
-        
-        
-        
-        
-        int len =strlen(str);
-        str[len-1] = '\0';
-        printf("[%s]", str);
-        insert(index,str);
-        index++;
-        printf("\n\n");
-        
-    }
-    display_hash();
-       fclose(fp);
-    
-    
-    
-    
-    /*
+
     printf("\n\n\n\n");
     printf("hello from the sleep.c\n");
     pthread_t thread = NULL;
@@ -82,7 +47,7 @@ int main(){
     pthread_join(thread, NULL);
     display();
     printf("\n\n\n\n");
-    */
+    
     return 0;
 }
 
@@ -108,7 +73,7 @@ void* function(void * input){
         size_counter++;
     }
     
-    pthread_cond_broadcast(&consumer);
+    pthread_cond_signal(&consumer);
     pthread_mutex_unlock(&lock);
     
     
@@ -123,16 +88,49 @@ void* function(void * input){
         pthread_cond_wait(&consumer, &lock);
         
     }else{
-        if(number%2 == 0){
-            printf("Thread %d This is an even\n",number);
-        }else{
-            printf("Thread %d This is an odd\n",number);
+        /*
+        //spell_cheker-------------------------------------------------------------------------------
+        FILE *fp;
+        char str[MAXCHAR];
+        char* filename = "dictionary.txt";
+        fp = fopen(filename, "r");
+        //User_input
+        
+        char *word;
+        printf("Type something: \n");
+        size_t bufsize = 32;
+        getline(&word,&bufsize,stdin);
+        int input_len =strlen(str);
+        word[input_len - 1] = '\0';
+        if (fp == NULL){
+            printf("Could not open file %s",filename);
+            return 1;
         }
+           while (fgets(str, MAXCHAR, fp) != NULL){
+        
+               int len =strlen(str);
+               str[len-1] = '\0';
+               
+               if(strcmp(word,str) == 0){
+                   printf("yes\n");
+                   return 0;
+               }else{
+                   printf("No,the words is not on the list\n");
+               }
+              
+           
+           }
+        fclose(fp);
+
+        //spell_cheker-------------------------------------------------------------------------------
+        */
+        
+        
         dequeue();
         size_counter--;
     }
     
-    pthread_cond_broadcast(&producer);
+    pthread_cond_signal(&producer);
     
     
     pthread_mutex_unlock(&lock);
