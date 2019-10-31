@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define SIZE 20
+#define SIZE 100000
 
 struct DataItem {
-    char* word;
+   char word[15];
    int key;
 };
 
@@ -38,10 +38,11 @@ struct DataItem *search(int key) {
    return NULL;
 }
 
-void insert(int key,int data) {
+void insert(int key,char letter[]) {
 
    struct DataItem *item = (struct DataItem*) malloc(sizeof(struct DataItem));
-   item->word = "hello";
+    
+   strcpy(item->word,letter);
    item->key = key;
 
    //get the hash
@@ -86,7 +87,7 @@ struct DataItem* delete(struct DataItem* item) {
    return NULL;
 }
 
-void display() {
+void display_hash() {
    int i = 0;
     
    for(i = 0; i<SIZE; i++) {

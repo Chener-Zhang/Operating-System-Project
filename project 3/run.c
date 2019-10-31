@@ -13,7 +13,7 @@
 #include "queue.c"
 #include "hash_table.c"
 
-
+#define MAXCHAR 50
 void* function(void * input);
 
 
@@ -32,9 +32,43 @@ struct item {
     int threadID;
 };
 
-//<------------------------------>
+
 
 int main(){
+    
+    FILE *fp;
+       char str[MAXCHAR];
+       char* filename = "dictionary.txt";
+        
+    int index = 0;
+       fp = fopen(filename, "r");
+    
+       if (fp == NULL){
+           printf("Could not open file %s",filename);
+           return 1;
+       }
+    
+    while (fgets(str, MAXCHAR, fp) != NULL){
+        
+        
+        
+        
+        
+        int len =strlen(str);
+        str[len-1] = '\0';
+        printf("[%s]", str);
+        insert(index,str);
+        index++;
+        printf("\n\n");
+        
+    }
+    display_hash();
+       fclose(fp);
+    
+    
+    
+    
+    /*
     printf("\n\n\n\n");
     printf("hello from the sleep.c\n");
     pthread_t thread = NULL;
@@ -48,6 +82,7 @@ int main(){
     pthread_join(thread, NULL);
     display();
     printf("\n\n\n\n");
+    */
     return 0;
 }
 
