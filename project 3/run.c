@@ -21,7 +21,7 @@ pthread_cond_t consumer = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 
-int limit = 2;
+int limit = 10;
 int size_counter = 0;
 
 
@@ -38,14 +38,14 @@ int main(){
     printf("hello from the sleep.c\n");
     pthread_t thread = NULL;
     
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 100; i++) {
         struct item *thread_1 = (struct item *)malloc(sizeof(struct item));
         thread_1->threadID = i;
         pthread_create(&thread,NULL,function,(void*)thread_1);
     }
     
     pthread_join(thread, NULL);
-    
+    display();
     printf("\n\n\n\n");
     return 0;
 }
@@ -62,10 +62,13 @@ void* function(void * input){
                     
     
     if(size_counter == limit){
+        //testing display in the middle
+        //display();
         printf("Thread %d go to sleep  --------------------- \n",number);
         pthread_cond_wait(&producer, &lock);
         
     }else{
+        enqueue(number,"hello");
         size_counter++;
     }
     
@@ -73,11 +76,13 @@ void* function(void * input){
     pthread_mutex_unlock(&lock);
     
     
+    
     //consumer
     pthread_mutex_lock(&lock);
     
     
     if(size_counter == 0){
+        //display();
         printf("Thread %d go to sleep  --------------------- \n",number);
         pthread_cond_wait(&consumer, &lock);
         
@@ -87,11 +92,13 @@ void* function(void * input){
         }else{
             printf("Thread %d This is an odd\n",number);
         }
-        
+        dequeue();
         size_counter--;
     }
     
     pthread_cond_broadcast(&producer);
+    
+    
     pthread_mutex_unlock(&lock);
     
     
