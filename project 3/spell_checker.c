@@ -20,7 +20,7 @@ pthread_cond_t producer = PTHREAD_COND_INITIALIZER;
 pthread_cond_t consumer = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-int x = 0;
+
 
 int limit = 10;
 int size_counter = 0;
@@ -28,8 +28,8 @@ int size_counter = 0;
 
 
 struct item {
-    char* name;
-    int age;
+    char* word;
+    int threadID;
 };
 
 
@@ -39,11 +39,10 @@ int main(){
     printf("hello from the sleep.c\n");
     pthread_t thread = NULL;
     
-    for (int i = 0; i < 10; i++) {
-        struct item *Allen = (struct item *)malloc(sizeof(struct item));
-        
-        Allen->age = i;
-        pthread_create(&thread,NULL,function,(void*)Allen);
+    for (int i = 0; i < 100; i++) {
+        struct item *thread_1 = (struct item *)malloc(sizeof(struct item));
+        thread_1->threadID = i;
+        pthread_create(&thread,NULL,function,(void*)thread_1);
     }
     
     pthread_join(thread, NULL);
@@ -52,8 +51,8 @@ int main(){
 }
 
 void* function(void * input){
-
-    int number = ((struct item*)input)->age;
+            
+    int number = ((struct item*)input)->threadID;
     printf("age: %d\n",number);
 
     
@@ -75,6 +74,8 @@ void* function(void * input){
     
     //consumer
     pthread_mutex_lock(&lock);
+    printf("Thread ID is [%d]",pthread_self());
+    
     if(size_counter == 0){
         printf("------zzzzzz------\n");
         pthread_cond_wait(&consumer, &lock);
