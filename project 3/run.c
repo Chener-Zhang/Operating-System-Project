@@ -11,6 +11,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include "queue.c"
+#include "hash_table.c"
 
 
 void* function(void * input);
@@ -31,7 +32,7 @@ struct item {
     int threadID;
 };
 
-
+//<------------------------------>
 
 int main(){
     printf("\n\n\n\n");
