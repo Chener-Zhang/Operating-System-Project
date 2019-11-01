@@ -74,9 +74,25 @@ int main(){
     
     pthread_t thread_ID;
     while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
+        puts("Cient [%s] Connection Success\n",client_sock);
+        
+        //Thread creation here + check_whether the socket is created successfully;
+        if( pthread_create( &thread_ID , NULL ,  function() , (void*) &client_sock) < 0)2
+        {
+            perror("could not create thread");
+            return 1;
+        }
+        
+        
+        
         
     }
-
+    
+    if (client_sock < 0)
+    {
+        perror("Error something happen!\n ");
+        return 0;
+    }
     
     
     
