@@ -48,7 +48,7 @@ int main(){
     //Initializing
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons( 8888 ); // My port number;
+    server.sin_port = htons(8888); // My port number;
      
     //Bind togehter
     if( bind(server_socket,(struct sockaddr *)&server , sizeof(server)) < 0)
@@ -74,7 +74,7 @@ int main(){
     
     pthread_t thread_ID;
     while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
-        puts("Cient [%s] Connection Success\n",client_sock);
+        puts(" Connection Success\n");
         
         
         //Thread creation here;
@@ -111,39 +111,40 @@ int main(){
 void* function(void * input){
     
     int client_id_number_in_function = ((struct item*)input)->threadID;
-    printf("age: %d\n",number);
+    printf("The client id: %d\n",client_id_number_in_function);
     
     
     //Message creator;
+    int buffer_size;
     char *server_message , client_message[2000];
     char *byebye_message = "\n byebye\n";
     char *println_line = ">";
-    message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
+    server_message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
     
     //The first words to the clients;
-    send(client_id_number_in_function , message , strlen(message),0);
-    send(sock , println_line , strlen(line_message),0);
+    send(client_id_number_in_function , server_message , strlen(server_message),0);
+    send(client_id_number_in_function , println_line , strlen(println_line),0);
     
     
 //----------------------------------------------------------RECEIVING--------------------------------------------------------------------
 
-    while((read_size = recv(client_id_number_in_function , client_message , 2000 , 0)) > 0 )
+    while((buffer_size = recv(client_id_number_in_function , client_message , 2000 , 0)) > 0 )
     {
         // size init
         
-        printf("size[%d]\n",read_size);
-        client_message[read_size-2] = '\0';
+        printf("size[%d]\n",buffer_size);
+        client_message[buffer_size-2] = '\0';
                                 
                                 //-----EXIT_CHECKER-------------------------------------------------------------------------------------
                                 if(client_message[0]=='q'){
-                                    send(sock,byebye,strlen(byebye),0);
+                                    send(client_id_number_in_function,byebye_message,strlen(byebye_message),0);
                                     //declare someone is leaving
-                                    close(sock);
+                                    close(client_id_number_in_function);
                                     break;
                                 }
                                 //-----EXIT_CHECKER-------------------------------------------------------------------------------------
         
-        printf("Client %d enter [%s]\n",sock,client_message);
+        printf("Client %d enter [%s]\n",client_id_number_in_function,client_message);
         //------------------------------------- Producer and Consumer ----------------------------------
         
         
@@ -165,17 +166,18 @@ void* function(void * input){
         
         //clear Ms_buffer
         memset(client_message, 0, 2000);
-        send(sock , println_line , strlen(line_message),0);
+        send(client_id_number_in_function , println_line , strlen(println_line),0);
         
-    }else (read_size == -1)
-    {
+    }
+        
+    if(buffer_size == -1){
         perror("recv failed");
     }
          
     
     
 //----------------------------------------------------------RECEIVING--------------------------------------------------------------------
-
+/*
     
     //producer
     pthread_mutex_lock(&lock);
@@ -242,7 +244,7 @@ void* function(void * input){
         fclose(fp);
 
         //spell_cheker-------------------------------------------------------------------------------
-        */
+    
         
         
         dequeue();
@@ -250,11 +252,8 @@ void* function(void * input){
     }
     
     pthread_cond_signal(&producer);
-    
-    
     pthread_mutex_unlock(&lock);
-    
-    
+    */
     return 0;
 }
 
