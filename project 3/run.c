@@ -76,9 +76,14 @@ int main(){
     while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
         puts("Cient [%s] Connection Success\n",client_sock);
         
-        //Thread creation here + check_whether the socket is created successfully;
-        if( pthread_create( &thread_ID , NULL ,  function() , (void*) &client_sock) < 0)2
+        
+        //Thread creation here;
+        struct item *thread_item = (struct item *)malloc(sizeof(struct item));
+        thread_item->threadID = client_sock;
+        
+        if( pthread_create(&thread_ID , NULL ,  function , (void*)thread_item) < 0)
         {
+            
             perror("could not create thread");
             return 1;
         }
@@ -97,31 +102,7 @@ int main(){
     
     
     //----------------------------------------------------------THREAD--------------------------------------------------------------------
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    pthread_t thread;
-    
-    for (int i = 0; i < 100; i++) {
-        struct item *thread_1 = (struct item *)malloc(sizeof(struct item));
-        thread_1->threadID = i;
-        pthread_create(&thread,NULL,function,(void*)thread_1);
-    }
-    
-    pthread_join(thread, NULL);
-    display();
-    printf("\n\n\n\n");
-    
-    */
+
     
     
     return 0;
@@ -129,9 +110,71 @@ int main(){
 
 void* function(void * input){
     
-    
-    int number = ((struct item*)input)->threadID;
+    int client_id_number_in_function = ((struct item*)input)->threadID;
     printf("age: %d\n",number);
+    
+    
+    //Message creator;
+    char *server_message , client_message[2000];
+    char *byebye_message = "\n byebye\n";
+    char *println_line = ">";
+    message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
+    
+    //The first words to the clients;
+    send(client_id_number_in_function , message , strlen(message),0);
+    send(sock , println_line , strlen(line_message),0);
+    
+    
+//----------------------------------------------------------RECEIVING--------------------------------------------------------------------
+
+    while((read_size = recv(client_id_number_in_function , client_message , 2000 , 0)) > 0 )
+    {
+        // size init
+        
+        printf("size[%d]\n",read_size);
+        client_message[read_size-2] = '\0';
+                                
+                                //-----EXIT_CHECKER-------------------------------------------------------------------------------------
+                                if(client_message[0]=='q'){
+                                    send(sock,byebye,strlen(byebye),0);
+                                    //declare someone is leaving
+                                    close(sock);
+                                    break;
+                                }
+                                //-----EXIT_CHECKER-------------------------------------------------------------------------------------
+        
+        printf("Client %d enter [%s]\n",sock,client_message);
+        //------------------------------------- Producer and Consumer ----------------------------------
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //------------------------------------- Producer and Consumer ----------------------------------
+        
+        
+        
+        
+        
+        //clear Ms_buffer
+        memset(client_message, 0, 2000);
+        send(sock , println_line , strlen(line_message),0);
+        
+    }else (read_size == -1)
+    {
+        perror("recv failed");
+    }
+         
+    
+    
+//----------------------------------------------------------RECEIVING--------------------------------------------------------------------
 
     
     //producer
