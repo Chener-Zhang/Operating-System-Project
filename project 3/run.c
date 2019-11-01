@@ -20,6 +20,8 @@ pthread_cond_t producer = PTHREAD_COND_INITIALIZER;
 pthread_cond_t consumer = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
+
+
 int limit = 10;
 int size_counter = 0;
 
@@ -29,14 +31,69 @@ struct item {
 };
 
 
-
-
 int main(){
     
+    //------------------------------------------------------INITIALIZING------------------------------------------------------------------
+    int server_socket , client_sock , c;
+    struct sockaddr_in server , client;
+     
+    //Create socket
+    server_socket = socket(AF_INET , SOCK_STREAM , 0);
+    if (server_socket == -1)
+    {
+        printf("Error!\n");
+    }
+    puts("Socket creation success\n");
+     
+    //Initializing
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons( 8888 ); // My port number;
+     
+    //Bind togehter
+    if( bind(server_socket,(struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        
+        perror("Bind Error\n");
+        return 1;
+    }
+    puts("bind done");
+     
+    //------------------------------------------------------INITIALIZING_FINISH-----------------------------------------------------------
+    
+    //------------------------------------------------------LISENINGIN_ITIALIZING---------------------------------------------------------
+    listen(server_socket , 10);
+    puts("waiting for the connection...............\n");
+    c = sizeof(struct sockaddr_in);
+    
+    //------------------------------------------------------LISENING_ING------------------------------------------------------------------
 
-    printf("\n\n\n\n");
-    printf("hello from the sleep.c\n");
-    pthread_t thread = NULL;
+    
+
+    //----------------------------------------------------------THREAD--------------------------------------------------------------------
+    
+    pthread_t thread_ID;
+    while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
+        
+    }
+
+    
+    
+    
+    //----------------------------------------------------------THREAD--------------------------------------------------------------------
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+    pthread_t thread;
     
     for (int i = 0; i < 100; i++) {
         struct item *thread_1 = (struct item *)malloc(sizeof(struct item));
@@ -47,6 +104,9 @@ int main(){
     pthread_join(thread, NULL);
     display();
     printf("\n\n\n\n");
+    
+    */
+    
     
     return 0;
 }
