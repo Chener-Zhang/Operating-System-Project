@@ -141,121 +141,96 @@ void* function(void * input){
                                     //declare someone is leaving
                                     close(client_id_number_in_function);
                                     break;
+                                }else if(buffer_size == -1){
+                                    perror("recv failed");
+                                    
                                 }
                                 //-----EXIT_CHECKER-------------------------------------------------------------------------------------
         
         printf("Client %d enter [%s]\n",client_id_number_in_function,client_message);
-        //------------------------------------- Producer and Consumer ----------------------------------
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         //------------------------------------- Producer and Consumer ----------------------------------
         
+    
+        //Producer ---------->
+        pthread_mutex_lock(&lock);
+        if(size_counter == limit){
+              printf("Thread %d go to sleep  --------------------- \n",client_id_number_in_function);
+              pthread_cond_wait(&producer, &lock);
+        }else{
+              enqueue(client_id_number_in_function,client_message);
+              size_counter++;
+        }
+          
+          pthread_cond_signal(&consumer);
+          pthread_mutex_unlock(&lock);
         
+        //consumer ---------->
+        pthread_mutex_lock(&lock);
+        if(size_counter == 0){
+            printf("Thread %d go to sleep  --------------------- \n",client_id_number_in_function);
+            pthread_cond_wait(&consumer, &lock);
+        }else{
+            
+            //spell_cheker-------------------------------------------------------------------------------
+            
+            // define a file
+            FILE *fp;
+            // define the str
+            char str[MAXCHAR];
+            // address the file name
+            char* filename = "dictionary.txt";
+            //got the file descriptor number;
+            fp = fopen(filename, "r");
+            //if something wired happen;
+            if (fp == NULL){
+                printf("Could not open file %s",filename);
+                return (void*)1;
+            }
+                        
+            //assign buffer_size;
+            size_t bufsize = 32;
+            
+            int input_len =strlen(str);
+            
+            //send to the client;
+            char* correct_message = "yes\n";
+            char* false_message = "no\n";
+            //yes / no message
+            
+
+               while (fgets(str, MAXCHAR, fp) != NULL){
+            
+                   int len =strlen(str);
+                   str[len-1] = '\0';
+                   
+                   if(strcmp(client_message,str) == 0){
+                       send(client_id_number_in_function , correct_message , strlen(correct_message),0);
+                       break;
+                   }else{
+                       //Do something else;
+                   }
+               }
+            
+            // close the file descriptor
+            fclose(fp);
+            //spell_cheker-------------------------------------------------------------------------------
+            dequeue();
+            size_counter--;
+        }
         
+        pthread_cond_signal(&producer);
+        pthread_mutex_unlock(&lock);
         
+        //------------------------------------- Producer and Consumer ----------------------------------
         
         //clear Ms_buffer
         memset(client_message, 0, 2000);
-        send(client_id_number_in_function , println_line , strlen(println_line),0);
-        
+        send(client_id_number_in_function , println_line , strlen(println_line),0);        
     }
-        
-    if(buffer_size == -1){
-        perror("recv failed");
-    }
-         
-    
-    
-//----------------------------------------------------------RECEIVING--------------------------------------------------------------------
-/*
-    
-    //producer
-    pthread_mutex_lock(&lock);
-                    
-    
-    if(size_counter == limit){
-        //testing display in the middle
-        //display();
-        printf("Thread %d go to sleep  --------------------- \n",number);
-        pthread_cond_wait(&producer, &lock);
-        
-    }else{
-        enqueue(number,"hello");
-        size_counter++;
-    }
-    
-    pthread_cond_signal(&consumer);
-    pthread_mutex_unlock(&lock);
-    
-    
-    
-    //consumer
-    pthread_mutex_lock(&lock);
-    
-    
-    if(size_counter == 0){
-        //display();
-        printf("Thread %d go to sleep  --------------------- \n",number);
-        pthread_cond_wait(&consumer, &lock);
-        
-    }else{
-        /*
-        //spell_cheker-------------------------------------------------------------------------------
-        FILE *fp;
-        char str[MAXCHAR];
-        char* filename = "dictionary.txt";
-        fp = fopen(filename, "r");
-        //User_input
-        
-        char *word;
-        printf("Type something: \n");
-        size_t bufsize = 32;
-        getline(&word,&bufsize,stdin);
-        int input_len =strlen(str);
-        word[input_len - 1] = '\0';
-        if (fp == NULL){
-            printf("Could not open file %s",filename);
-            return 1;
-        }
-           while (fgets(str, MAXCHAR, fp) != NULL){
-        
-               int len =strlen(str);
-               str[len-1] = '\0';
-               
-               if(strcmp(word,str) == 0){
-                   printf("yes\n");
-                   return 0;
-               }else{
-                   printf("No,the words is not on the list\n");
-               }
-              
-           
-           }
-        fclose(fp);
+            return 0;
 
-        //spell_cheker-------------------------------------------------------------------------------
-    
-        
-        
-        dequeue();
-        size_counter--;
-    }
-    
-    pthread_cond_signal(&producer);
-    pthread_mutex_unlock(&lock);
-    */
-    return 0;
-}
+  }
 
 
 
