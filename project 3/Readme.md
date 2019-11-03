@@ -1,5 +1,5 @@
 # Project 3  
-# The spell checker 
+## The spell checker 
 
 
 
