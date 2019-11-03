@@ -126,7 +126,7 @@ void* function(void * input){
     // byebye text
     char *byebye_message = "\n byebye\n";
     // prompt
-    char *println_line = ">";
+    char *println_line = "\n >";
     // press q to quit
     server_message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
     
@@ -208,8 +208,8 @@ void* function(void * input){
             // the checker have already check everything inside; then it will print no;
             int false_counter = 0;
             //send to the client;
-            char* correct_message = "The word is in the dictionary\n";
-            char* false_message = "The word is NOT in the dictionary\n Error\n";
+            char* correct_message = "In the dictionary\n";
+            char* false_message = "NOT in the dictionary\n Error\n";
             //yes / no message
             
             // check whether the words enter by the user is actually inside of the dictionary
@@ -219,14 +219,14 @@ void* function(void * input){
                    str[len-1] = '\0';
                    // if yes;
                    if(strcmp(client_message,str) == 0){
-                       send(client_id_number_in_function , correct_message , strlen(false_message),0);
+                       send(client_id_number_in_function , correct_message , strlen(correct_message),0);
                        break;
                    }else{
                        //else no
                        false_counter++;
-                       if(false_counter == 99171){
-                       send(client_id_number_in_function , false_message , strlen(false_message),0);
-                       }
+                               if(false_counter == 99171){
+                               send(client_id_number_in_function , false_message , strlen(false_message),0);
+                               }
                                               
                    }
                }

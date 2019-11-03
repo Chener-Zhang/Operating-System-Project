@@ -1,5 +1,5 @@
 run:
-	gcc -o run run.c
-	./run
-	rm run
+	gcc -o main main.c
+	./main
+	rm main
 
