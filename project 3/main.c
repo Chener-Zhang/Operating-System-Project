@@ -68,6 +68,7 @@ int main(){
     //------------------------------------------------------LISENINGIN_ITIALIZING---------------------------------------------------------
     // wait for the lient enters
     listen(server_socket , 10);
+    
     puts("waiting for the connection...............\n");
     c = sizeof(struct sockaddr_in);
     
@@ -80,8 +81,8 @@ int main(){
     // If anyone enters in, it will create the thread;
     pthread_t thread_ID;
     while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
-        puts(" Connection Success\n");
         
+        puts(" Connection Success\n");
         // initialize the struct item;
         struct item *thread_item = (struct item *)malloc(sizeof(struct item));
         thread_item->threadID = client_sock;
@@ -94,13 +95,13 @@ int main(){
             perror("could not create thread");
             return 1;
         }
-        
+            printf("saldjaskldjkladjals\n\n");
+
     }
     
     // same here that the client has some problem with the connection;
     if (client_sock < 0)
     {
-        perror("Error something happen!\n ");
         return 0;
     }
     
@@ -130,6 +131,8 @@ void* function(void * input){
     // press q to quit
     server_message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
     
+    char* server_input;
+    
     //The first words to the clients;
     // send something to my clients
     send(client_id_number_in_function , server_message , strlen(server_message),0);
@@ -140,6 +143,7 @@ void* function(void * input){
     //If receive;
     while((buffer_size = recv(client_id_number_in_function , client_message , 2000 , 0)) > 0 )
     {
+                
         
         client_message[buffer_size-2] = '\0';
         
