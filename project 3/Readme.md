@@ -1,5 +1,4 @@
-# Project 3  
-## The spell checker 
+# Project 3  - ## The spell checker 
 
 
 
@@ -11,7 +10,7 @@ There are three major part about this project
  
  
  1: The server connection 
-        Initilize the socket; 
+        - Initilize the socket; 
         Put all init vars into the correct place
         Make the socket 
         Bind the socket 
