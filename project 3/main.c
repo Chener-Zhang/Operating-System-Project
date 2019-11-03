@@ -23,26 +23,34 @@ pthread_cond_t producer = PTHREAD_COND_INITIALIZER;
 pthread_cond_t consumer = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
+int server_socket_id;
+int num;
 
 // Global vars
 int limit = 10;
 int size_counter = 0;
+char log_buffer[20000];
 
 //my_struct which carry the user_input and the id;
+
 struct item {
     char* word;
     int threadID;
 };
 
+
 // run;
 int main(){
     
+
     //------------------------------------------------------INITIALIZING------------------------------------------------------------------
     int server_socket , client_sock , c;
     struct sockaddr_in server , client;
-     
+    
+    
     //Create socket
     server_socket = socket(AF_INET , SOCK_STREAM , 0);
+    server_socket_id = server_socket;
     if (server_socket == -1)
     {
         printf("Error!\n");
@@ -79,25 +87,25 @@ int main(){
     //----------------------------------------------------------THREAD--------------------------------------------------------------------
     // thread creation;
     // If anyone enters in, it will create the thread;
-    pthread_t thread_ID;
-    while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
+    
         
-        puts(" Connection Success\n");
-        // initialize the struct item;
-        struct item *thread_item = (struct item *)malloc(sizeof(struct item));
-        thread_item->threadID = client_sock;
-        
-        
-        //Thread creation here;
-        if( pthread_create(&thread_ID , NULL ,  function , (void*)thread_item) < 0)
-        {
-        // if < 0, the creation of thread is fail;
-            perror("could not create thread");
-            return 1;
+        pthread_t thread_ID;
+        while( (client_sock = accept(server_socket, (struct sockaddr *)&client, (socklen_t*)&c))){
+            
+            puts(" Connection Success\n");
+            // initialize the struct item;
+            struct item *thread_item = (struct item *)malloc(sizeof(struct item));
+            thread_item->threadID = client_sock;
+                        
+            //Thread creation here;
+            if( pthread_create(&thread_ID , NULL ,  function , (void*)thread_item) < 0)
+            {
+            // if < 0, the creation of thread is fail;
+                perror("could not create thread");
+                return 1;
+            }
+                    
         }
-            printf("saldjaskldjkladjals\n\n");
-
-    }
     
     // same here that the client has some problem with the connection;
     if (client_sock < 0)
@@ -115,9 +123,15 @@ int main(){
 }
 
 void* function(void * input){
+    
+      
+  
+    
     // set input to client_id_number_in_function, casting the variable;
     int client_id_number_in_function = ((struct item*)input)->threadID;
     printf("The client id is enter the room: %d\n",client_id_number_in_function);
+    
+    
     
     
     //<-----Message creator--------->
@@ -129,35 +143,42 @@ void* function(void * input){
     // prompt
     char *println_line = "\n >";
     // press q to quit
-    server_message = "Successful connect to the function\n Please type the world you would like to check, press 'q' for quit\n";
+    server_message = "Successful connect to the function\nPlease type the world you would like to check, press 'q' for quit\n";
     
-    char* server_input;
     
     //The first words to the clients;
     // send something to my clients
     send(client_id_number_in_function , server_message , strlen(server_message),0);
+    
+    strcat(log_buffer, server_message);
+    
     send(client_id_number_in_function , println_line , strlen(println_line),0);
+    
+    strcat(log_buffer,println_line);
     
     
 //----------------------------------------------------------RECEIVING--------------------------------------------------------------------
     //If receive;
     while((buffer_size = recv(client_id_number_in_function , client_message , 2000 , 0)) > 0 )
     {
-                
-        
-        client_message[buffer_size-2] = '\0';
+        client_message[buffer_size-2] = '\0';        
+        strcat(log_buffer,client_message);
+        strcat(log_buffer,"\n");
         
                                 //-----EXIT_CHECKER-------------------------------------------------------------------------------------
                                 if(client_message[0]=='q'){
                                     send(client_id_number_in_function,byebye_message,strlen(byebye_message),0);
+                                    strcat(log_buffer,byebye_message);
                                     //declare someone is leaving
                                     printf("Client[%d] is leaving............\n",client_id_number_in_function);
                                     close(client_id_number_in_function);
                                     break;
+                                    
                                 }else if(buffer_size == -1){
                                     perror("recv failed");
                                     
                                 }
+                      
                                 //-----EXIT_CHECKER-------------------------------------------------------------------------------------
         
         
@@ -224,12 +245,14 @@ void* function(void * input){
                    // if yes;
                    if(strcmp(client_message,str) == 0){
                        send(client_id_number_in_function , correct_message , strlen(correct_message),0);
+                       strcat(log_buffer,correct_message);
                        break;
                    }else{
                        //else no
                        false_counter++;
                                if(false_counter == 99171){
                                send(client_id_number_in_function , false_message , strlen(false_message),0);
+                                strcat(log_buffer,false_message);
                                }
                                               
                    }
@@ -252,7 +275,25 @@ void* function(void * input){
         //clear Ms_buffer
         memset(client_message, 0, 2000);
         send(client_id_number_in_function , println_line , strlen(println_line),0);
-    }
+        
+        }
+    
+        //printf("%s",log_buffer);
+
+    
+        // Print the buffer to the log_file
+        FILE *fptr;
+        // use appropriate location if you are using MacOS or Linux
+        fptr = fopen("log.txt","a");
+        if(fptr == NULL)
+                {
+                   printf("Error!");
+                   exit(1);
+                }
+        fprintf(fptr,log_buffer);
+        fclose(fptr);
+
+        
             return 0;
 
   }
