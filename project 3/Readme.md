@@ -32,6 +32,29 @@
 * lock and unlock;
 * wait and signal;
 * reset the buffer;
+### EXP Below:
+```
+lock
+
+producer: 
+    Queue FULL yes / no?
+
+    if yes - > go to sleep
+    if no - > just keep adding
+    wake up consumer
+
+unlock    
+------------------------------------------------
+lock
+
+consumer
+    Queue Empty yes / no?        
+    if yes - > go to sleep
+    if no -> just keep deleting
+    wakeup producer
+    
+unlock    
+```
       
 ## 3: Spell checker
 
@@ -48,5 +71,9 @@
         ```
         close the file
         
-    
+## 4: Log_file
+* Create a buffer
+* Every time there is an output of client or server, println, the buffer will goes into the file
+* Open + Close file
+
 
