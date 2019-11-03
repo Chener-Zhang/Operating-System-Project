@@ -283,7 +283,6 @@ void* function(void * input){
     
         // Print the buffer to the log_file
         FILE *fptr;
-        // use appropriate location if you are using MacOS or Linux
         fptr = fopen("log.txt","a");
         if(fptr == NULL)
                 {
