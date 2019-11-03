@@ -33,7 +33,7 @@
 * wait and signal;
 * reset the buffer;
       
- ##3: Spell checker
+## 3: Spell checker
 
 * Open the file 
 
