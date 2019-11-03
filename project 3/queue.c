@@ -70,7 +70,7 @@ bool dequeue(){
 
 	if(is_empty()){
 
-		printf("\nThe queue is empty!\n");
+		//printf("\nThe queue is empty!\n");
 		return false;
 	}
 
