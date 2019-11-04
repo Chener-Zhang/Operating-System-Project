@@ -85,4 +85,4 @@ unlock
 * The concurrency will happen in the real life when multi-clients connected to on server for some websize company; Or, in  the school 
 
 
-
+* by the way, The queue i import from other  credit goes to him -> Rafael Domingues Tardivo;
