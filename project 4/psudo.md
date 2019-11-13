@@ -41,8 +41,9 @@ disk.h
     * After init_description;
     * ### Image :[1111000000000000000000000000000000000]
 
+```
 
- ```
+```
  void init_description(size, block,pointer_position){
      
     // define as 0; very very beginning of the disk
