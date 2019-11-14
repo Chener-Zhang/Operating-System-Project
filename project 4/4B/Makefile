@@ -1,5 +1,5 @@
 all:
-	gcc -o main disk.c 
+	gcc -o main mydisk.c 
 	./main 
 	rm main 
 
