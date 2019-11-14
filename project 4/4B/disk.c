@@ -10,6 +10,7 @@
 static int active = 0;  /* is the virtual disk open (active) */
 static int handle;      /* file handle to virtual disk       */
 
+//int size_counter = 0;
 /******************************************************************************/
 int make_disk(char *name)
 { 
@@ -28,10 +29,11 @@ int make_disk(char *name)
 
   memset(buf, 0, BLOCK_SIZE);
   for (cnt = 0; cnt < DISK_BLOCKS; ++cnt)
-    write(f, buf, BLOCK_SIZE);
-
+    write(f, buf, BLOCK_SIZE);    
+    //size_counter++;
   close(f);
 
+  //printf("the size is [%d]", size_counter);
   return 0;
 }
 
