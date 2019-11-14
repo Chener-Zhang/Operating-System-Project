@@ -5,7 +5,7 @@
 * ## Flat table design 
 * ## Regular Funtion
 
-### Image :[0000000000000000000000000000000000000000]
+Image :[0000000000000000000000000000000000000000]
 
 # Initializing the size 
 
@@ -56,6 +56,8 @@ disk.h
  ```
 ### 3: **FAT** Allocation data structure; 
 
+
+# Flat table design
 ```
 Free space indicatior
 
@@ -71,6 +73,7 @@ struct{
 
 
 ```
+* VERY IMPORTANT!!!
 Direction Entry table;
 
 struct{
@@ -92,17 +95,52 @@ struct{
 }
 ```
 
-### Once finished setup the file entery ;
-    * Before
-    * ### Image :[0000000000000000000000000000000000000]
-    * After Finish the file entry, i mean, it never gonna finish becasue we can increases the block of the entry list;
-    * ### Image :[1111001111111111110000000000000000000]
+```
+ Once finished setup the file entery ;
+    Before
+    Image :[1111000000000000000000000000000000000]
+    After Finish the file entry, i mean, it never gonna finish becasue we can increases the block of the entry list;
+    Image :[1111001111111111110000000000000000000]
 
 In order to make easy to find the specific entry; 
-### we can use the **mmap()** here;
+ we can use the **mmap()** here;
+```
 
+# Regular Funtion AND Global Var
+```
+struct:
+    1: Free space indicatior
+    2: File entry table
+  * 3: Each File descriptor content {
+        .
+        ..
+        file1
+        file2
+        bla
+        bla
+        bla
+        .
+        .
+        .
+    }
+function:    
+    1: Make_Disk()
+    2: Write_Block()
+    3: Read_Block()
+    4: Delete_Block_imformation()
+    5: Close()
+    6: mmap();
 
+```
 
+```
+After finished all above
+    Before
+    Image :[1111001111111111110000000000000000000]
+    After put the data in the disk
+    Image :[1111001111111111110001111111111110000]
+
+```
 
 
 
