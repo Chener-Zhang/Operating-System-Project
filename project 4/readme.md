@@ -7,10 +7,13 @@
  
 
 **Notes for myself**
+## write(); write stuff
 ```
 write(int fd, "words", strlen(words));
 ```
 
+
+## fseek(); set where to begin
 ```
 fseek(int fd, index_pointer, SEEK_SET );
 //SEEK_SET: set the start pointer here 
