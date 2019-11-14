@@ -124,10 +124,14 @@ int block_read(int block, char *buf)
   return 0;
 }
 
-
+//<-----------------------------------------------My Code------------------------------------------------------>
 int main(){
   
-
+    char *name = "mydisk";
+    make_disk(name);
+    open_disk(name);
+    block_write(0,"hello world");
+    close_disk();
 
   return 0;
 }
