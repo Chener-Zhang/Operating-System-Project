@@ -88,6 +88,11 @@ int block_write(int block, char *buf)
 
   if (lseek(handle, block * BLOCK_SIZE, SEEK_SET) < 0) {
     perror("block_write: failed to lseek");
+    
+    //------
+    int cal_size = block * 10;
+    printf("The address is [%d]",cal_size);
+    //------
     return -1;
   }
 
@@ -127,10 +132,13 @@ int block_read(int block, char *buf)
 
 //<-----------------------------------------------My Code------------------------------------------------------>
 int main(){
-  
-   
-    
-   
+  char name[] = "mydisk";
+  make_disk(name);
+  open_disk(name);
 
+  block_write(0,"hello");
+  block_write(1,"hi");
+
+  close_disk();
   return 0;
 }
