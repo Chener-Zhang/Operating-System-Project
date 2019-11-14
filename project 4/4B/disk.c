@@ -10,7 +10,6 @@
 static int active = 0;  /* is the virtual disk open (active) */
 static int handle;      /* file handle to virtual disk       */
 
-//int size_counter = 0;
 /******************************************************************************/
 int make_disk(char *name)
 { 
@@ -22,18 +21,17 @@ int make_disk(char *name)
     return -1;
   }
 
-  if ((f = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777)) < 0) {
+  if ((f = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0) {
     perror("make_disk: cannot open file");
     return -1;
   }
 
   memset(buf, 0, BLOCK_SIZE);
   for (cnt = 0; cnt < DISK_BLOCKS; ++cnt)
-    write(f, buf, BLOCK_SIZE);    
-    //size_counter++;
+    write(f, buf, BLOCK_SIZE);
+
   close(f);
 
-  //printf("the size is [%d]", size_counter);
   return 0;
 }
 
@@ -98,7 +96,6 @@ int block_write(int block, char *buf)
     return -1;
   }
 
-  printf("write successful\n");
   return 0;
 }
 
