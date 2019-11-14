@@ -29,3 +29,25 @@ exp:
 ------------------------
 
 ```
+
+## mmap(); set where to begin
+```
+
+
+void *addr = mmap(NULL,100,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+
+-----------------
+List :[0 0 t 0 h 0 i 0 s]
+
+Index:[0 1 2 3 4 5 6 7 8] 
+-----------------
+char *list = addr;
+
+=> will print
+
+list[0] = '0';
+list[2] = 't';
+list[4] = 'h';
+
+
+```
