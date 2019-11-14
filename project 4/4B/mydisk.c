@@ -8,7 +8,7 @@ int number_of_block = 20;
 int each_block_size = 16; 
 int fd;
 
-
+// --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){
 
     int file_size_counter;
@@ -25,6 +25,31 @@ int create_disk(char *name ){
     return 0;
 }
 
+// --------------------------------------------- Open a disk ---------------------------------------------//
+int open_disk(char *name){
+    fd = open(name,O_RDWR,0644);
+    return 0;
+}
+
+// --------------------------------------------- Write a disk ---------------------------------------------//
+int write_disk(int block_index, char* words){
+    lseek(fd, 0, SEEK_SET);    
+    lseek(fd, block_index * each_block_size, SEEK_SET);
+    write(fd,words,strlen(words));    
+    return 0;
+}
+// --------------------------------------------- Read a disk ---------------------------------------------//
+
+int read_disk(int fd){
+    return 0;
+}
+// --------------------------------------------- Close a disk ---------------------------------------------//
+int close_disk(int fd){
+    close(fd);
+    return 0;
+}
+
+// --------------------------------------------- Main ---------------------------------------------//
 int main(){ 
     create_disk("hello");
 }
