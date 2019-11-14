@@ -51,3 +51,39 @@ list[4] = 'h';
 
 
 ```
+
+
+```
+struct {
+    char name[];
+    int size;
+    int next_entry;
+    char time_of_the_creation[]
+    .
+    .
+    .
+    .
+    .
+
+}File;
+```
+
+```
+struct {
+    char name[];
+    int size[]
+    ine next_entry;
+    .
+    .
+    .
+
+}Direction 
+```
+```
+struct{
+    int index_of_the_block / block_id;
+    int size;
+    int next_entry;
+
+}BLOCK
+```
