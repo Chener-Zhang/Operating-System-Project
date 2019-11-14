@@ -78,11 +78,4 @@ struct {
 
 }Direction 
 ```
-```
-struct{
-    int index_of_the_block / block_id;
-    int size;
-    int next_entry;
 
-}BLOCK
-```
