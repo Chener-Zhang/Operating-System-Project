@@ -12,7 +12,8 @@ int main(){
     make_disk("mydisk");    
     open_disk("mydisk");
     block_write(1,"hello world \n");
-    close_disk("mydisk");    
+    block_write(2,"my name is chener\n");
+    close_disk();    
     
     printf("\n\n");
     return 0;
