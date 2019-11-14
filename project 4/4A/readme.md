@@ -180,8 +180,8 @@ in the real case, each block has a remain area for pointer
 *   WRITE THE BLOCK (int BLOCK_ID, char *text)   
 *   READ THE BLOCK(int BLOCK_ID, char *text)   
 *   CLOSE()
-*  REMEMBER EACH TIME WRITE A NEW BLOCK INCREASE THE SIZE TO KEEP TRACH WHETHER THE BLOCK ARE FULL OR NOT 
-* DONE 
+*   REMEMBER EACH TIME WRITE A NEW BLOCK INCREASE THE SIZE TO KEEP TRACH WHETHER THE BLOCK ARE FULL OR NOT 
+*   DONE 
 
 
 ### The project it self can be done by read and write; read and write will be the function that use most in this project
