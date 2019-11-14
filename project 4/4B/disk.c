@@ -22,7 +22,7 @@ int make_disk(char *name)
     return -1;
   }
 
-  if ((f = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0) {
+  if ((f = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777)) < 0) {
     perror("make_disk: cannot open file");
     return -1;
   }
@@ -98,6 +98,7 @@ int block_write(int block, char *buf)
     return -1;
   }
 
+  printf("write successful\n");
   return 0;
 }
 

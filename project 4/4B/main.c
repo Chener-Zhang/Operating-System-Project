@@ -7,13 +7,12 @@
 
 
 int main(){
-    printf("\n\n");    
-    char name[] = "mydisk";
-    make_disk(name);
-    open_disk(name);
-    block_write(0,"hello world");
-    close_disk(name);
-
+    printf("\n\n");        
+    make_disk("mydisk");
+    //open_disk("mydisk");
+    //block_write(1,"hello world \n");
+    //close_disk("mydisk");
+    
     printf("\n\n");
     return 0;
 }
