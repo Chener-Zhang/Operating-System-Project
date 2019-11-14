@@ -144,6 +144,31 @@ After finished all above
 
 
 
+```
+DISK0 00BLOCK _SIZE000
+
+0000F ILE10FO LDER1000
+
+00000 0000000 00000000
+
+00000 00000FO LDER2000
+
+00000 0.....0 00000000
+
+0000x 0000000 00000000
+
+0000x 000HELL O\0WORLD
+
+0000T HIS IS. ME000000
+
+0000x 3000000 00000000
+
+00000 00012300 0000000
+
+Simulation graph;
+in the real case, each block has a remain area for pointer
+```
+
   
 
 
