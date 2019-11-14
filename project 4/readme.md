@@ -10,3 +10,19 @@
 ```
 write(int fd, "words", strlen(words));
 ```
+
+```
+fseek(int fd, index_pointer, SEEK_SET );
+//SEEK_SET: set the start pointer here 
+exp: 
+------------------------
+1: fd = open("this is a test")
+------------------------
+2: before : this is a test 
+------------------------
+3: fseek(int fd, 4, SEEK_SET );
+------------------------
+4: after  : is a test
+------------------------
+
+```
