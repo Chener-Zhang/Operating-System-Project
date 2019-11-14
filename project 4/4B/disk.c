@@ -120,6 +120,7 @@ int block_read(int block, char *buf)
     perror("block_read: failed to read");
     return -1;
   }
+  printf("[%s]\n",buf);
 
   return 0;
 }
@@ -127,11 +128,9 @@ int block_read(int block, char *buf)
 //<-----------------------------------------------My Code------------------------------------------------------>
 int main(){
   
-    char *name = "mydisk";
-    make_disk(name);
-    open_disk(name);
-    block_write(0,"hello world");
-    close_disk();
+   
+    
+   
 
   return 0;
 }
