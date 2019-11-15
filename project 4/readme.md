@@ -96,3 +96,6 @@ struct {
     write_disk(data_entry_index,"third part");
     close_disk(fd);
 ```
+
+
+
