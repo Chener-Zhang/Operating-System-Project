@@ -86,3 +86,13 @@ struct {
 }Direction 
 ```
 
+## MAIN FUNCTION 
+```
+    char name[] = "disk";    
+    create_disk(name);
+    open_disk(name);
+    write_disk(file_information_index,"first part");
+    write_disk(fat_table_storage_index,"second part");
+    write_disk(data_entry_index,"third part");
+    close_disk(fd);
+```

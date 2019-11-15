@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <strings.h>
 #include "struct.h"
 // --------------------------------------------- Global Var ---------------------------------------------//
 int number_of_block = 60;
@@ -58,22 +59,32 @@ int write_disk(int block_index, char* words){
     return 0;
 }
 // --------------------------------------------- Read a disk/block ---------------------------------------------//
-
+// 0 - > NULL, 1 - > HAS SOMETHING
 int read_disk(int block_index){
+
+
     lseek(fd, block_index * each_block_size, SEEK_SET);    
     char read_buffer[each_block_size];
-    read(fd,read_buffer,strlen(read_buffer));
-    printf("%s",read_buffer);
-    return 0;
+    read(fd,read_buffer,each_block_size);
+    
+
+    if(strcmp(read_buffer, "\0") == 0){
+        printf("It is empty\n");
+        return 0;
+    }else{
+        printf("%s\n",read_buffer);
+        return 1;
+    }
+    
 }
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
 
 int detele_block(int block_index){
     lseek(fd, block_index * each_block_size, SEEK_SET);  
-
+    // slight change here
     char buf[each_block_size];
-    memset(buf, 0, each_block_size);
-    write(fd, buf, each_block_size);    
+    memset(buf, 0, strlen(buf));
+    write(fd, buf, strlen(buf));    
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
@@ -93,9 +104,9 @@ int main(){
     write_disk(file_information_index,"first part");
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
-    close_disk(fd);
+    read_disk(fat_table_storage_index);
     
-
+    close_disk(fd);    
     printf("\n\n\n");
     return 0;
 }
