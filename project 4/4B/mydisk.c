@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include "struct.h"
 
 int number_of_block = 20;
 int each_block_size = 16; 
@@ -69,16 +70,9 @@ int close_disk(int fd){
 int main(){ 
 
     printf("\n\n\n");
-    char name[] = "disk";
-
-    create_disk(name);
-    open_disk(name);
-    write_disk(0,"one");
-    write_disk(1,"two");
-    write_disk(2,"three");
-    detele_block(0);
-
-    close_disk(fd);
+    struct my_file* item = (struct my_file*) malloc(sizeof(struct my_file));
+    
 
     printf("\n\n\n");
+    return 0;
 }
