@@ -104,8 +104,10 @@ int main(){
     write_disk(file_information_index,"first part");
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
-    read_disk(fat_table_storage_index);
+    read_disk(file_information_index);
     
+    
+
     close_disk(fd);    
     printf("\n\n\n");
     return 0;
