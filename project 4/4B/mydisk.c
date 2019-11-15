@@ -39,7 +39,7 @@ int open_disk(char *name){
 int write_disk(int block_index, char* words){
       
     lseek(fd, block_index * each_block_size, SEEK_SET);
-    write(fd,words,each_block_size);    
+    write(fd,words,strlen(words));    
     return 0;
 }
 // --------------------------------------------- Read a disk ---------------------------------------------//
@@ -60,19 +60,13 @@ int main(){
     char name[] = "disk";
 
     create_disk(name);
-
     open_disk(name);
-
     write_disk(0,"one");
     write_disk(1,"two");
     write_disk(2,"three");
-    write_disk(3,"four");
+    write_disk(4,"three");
 
     close_disk(fd);
-
-
-
-
 
     printf("\n\n\n");
 }
