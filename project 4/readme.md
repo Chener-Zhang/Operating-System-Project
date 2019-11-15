@@ -3,10 +3,17 @@
 * -> Click on "4A" for "Design of the Simple File System" ---- Project4 - A Psudo code 
 * -> Click on "4B" for "Implementing a Simple File System on Top of a Virtual Disk" ---- for my project entire code
 
-# Enjoy
+
  
+-----------------------------------------------------
+
 
 **Notes for myself**
+
+## Use malloc create struct
+```
+struct my_file* item = (struct my_file*) malloc(sizeof(struct my_file));
+```
 ## write(); write stuff
 ```
 write(int fd, "words", strlen(words));

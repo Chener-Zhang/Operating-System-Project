@@ -4,14 +4,31 @@
 #include <fcntl.h>
 #include <string.h>
 #include "struct.h"
-
-int number_of_block = 20;
+// --------------------------------------------- Global Var ---------------------------------------------//
+int number_of_block = 60;
 int each_block_size = 16; 
 int fd;
+
+int file_information_index;
+int fat_table_storage_index;
+int data_entry_index;
+// --------------------------------------------- Global Var ---------------------------------------------//
+
+// --------------------------------------------- Partition a disk ---------------------------------------------//
+int disk_split(){
+    file_information_index = 0;
+    fat_table_storage_index = number_of_block / 3;
+    data_entry_index = fat_table_storage_index * 2;
+    return 0;
+}
+
 // --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){
     int file_size_counter;
     fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);  
+
+
+    disk_split();
 
     char buf[each_block_size];
     memset(buf, 0, each_block_size);
@@ -37,6 +54,7 @@ int write_disk(int block_index, char* words){
       
     lseek(fd, block_index * each_block_size, SEEK_SET);
     write(fd,words,strlen(words));    
+
     return 0;
 }
 // --------------------------------------------- Read a disk/block ---------------------------------------------//
@@ -55,9 +73,7 @@ int detele_block(int block_index){
 
     char buf[each_block_size];
     memset(buf, 0, each_block_size);
-    write(fd, buf, each_block_size);
-    printf("\n this is the buf [%s]\n",buf);
-    
+    write(fd, buf, each_block_size);    
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
@@ -68,9 +84,16 @@ int close_disk(int fd){
 
 // --------------------------------------------- Main ---------------------------------------------//
 int main(){ 
-
     printf("\n\n\n");
-    struct my_file* item = (struct my_file*) malloc(sizeof(struct my_file));
+    
+    char name[] = "disk";
+    
+    create_disk(name);
+    open_disk(name);
+    write_disk(file_information_index,"first part");
+    write_disk(fat_table_storage_index,"second part");
+    write_disk(data_entry_index,"third part");
+    close_disk(fd);
     
 
     printf("\n\n\n");
