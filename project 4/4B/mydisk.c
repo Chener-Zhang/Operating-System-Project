@@ -35,16 +35,21 @@ int open_disk(char *name){
     return 0;
 }
 
-// --------------------------------------------- Write a disk ---------------------------------------------//
+// --------------------------------------------- Write a disk/block ---------------------------------------------//
 int write_disk(int block_index, char* words){
       
     lseek(fd, block_index * each_block_size, SEEK_SET);
     write(fd,words,strlen(words));    
     return 0;
 }
-// --------------------------------------------- Read a disk ---------------------------------------------//
+// --------------------------------------------- Read a disk/block ---------------------------------------------//
 
-int read_disk(int fd){
+int read_disk(int block_index){
+    lseek(fd, 0, SEEK_SET);    
+    lseek(fd, block_index * each_block_size, SEEK_SET);    
+    char read_buffer[each_block_size];
+    read(fd,read_buffer,strlen(read_buffer));
+    printf("%s",read_buffer);
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
@@ -65,6 +70,7 @@ int main(){
     write_disk(1,"two");
     write_disk(2,"three");
     write_disk(4,"three");
+
 
     close_disk(fd);
 
