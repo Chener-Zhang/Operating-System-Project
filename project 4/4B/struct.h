@@ -15,6 +15,7 @@
 struct File { 
     char name[name_size]; //index of the block which contains the imformation of the file;
     int block_entry[bloc_entry_number]; // add additional imformation here
+    // int next_block_entry;
     
 };
 
