@@ -12,21 +12,20 @@
 
 
 struct File { 
-    char name[name_size]; 
-    int block_entry[]; 
-    // add additional imformation here
+    char name[name_size]; //index of the block which contains the imformation of the file;
+    int block_entry[]; // add additional imformation here
+    
 };
 
-struct Direction{
-    // name of the direction
-    char name[name_size];
-    struct File* file_list[file_list_number];
-    struct Direction* next_entry_direction[];
+struct Direction{    
+    char name[name_size];// name of the direction    
+    struct File* file_list[file_list_number]; // file list here
+    struct Direction* next_entry_direction[]; // directory list here
     // add additional imformation here
 };
 
 struct Block{
-    int index;
-    int size;
+    int index; // the id / the index of the block
+    int size_remain; // the size of a single block remain 
     // add additional imformation here
 };
