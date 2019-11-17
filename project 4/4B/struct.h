@@ -5,15 +5,22 @@
 #include <string.h>
 
 
-struct my_file{
-    char file_name[50];
+
+#define name_size  30   
+#define bloc_entry_number  20   
+
+
+struct File { 
+    char name[name_size]; 
+    struct File* block_entry[]; 
+};
+
+struct Direction{
+    char name[name_size];
+    struct Direction* next_entry[];
+};
+
+struct Block{
+    int index;
     int size;
-    int blocks_index[];
-    
 };
-
-struct my_direction{
-    char directory_name[50];    
-    int direction_fat_table[];
-};
-
