@@ -144,12 +144,13 @@ int get_current_direction(){
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
-int Create_directory(char *dirname, int current_d_index, int previous_d_index){
+int Create_directory(char *dirname, struct Direction *current_dir){
 
     // check if the dirname exit;
+
+
     struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
-    new_direction->current_index = current_d_index;
-    new_direction->previous_index = previous_d_index;
+    new_direction->previous_index = current_dir->current_index;
 
 
     return 1;
@@ -209,7 +210,7 @@ int main(){
     current_direction->current_index = 2;
     printf("%d\n",current_direction->current_index);
 
-    Create_directory("hello",3,2);
+    Create_directory("hello",Root_direction);
     print_direction(Root_direction);
     close_disk(fd);    
     printf("\n\n\n");
