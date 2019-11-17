@@ -5,3 +5,10 @@ all:
 
 rm:	
 	rm mydisk
+
+
+t:
+	gcc -o test testing.c
+	./test
+	rm test
+	
