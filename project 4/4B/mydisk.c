@@ -147,10 +147,10 @@ int get_current_direction(){
 int Create_directory(char *dirname, struct Direction *current_dir){
     
     //if the name is already exit inside of the current direction
-
+    
     struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
     new_direction->previous_index = current_dir->current_index;
-
+    
 
     return 1;
 }
