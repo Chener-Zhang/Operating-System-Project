@@ -149,8 +149,11 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     {
         // if yes -> it repeat;
         
-        //WORKING......
-
+        
+        if(strcmp(current_direction->next_entry_direction[i]->name,dirname) == 0){
+            perror("The direction is already exit\n ");
+            return -1;
+        }
             /*
         // else no -> does not repeat; 
         else{
@@ -214,10 +217,11 @@ int init_dir(struct Direction *dir, char name[]){
 
     dir->current_index = 0;
     strcpy(dir->name, name);
-    dir->current_index = -1;   
+    dir->current_index = -1;  
+
     for (int i = 0; i < direction_list_number; i++)
     {
-        dir->next_entry_direction[i] = 0;
+        dir->next_entry_direction[i]->current_index = 0;
         dir->next_entry_direction_tracking[i] = 0;
     }
 
