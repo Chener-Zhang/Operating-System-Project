@@ -95,7 +95,7 @@ int close_disk(int fd){
 
 
 
-// Note:
+// Note: Above is the creation of a disk; working on nov 17,2019;
 
 
 
