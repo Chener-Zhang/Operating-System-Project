@@ -21,13 +21,7 @@ struct File {
 struct Direction{    
     char name[name_size];// name of the direction    
     int current_index;
-    int previous_index;
-
-    struct File* file_list[file_list_number]; // file list here
-    int file_list_tracking[file_list_number]; 
-
-    struct Direction* next_entry_direction[direction_list_number]; // directory list here
-    int next_entry_direction_tracking[direction_list_number];
+    int previous_index;        
     // add additional imformation here
 };
 
