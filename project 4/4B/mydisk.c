@@ -101,6 +101,11 @@ int Create_file(char *filename){
 
     return 0;
 }
+
+int Write_file(char* filename, char* words){
+
+    return 0;
+}
 // --------------------------------------------- Read a File---------------------------------------------//
 int Read_file(char *filename){
     return 0;
@@ -141,6 +146,10 @@ int main(){
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
+
+
+
+
 
     close_disk(fd);    
     printf("\n\n\n");
