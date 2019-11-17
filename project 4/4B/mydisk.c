@@ -147,14 +147,10 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     //if the name is already exit inside of the current direction
     for (int i = 0; i < direction_list_number; i++)
     {
-        // if yes -> it repeat;
+        // if yes -> it repeat; ----------->
         
-        
-        if(strcmp(current_direction->next_entry_direction[i]->name,dirname) == 0){
-            perror("The direction is already exit\n ");
-            return -1;
-        }
-            /*
+
+        /*          ----------->
         // else no -> does not repeat; 
         else{
         
@@ -232,6 +228,7 @@ int init_dir(struct Direction *dir, char name[]){
     }
     return 0;
 }
+
 
 
 // --------------------------------------------- some small function ---------------------------------------------//
