@@ -7,11 +7,22 @@
 #include "struct.h"
 
 
-int main(){
 
-    struct Direction *d = (struct Direction*) malloc(sizeof(struct Direction));            
-    int c  = sizeof(d->next_entry_direction);
-    printf("the size is %d\n",c);
+
+
+int main(){
+    int list[10];
+    for (int i = 0; i < 10; i++)
+    {
+        list[i] = 0;
+//          printf("%d - > %d\n",i,list[i]);
+    }
     
+    for (int i = 0; i < 10; i++)
+    {
+          printf("%d - > %d\n",i,list[i]);
+    }
+    
+
     return 0;
 }

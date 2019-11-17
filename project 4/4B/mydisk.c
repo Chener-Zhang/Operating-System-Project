@@ -116,8 +116,6 @@ int close_disk(int fd){
 
 // --------------------------------------------- Create a File---------------------------------------------//
 int Create_file(char *filename){
-    
-
     return 0;
 }
 
@@ -149,15 +147,16 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     //if the name is already exit inside of the current direction
     for (int i = 0; i < direction_list_number; i++)
     {
-        // if yes;
+        // if yes -> it repeat;
         if(strcmp(current_direction->next_entry_direction[i]->name,dirname) == 0){
             perror("The direction is already exit\n ");
             return -1;
         }
-        // else no; 
+        // else no -> does not repeat; 
         else{
             struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
             new_direction->previous_index = current_dir->current_index; // the new dir current = previoius pointer
+
             
         }        
     }
@@ -195,9 +194,40 @@ void print_direction( struct Direction *dir){
     // adding more information;
 }
 
+// working.......
 int get_free_space(int list[]){
+    
+    for (int i = 0; i < file_list_number; i++)
+    {
+        if(list[i] == 0){
+            return i;
+        }
+    }
+    
+    // all full return -1;
+    return -1;
+}
+
+// initilization of direction struct 
+int init_dir(struct Direction *dir, char name[]){
+
+    dir->current_index = 0;
+    strcpy(dir->name, name);
+    dir->current_index = -1;   
+    for (int i = 0; i < direction_list_number; i++)
+    {
+        dir->next_entry_direction[i] = 0;
+        dir->next_entry_direction_tracking[i] = 0;
+    }
+
+    for (size_t i = 0; i < file_list_number; i++)
+    {
+        dir->file_list[i] = 0;
+        dir->file_list_tracking[i] = 0;
+    }
     return 0;
 }
+
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
@@ -215,23 +245,16 @@ int main(){
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
 
-    // <----------initialize the root----------->
-    Root_direction = (struct Direction*) malloc(sizeof(struct Direction));            
-    Root_direction->current_index = 0;
-    strcpy(Root_direction->name, "root");
-    Root_direction->current_index = -1;    
-    // <------Finished initialize the root------->
 
 
-    // make a current direction;    
-    current_direction =(struct Direction*) malloc(sizeof(struct Direction));            
-    current_direction->current_index = 2;
-    printf("%d\n",current_direction->current_index);
+    //  init root 
+
+    Root_direction = (struct Direction*) malloc(sizeof(struct Direction));    
+    init_dir(Root_direction,"root");
 
 
 
-
-    Create_directory("hello",Root_direction);
+    Create_directory("hello_direction",Root_direction);
     print_direction(Root_direction);
     
 
