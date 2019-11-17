@@ -9,6 +9,7 @@
 #define name_size  30   
 #define bloc_entry_number  20   
 #define file_list_number 10
+#define direction_list_number 10
 
 
 struct File { 
@@ -19,8 +20,10 @@ struct File {
 
 struct Direction{    
     char name[name_size];// name of the direction    
+    int curren_index;
+    int previous_index;
     struct File* file_list[file_list_number]; // file list here
-    struct Direction* next_entry_direction[]; // directory list here
+    struct Direction* next_entry_direction[direction_list_number]; // directory list here
     // add additional imformation here
 };
 

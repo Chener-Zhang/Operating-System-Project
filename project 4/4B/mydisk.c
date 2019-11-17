@@ -14,9 +14,12 @@ int file_information_index; // for disk_split() function;
 int fat_table_storage_index; // for disk_split() function;
 int data_entry_index; // for disk_split() function;
 
+int root_index = 0; //the root;
+
 int data_block_checking_list[100];//{1,0,1,0,0,0,1} tracking of the block whether it used; 
 //the int inside of the list can be motify;
 
+struct Direction* current_direction; // root;
 
 // --------------------------------------------- Global Var ---------------------------------------------//
 
@@ -45,7 +48,6 @@ int create_disk(char *name ){
 
     close(fd);
     return 0;
-  
   
 }
 
@@ -113,7 +115,7 @@ int close_disk(int fd){
 
 // --------------------------------------------- Create a File---------------------------------------------//
 int Create_file(char *filename){
-
+    
 
     return 0;
 }
@@ -132,9 +134,18 @@ int Delete_file(char *filename){
     return 0;
 }
 // --------------------------------------------- Create a Direction---------------------------------------------//
+// working .............
+int Create_directory(char *dirname, int current_d_index, int previous_d_index){
 
-int Create_directory(char *dirname){
-    return 0;
+    // check if the dirname exit;
+    
+
+    struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
+    new_direction->curren_index = current_d_index;
+    new_direction->previous_index = previous_d_index;
+
+
+    return 1;
 }
 // --------------------------------------------- Find a Direction---------------------------------------------//
 
