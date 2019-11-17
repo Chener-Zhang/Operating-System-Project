@@ -10,9 +10,14 @@ int number_of_block = 60;
 int each_block_size = 16; 
 int fd;
 
-int file_information_index;
-int fat_table_storage_index;
-int data_entry_index;
+int file_information_index; // for disk_split() function;
+int fat_table_storage_index; // for disk_split() function;
+int data_entry_index; // for disk_split() function;
+
+int data_block_checking_list[100];//{1,0,1,0,0,0,1} tracking of the block whether it used; 
+//the int inside of the list can be motify;
+
+
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
@@ -95,7 +100,7 @@ int close_disk(int fd){
 
 
 
-// Note: Above is the creation of a disk; working on nov 17,2019;
+// Note: Above is the creation of a disk; working on nov 17,2019; 
 
 
 
