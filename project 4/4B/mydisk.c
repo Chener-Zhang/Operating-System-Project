@@ -219,14 +219,15 @@ int init_dir(struct Direction *dir, char name[]){
 
     for (int i = 0; i < direction_list_number; i++)
     {
-        dir->next_entry_direction[i]->current_index = 0;
-        // working
+                
+        memset(&dir->next_entry_direction[i]->name[0], 0, sizeof(dir->next_entry_direction[i]->name));
         dir->next_entry_direction_tracking[i] = 0;
     }
 
     for (size_t i = 0; i < file_list_number; i++)
     {
-        dir->file_list[i] = 0;
+        // working;
+        
         dir->file_list_tracking[i] = 0;
     }
     return 0;
