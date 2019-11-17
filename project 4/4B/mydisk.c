@@ -149,11 +149,18 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     //if the name is already exit inside of the current direction
     for (int i = 0; i < direction_list_number; i++)
     {
-        
+        // if yes;
+        if(strcmp(current_direction->next_entry_direction[i]->name,dirname) == 0){
+            perror("The direction is already exit\n ");
+            return -1;
+        }
+        // else no; 
+        else{
+            struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
+            new_direction->previous_index = current_dir->current_index; // the new dir current = previoius pointer
+            
+        }        
     }
-    
-    struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
-    new_direction->previous_index = current_dir->current_index;
     
 
     return 1;
@@ -178,13 +185,21 @@ int Delete_directory(char *dirname){
     return 0;
 }
 
+
+
+// --------------------------------------------- some small function ---------------------------------------------//
+
 void print_direction( struct Direction *dir){
     printf("name: %s\n", dir->name);
     printf("index: %d\n",dir->current_index);
     // adding more information;
 }
 
+int get_free_space(int list[]){
+    return 0;
+}
 
+// --------------------------------------------- some small function ---------------------------------------------//
 
 
 // --------------------------------------------- Main ---------------------------------------------//
