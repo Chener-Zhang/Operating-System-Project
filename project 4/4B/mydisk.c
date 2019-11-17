@@ -152,12 +152,7 @@ int Create_directory(char *dirname, struct Direction *current_dir){
 
         /*          ----------->
         // else no -> does not repeat; 
-        else{
-        
-            struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
-            new_direction->previous_index = current_dir->current_index; // the new dir current = previoius pointer
 
-        }  
         */
     }
     
@@ -213,19 +208,6 @@ int init_dir(struct Direction *dir, char name[]){
     strcpy(dir->name, name);
     dir->current_index = -1;  
 
-    for (int i = 0; i < direction_list_number; i++)
-    {
-                
-        memset(&dir->next_entry_direction[i]->name[0], 0, sizeof(dir->next_entry_direction[i]->name));
-        dir->next_entry_direction_tracking[i] = 0;
-    }
-
-    for (size_t i = 0; i < file_list_number; i++)
-    {
-        // working;
-        
-        dir->file_list_tracking[i] = 0;
-    }
     return 0;
 }
 
