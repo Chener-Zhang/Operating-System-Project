@@ -149,8 +149,8 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     {
         // if yes -> it repeat;
         
-        
-    
+        //WORKING......
+
             /*
         // else no -> does not repeat; 
         else{
