@@ -19,7 +19,8 @@ int root_index = 0; //the root;
 int data_block_checking_list[100];//{1,0,1,0,0,0,1} tracking of the block whether it used; 
 //the int inside of the list can be motify;
 
-struct Direction* current_direction; // root;
+struct Direction* current_direction; // current;
+struct Direction* Root_direction; // Root;
 
 // --------------------------------------------- Global Var ---------------------------------------------//
 
@@ -133,13 +134,19 @@ int Read_file(char *filename){
 int Delete_file(char *filename){
     return 0;
 }
+
+// --------------------------------------------- Get a Direction---------------------------------------------//
+
+int get_current_direction(){
+
+    return 0;
+}
+
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
 int Create_directory(char *dirname, int current_d_index, int previous_d_index){
 
     // check if the dirname exit;
-
-
     struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
     new_direction->current_index = current_d_index;
     new_direction->previous_index = previous_d_index;
@@ -147,6 +154,15 @@ int Create_directory(char *dirname, int current_d_index, int previous_d_index){
 
     return 1;
 }
+
+
+// --------------------------------------------- Change a Direction---------------------------------------------//
+
+int Change_directory(char *dirname, int current_d_index, int previous_d_index){
+    return 0;
+}
+
+
 // --------------------------------------------- Find a Direction---------------------------------------------//
 
 int Fine_directory(char *dirname){
@@ -156,6 +172,12 @@ int Fine_directory(char *dirname){
 
 int Delete_directory(char *dirname){
     return 0;
+}
+
+void print_direction( struct Direction *dir){
+    printf("name: %s\n", dir->name);
+    printf("index: %d\n",dir->current_index);
+    // adding more information;
 }
 
 
@@ -173,13 +195,22 @@ int main(){
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
+
+    // <----------initialize the root----------->
+    Root_direction = (struct Direction*) malloc(sizeof(struct Direction));            
+    Root_direction->current_index = 0;
+    strcpy(Root_direction->name, "root");
+    Root_direction->current_index = -1;    
+    // <------Finished initialize the root------->
+
+
+    // make a current direction;    
     current_direction =(struct Direction*) malloc(sizeof(struct Direction));            
-
-
-    //testing
     current_direction->current_index = 2;
     printf("%d\n",current_direction->current_index);
 
+    Create_directory("hello",3,2);
+    print_direction(Root_direction);
     close_disk(fd);    
     printf("\n\n\n");
     return 0;
