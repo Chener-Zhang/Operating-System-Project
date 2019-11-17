@@ -8,27 +8,31 @@
 
 
 
-int get_free_space(int list[]){
-
-    for (int i = 0; i < file_list_number; i++)
-    {
-        if(list[i] == 0){
-            return i;
-        }
-    }
-    printf("The spcae is full now\n");
-    // all full return -1;
-    return -1;
-}
 
 
 int main(){
 
-    int list[10] = {1,2,3,4,5,2,2,3,4,9};
-    int value = get_free_space(list);
-    printf("%d\n",value);
+    struct Direction *dir =(struct Direction*) malloc(sizeof(struct Direction));    
+    
+
+
+    strcpy(dir->next_entry_direction[3]->name,"hello");
+    printf("%s;\n",dir->next_entry_direction[3]->name);
+    
 
     
+    for (int i = 0; i < direction_list_number; i++)
+    {
+        printf("%s;\n",dir->next_entry_direction[i]->name);
+        if(strcmp(dir->next_entry_direction[i]->name,"hello") == 0){
+            printf("yes\n");
+        }
+
+    }
+    
+    
+    
+    free(dir);
 
     return 0;
 }
