@@ -141,7 +141,7 @@ int Create_directory(char *dirname, int current_d_index, int previous_d_index){
 
 
     struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
-    new_direction->curren_index = current_d_index;
+    new_direction->current_index = current_d_index;
     new_direction->previous_index = previous_d_index;
 
 
@@ -173,12 +173,12 @@ int main(){
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
+    current_direction =(struct Direction*) malloc(sizeof(struct Direction));            
 
 
-    int c = current_direction->curren_index = 2;
-    printf("%d\n",c);
-
-
+    //testing
+    current_direction->current_index = 2;
+    printf("%d\n",current_direction->current_index);
 
     close_disk(fd);    
     printf("\n\n\n");

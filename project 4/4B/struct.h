@@ -20,7 +20,7 @@ struct File {
 
 struct Direction{    
     char name[name_size];// name of the direction    
-    int curren_index;
+    int current_index;
     int previous_index;
     struct File* file_list[file_list_number]; // file list here
     struct Direction* next_entry_direction[direction_list_number]; // directory list here
