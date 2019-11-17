@@ -138,7 +138,7 @@ int Delete_file(char *filename){
 int Create_directory(char *dirname, int current_d_index, int previous_d_index){
 
     // check if the dirname exit;
-    
+
 
     struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
     new_direction->curren_index = current_d_index;
@@ -175,6 +175,8 @@ int main(){
     read_disk(file_information_index);
 
 
+    int c = current_direction->curren_index = 2;
+    printf("%d\n",c);
 
 
 
