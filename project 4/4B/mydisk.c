@@ -148,17 +148,18 @@ int Create_directory(char *dirname, struct Direction *current_dir){
     for (int i = 0; i < direction_list_number; i++)
     {
         // if yes -> it repeat;
-        if(strcmp(current_direction->next_entry_direction[i]->name,dirname) == 0){
-            perror("The direction is already exit\n ");
-            return -1;
-        }
+        
+        
+    
+            /*
         // else no -> does not repeat; 
         else{
+        
             struct Direction* new_direction = (struct Direction*) malloc(sizeof(struct Direction));        
             new_direction->previous_index = current_dir->current_index; // the new dir current = previoius pointer
 
-            
-        }        
+        }  
+        */
     }
     
 
@@ -194,16 +195,16 @@ void print_direction( struct Direction *dir){
     // adding more information;
 }
 
-// working.......
+// Get the free space;
 int get_free_space(int list[]){
-    
+
     for (int i = 0; i < file_list_number; i++)
     {
         if(list[i] == 0){
             return i;
         }
     }
-    
+    printf("The spcae is full now\n");
     // all full return -1;
     return -1;
 }

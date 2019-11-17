@@ -8,20 +8,26 @@
 
 
 
+int get_free_space(int list[]){
+
+    for (int i = 0; i < file_list_number; i++)
+    {
+        if(list[i] == 0){
+            return i;
+        }
+    }
+    printf("The spcae is full now\n");
+    // all full return -1;
+    return -1;
+}
 
 
 int main(){
-    int list[10];
-    for (int i = 0; i < 10; i++)
-    {
-        list[i] = 0;
-//          printf("%d - > %d\n",i,list[i]);
-    }
-    
-    for (int i = 0; i < 10; i++)
-    {
-          printf("%d - > %d\n",i,list[i]);
-    }
+
+    int list[10] = {1,2,3,4,5,2,2,3,4,9};
+    int value = get_free_space(list);
+    printf("%d\n",value);
+
     
 
     return 0;
