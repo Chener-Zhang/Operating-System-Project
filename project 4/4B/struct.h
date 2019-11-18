@@ -18,6 +18,7 @@ struct File {
     int block_entry[bloc_entry_number]; // add additional imformation here
     int below_direction;
     int size;
+    int used;
     // int next_block_entry;    
 };
 
@@ -39,6 +40,7 @@ int char_reset();
 int parsing();
 void print_direction( struct Direction *dir,struct Direction *list[]);
 int get_free_space(struct Direction *list[]);
+int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
 int init_root(struct Direction *list[]);
 int disk_split();
@@ -49,7 +51,7 @@ int read_disk(int block_index);
 int detele_block(int block_index);
 int close_disk(int fd);
 
-int Create_file(char *filename, struct File *current_file, struct Direction *current_dir,struct Direction *dirtable[]);
+int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
 int Write_file(char* filename, char* words);
 int Read_file(char *filename);
 int Delete_file(char *filename);

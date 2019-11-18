@@ -21,7 +21,7 @@ int data_entry_index; // for disk_split() function;
 
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
-struct File filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
+struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
 struct Direction *traking_dir;
 
 
@@ -64,6 +64,8 @@ printf("\n\n\n");
                 Create_directory(argument,dirtable,traking_dir);
             }else if(strcmp(command,"rm") == 0){
                 Delete_directory(argument,dirtable,traking_dir);
+            }else if(strcmp(command,"touch") == 0){
+                Create_file(argument,traking_dir,dirtable,filetable);
             }
             else{
                 printf("checking your input\n");
@@ -92,7 +94,8 @@ int init_filelis(struct File *list[]){
         
         memset(list[i]->name, 0, sizeof *list[i]->name);   
         list[i]->below_direction = -1;
-        list[i]->size = 0;        
+        list[i]->size = 0;    
+        list[i]->used = 0;
 
     }
     
@@ -173,7 +176,7 @@ void print_direction( struct Direction *dir,struct Direction *list[]){
 
 // Get the free space;
 // return the list if it has the space;
-int get_free_space(struct Direction *list[]){
+int get_free_space(struct Direction *list[]){ // dir
     for (int i = 1; i < direction_list; i++)
     {
 
@@ -187,6 +190,24 @@ int get_free_space(struct Direction *list[]){
     // all full return -1;
     return -1;
 }
+// -----------------------------
+// Get the free space;
+// return the list if it has the space;
+int get_free_space_filetable(struct File *list[]){ // file
+    for (int i = 1; i < direction_list; i++)
+    {
+
+    //debug tracker;
+    //printf("%d\n",ci);
+       if(list[i]->used == 0){
+           return i;
+       }
+    }
+    printf("The spcae is full now\n");
+    // all full return -1;
+    return -1;
+}
+
 
 // initilization of direction struct for all;
 
@@ -301,7 +322,17 @@ int close_disk(int fd){
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
-int Create_file(char *filename, struct File *current_file, struct Direction *current_dir,struct Direction *dirtable[]){
+int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
+    for (int i = 0; i < direction_list; i++)
+    {
+            if(dir_table[i]->previous_index == current_dir->current_index){ // check within the same dir_path
+                strcpy(file_table[i]->name,filename);
+                file_table[i]->below_direction = current_dir->current_index;
+                int position = get_free_space_filetable(file_table);
+                
+            }
+
+    }
 
     return 0;
 }
