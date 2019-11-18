@@ -393,11 +393,6 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 }
 
 
-// --------------------------------------------- Find a Direction---------------------------------------------//
-
-int Fine_directory(char *dirname){
-    return 0;
-}
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){

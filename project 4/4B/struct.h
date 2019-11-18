@@ -57,7 +57,6 @@ int Delete_file(char *filename);
 int get_current_direction();
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
-int Fine_directory(char *dirname);
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
 int print_list();
 int begin();
