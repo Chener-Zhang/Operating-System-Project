@@ -21,6 +21,40 @@ struct File filetable[file_list]; //{file1,file2,file3}
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
+// --------------------------------------------- some small function ---------------------------------------------//
+
+void print_direction( struct Direction *dir){
+
+    printf("name: %s\n", dir->name);
+    printf("current index: %d\n",dir->current_index);
+    printf("previous index: %d\n",dir->previous_index);
+    printf("used index: %d\n",dir->used);
+    // adding more information;
+}
+
+// Get the free space;
+int get_free_space(struct Direction *list[]){
+    for (int i = 0; i < direction_list; i++)
+    {
+       if(list[i]->used == 0){
+           return i;
+       }
+    }
+    printf("The spcae is full now\n");
+    // all full return -1;
+    return -1;
+}
+
+// initilization of direction struct
+int init_dir(struct Direction *list[]){
+    for (int i = 0; i < direction_list; i++)
+    {
+        list[i] = (struct Direction*) malloc(sizeof(struct Direction));
+        memset(list[i]->name, 0, sizeof *list[i]->name);    
+        
+    }
+    return 0;
+}
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
 int disk_split(){
@@ -140,17 +174,24 @@ int get_current_direction(){
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
-int Create_directory(char *dirname, struct Direction *dir_table[]){
+int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current){
     //check if exist
-
     for (int i = 0; i < direction_list; i++)
     {
-        if(strcmp(dirname,dir_table[i]->name)==0){
+        if(strcmp(dirname,dir_table[i]->name)==0 ){
                 perror("you cannot create a dir with same name\n");
+                return -1;
         }   
 
     }
+
+    //working....
+    int position = get_free_space(dir_table);
+    strcpy(dir_table[position]->name,dirname);
+    dir_table[position]->current_index = position;
+
     
+
     return 1;
 }
 
@@ -175,40 +216,7 @@ int Delete_directory(char *dirname){
 
 
 
-// --------------------------------------------- some small function ---------------------------------------------//
 
-void print_direction( struct Direction *dir){
-
-    printf("name: %s\n", dir->name);
-    printf("current index: %d\n",dir->current_index);
-    printf("previous index: %d\n",dir->previous_index);
-    // adding more information;
-}
-
-// Get the free space;
-int get_free_space(int list[]){
-
-    for (int i = 0; i < 10; i++)
-    {
-        if(list[i] == 0){
-            return i;
-        }
-    }
-    printf("The spcae is full now\n");
-    // all full return -1;
-    return -1;
-}
-
-// initilization of direction struct
-int init_dir(struct Direction *list[]){
-    for (int i = 0; i < direction_list; i++)
-    {
-        list[i] = (struct Direction*) malloc(sizeof(struct Direction));
-        memset(list[i]->name, 0, sizeof *list[i]->name);    
-        
-    }
-    return 0;
-}
 
 
 

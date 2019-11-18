@@ -22,7 +22,8 @@ struct File {
 struct Direction{    
     char name[name_size];// name of the direction    
     int current_index;
-    int previous_index;        
+    int previous_index;   
+    int used;     
     // add additional imformation here
 };
 
