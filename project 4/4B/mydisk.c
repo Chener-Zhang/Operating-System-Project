@@ -56,6 +56,14 @@ int init_dir(struct Direction *list[]){
     return 0;
 }
 
+int init_root(struct Direction *list[]){
+    strcpy(list[0]->name,"root");
+    list[0]->current_index = 0;
+    list[0]->previous_index = -1;
+    list[0]->used = 1;
+    return 0;
+}
+
 // --------------------------------------------- Partition a disk ---------------------------------------------//
 int disk_split(){
     file_information_index = 0;
@@ -240,7 +248,8 @@ int main(){
 
     //init - testig
     init_dir(dirtable);
-    strcpy(dirtable[1]->name,"hello");
+    init_root(dirtable);
+    print_direction(dirtable[0]);
     
     
     
