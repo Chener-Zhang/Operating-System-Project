@@ -54,6 +54,16 @@ printf("\n\n\n");
         if(strcmp(command,"quit") == 0){
             printf("bye - bye : > \n");
             break;
+        }else{
+            if(strcmp(command,"ls") == 0){
+                    printf("you have enter ls\n");
+            }else if(strcmp(command,"cd") == 0){
+                printf("you have enter cd \n");
+            }else{
+                printf("checking your input\n");
+                return -1;
+            }
+
         }
         char_reset();
     }
