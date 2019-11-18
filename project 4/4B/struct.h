@@ -33,6 +33,7 @@ struct Direction{
 struct Block{
     int index; // the id / the index of the block
     int size_remain; // the size of a single block remain 
+    struct Block *next;
     // add additional imformation here
 };
 // ---------------- Function declares --------------------------- 

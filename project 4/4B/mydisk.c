@@ -5,6 +5,7 @@
 #include <string.h>
 #include <strings.h>
 #include <errno.h>
+#include <sys/mman.h>
 #include "struct.h"
 // --------------------------------------------- Global Var ---------------------------------------------//
 
@@ -43,14 +44,17 @@ printf("\n\n\n");
     char name[] = "disk";
     create_disk(name);
     open_disk(name);
-    write_disk(file_information_index,"first part");
-    write_disk(fat_table_storage_index,"second part");
-    write_disk(data_entry_index,"third part");
+    write_disk(file_information_index,"Super block");
+    write_disk(fat_table_storage_index,"Meda block");
+    write_disk(data_entry_index,"Data block");
+
     // DISK INITING ----------------------
     init_dir(dirtable);
     init_root(dirtable);
     init_file(filetable);
     
+
+    /* -------
     // while loop
     while(1){
         parsing();
@@ -81,8 +85,8 @@ printf("\n\n\n");
         
     }
     
-    
     // while loop
+    */
 
     close_disk(fd);
     printf("\n\n\n");
@@ -225,7 +229,13 @@ int get_free_space_filetable(struct File *list[]){ // file
     // all full return -1;
     return -1;
 }
+int init_block_allocation(){ // set the index for the block;
+    
 
+    return 0;
+}
+
+// --------------------------------------------- some small function ---------------------------------------------//
 
 // initilization of direction struct for all;
 
