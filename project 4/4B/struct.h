@@ -16,9 +16,9 @@
 struct File { 
     char name[name_size]; //index of the block which contains the imformation of the file;
     int block_entry[bloc_entry_number]; // add additional imformation here
+    int below_direction;
     int size;
-    // int next_block_entry;
-    
+    // int next_block_entry;    
 };
 
 struct Direction{    

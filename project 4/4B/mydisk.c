@@ -21,7 +21,7 @@ int data_entry_index; // for disk_split() function;
 
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
-struct File filetable[file_list]; //{file1,file2,file3}
+struct File filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
 struct Direction *traking_dir;
 
 
@@ -86,6 +86,18 @@ printf("\n\n\n");
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
+int init_filelis(struct File *list[]){
+    for (int i = 0; i < file_list; i++)
+    {
+        
+        memset(list[i]->name, 0, sizeof *list[i]->name);   
+        list[i]->below_direction = -1;
+        list[i]->size = 0;        
+
+    }
+    
+    return 0;
+}
 //Print my list;
 int print_list(){
     for (int i = 0; i < direction_list; i++)
