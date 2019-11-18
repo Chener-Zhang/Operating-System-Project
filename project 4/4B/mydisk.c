@@ -143,18 +143,7 @@ int get_current_direction(){
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
 int Create_directory(char *dirname, struct Direction *current_dir){
-    
-    //if the name is already exit inside of the current direction
-    for (int i = 0; i < direction_list_number; i++)
-    {
-        // if yes -> it repeat; ----------->
-        
 
-        /*          ----------->
-        // else no -> does not repeat; 
-
-        */
-    }
     
 
     return 1;

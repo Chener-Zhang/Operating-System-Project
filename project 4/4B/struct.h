@@ -8,8 +8,8 @@
 
 #define name_size  30   
 #define bloc_entry_number  20   
-#define file_list_number 10
-#define direction_list_number 10
+
+
 
 
 struct File { 
