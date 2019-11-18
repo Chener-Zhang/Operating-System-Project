@@ -57,5 +57,6 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Fine_directory(char *dirname);
 int Delete_directory(char *dirname);
+int begin();
 // ---------------- Function declares ---------------------------
 

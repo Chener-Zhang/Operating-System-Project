@@ -29,45 +29,42 @@ struct Direction *traking_dir;
 
 // --------------------------------------------- Main ---------------------------------------------//
 int main(){
-    printf("\n\n\n");
+    begin();
+    return 0;
+}
+
+
+int begin(){
+printf("\n\n\n");
     
+    
+    // DISK INITING ----------------------    
     char name[] = "disk";
-    
     create_disk(name);
     open_disk(name);
     write_disk(file_information_index,"first part");
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
-    //read_disk(file_information_index);
-
-
-    //init - testing
+    // DISK INITING ----------------------        
     init_dir(dirtable);
     init_root(dirtable);
-    //print_direction(dirtable[0]);
-    traking_dir = dirtable[0];
-    Create_directory("direction1",dirtable,traking_dir);
-    print_direction(traking_dir,dirtable);
-    Create_directory("direction2",dirtable,traking_dir);
-    print_direction(traking_dir,dirtable);
-
-
-    Change_directory("direction1",traking_dir,dirtable);
-    print_direction(traking_dir,dirtable);
-    Change_directory("..",traking_dir,dirtable);
-    print_direction(traking_dir,dirtable);
-
-    
-    //init - testing
+    // while loop
+    while(1){
+        parsing();
+        if(strcmp(command,"quit") == 0){
+            printf("bye - bye : > \n");
+            break;
+        }
+        char_reset();
+    }
     
     
-
+    // while loop
 
     close_disk(fd);
     printf("\n\n\n");
     return 0;
 }
-
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
@@ -75,13 +72,29 @@ int main(){
 int parsing(){
 
     char user_input[20];
-    printf(">"); // print ">" 
-    fgets(user_input,20,stdin); // get user_input    
-    strcpy(command,strtok(user_input," ")); // assign first arg -> cmd;
-    //printf("[%s]\n", command);
-    strcpy(argument,strtok(NULL," \n"));
-    //printf("[%s]\n",argument);
-    return 0;
+    char copy[20];
+    printf(">"); // print ">";
+    fgets(user_input,20,stdin); // get user_input;
+    strcpy(copy, user_input); // copy = user_input;
+    int user_input_len = (int)strlen(user_input);
+
+    if(user_input_len == 1){
+        return 0;
+    }    
+
+    strcpy(command,strtok(user_input," \n")); // assign first arg -> cmd;
+    printf("[%s]\n", command);
+    int command_len =(int)strlen(command);
+    
+    if(command_len == user_input_len - 1){
+        return 1;
+    }else{
+            
+        strcpy(argument,strtok(copy," \t\n"));
+        strcpy(argument,strtok(NULL," \n\t"));
+        printf("[%s]\n",argument);
+        return 2;
+    }
 }
 
 int char_reset(){
