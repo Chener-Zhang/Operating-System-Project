@@ -4,11 +4,16 @@
 #include <fcntl.h>
 #include <string.h>
 #include <strings.h>
+#include <errno.h>
 #include "struct.h"
 // --------------------------------------------- Global Var ---------------------------------------------//
 int number_of_block = 60;
 int each_block_size = 16;
 int fd;
+
+
+char command[20];
+char argument[20];
 
 int file_information_index; // for disk_split() function;
 int fat_table_storage_index; // for disk_split() function;
@@ -21,7 +26,70 @@ struct Direction *traking_dir;
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
+
+// --------------------------------------------- Main ---------------------------------------------//
+int main(){
+    printf("\n\n\n");
+    
+    char name[] = "disk";
+    
+    create_disk(name);
+    open_disk(name);
+    write_disk(file_information_index,"first part");
+    write_disk(fat_table_storage_index,"second part");
+    write_disk(data_entry_index,"third part");
+    //read_disk(file_information_index);
+
+
+    //init - testing
+    init_dir(dirtable);
+    init_root(dirtable);
+    //print_direction(dirtable[0]);
+    traking_dir = dirtable[0];
+    Create_directory("direction1",dirtable,traking_dir);
+    print_direction(traking_dir,dirtable);
+    Create_directory("direction2",dirtable,traking_dir);
+    print_direction(traking_dir,dirtable);
+
+
+    Change_directory("direction1",traking_dir,dirtable);
+    print_direction(traking_dir,dirtable);
+    Change_directory("..",traking_dir,dirtable);
+    print_direction(traking_dir,dirtable);
+
+    
+    //init - testing
+    
+    
+
+
+    close_disk(fd);
+    printf("\n\n\n");
+    return 0;
+}
+
+
 // --------------------------------------------- some small function ---------------------------------------------//
+
+
+int parsing(){
+
+    char user_input[20];
+    printf(">"); // print ">" 
+    fgets(user_input,20,stdin); // get user_input    
+    strcpy(command,strtok(user_input," ")); // assign first arg -> cmd;
+    //printf("[%s]\n", command);
+    strcpy(argument,strtok(NULL," \n"));
+    //printf("[%s]\n",argument);
+    return 0;
+}
+
+int char_reset(){
+    memset(command, 0, sizeof(command)); 
+    memset(argument, 0, sizeof(command)); 
+    return 0;
+}
+
 
 void print_direction( struct Direction *dir,struct Direction *list[]){
 
@@ -287,43 +355,3 @@ int Delete_directory(char *dirname){
 // --------------------------------------------- some small function ---------------------------------------------//
 
 
-// --------------------------------------------- Main ---------------------------------------------//
-int main(){
-    printf("\n\n\n");
-    
-    char name[] = "disk";
-    
-    create_disk(name);
-    open_disk(name);
-    write_disk(file_information_index,"first part");
-    write_disk(fat_table_storage_index,"second part");
-    write_disk(data_entry_index,"third part");
-    //read_disk(file_information_index);
-
-
-    //init - testing
-    init_dir(dirtable);
-    init_root(dirtable);
-    //print_direction(dirtable[0]);
-    traking_dir = dirtable[0];
-    Create_directory("direction1",dirtable,traking_dir);
-    print_direction(traking_dir,dirtable);
-    Create_directory("direction2",dirtable,traking_dir);
-    print_direction(traking_dir,dirtable);
-
-
-    Change_directory("direction1",traking_dir,dirtable);
-    print_direction(traking_dir,dirtable);
-    Change_directory("..",traking_dir,dirtable);
-    print_direction(traking_dir,dirtable);
-
-    
-    //init - testing
-    
-    
-
-
-    close_disk(fd);
-    printf("\n\n\n");
-    return 0;
-}
