@@ -63,10 +63,12 @@ printf("\n\n\n");
                 Change_directory(argument,traking_dir,dirtable);
             }else if(strcmp(command,"mkdir")== 0){
                 Create_directory(argument,dirtable,traking_dir);
-            }else if(strcmp(command,"rm") == 0){
+            }else if(strcmp(command,"rmr") == 0){
                 Delete_directory(argument,dirtable,traking_dir);
             }else if(strcmp(command,"touch") == 0){
                 Create_file(argument,traking_dir,dirtable,filetable);
+            }else if(strcmp(command,"rm") == 0){
+                Delete_file(argument,dirtable,traking_dir,filetable);
             }
             else{
                 printf("checking your input\n");
@@ -371,7 +373,21 @@ int Read_file(char *filename){
 }
 
 // --------------------------------------------- Delete a File---------------------------------------------//
-int Delete_file(char *filename){
+int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
+    
+    for (int i = 0; i < file_list; i++)
+    {
+
+            if(file_table[i]->below_direction == current_dir->current_index){                
+                        if(strcmp(filename,file_table[i]->name)==0 ){
+                            memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
+                            file_table[i]->below_direction = -1;
+                            file_table[i]->used = 0;
+                        return 1;
+                }
+            }
+    }
+    
     return 0;
 }
 

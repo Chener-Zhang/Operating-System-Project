@@ -54,7 +54,7 @@ int init_file(struct File *list[]);
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
 int Write_file(char* filename, char* words);
 int Read_file(char *filename);
-int Delete_file(char *filename);
+int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 
 int get_current_direction();
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
