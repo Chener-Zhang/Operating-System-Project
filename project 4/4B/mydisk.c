@@ -17,7 +17,7 @@ int data_entry_index; // for disk_split() function;
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
 struct File filetable[file_list]; //{file1,file2,file3}
-
+struct Direction *traking_dir;
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
@@ -240,7 +240,24 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
 // --------------------------------------------- Change a Direction---------------------------------------------//
 
-int Change_directory(char *dirname, int current_d_index, int previous_d_index){
+int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){
+
+    
+    for (int i = 0; i < direction_list; i++)
+    {
+            
+            if(dir_table[i]->previous_index == current_dir->current_index){
+
+                    if(strcmp(dirname,dir_table[i]->name)==0 ){                                  
+                        traking_dir = dir_table[i];
+                        
+                    } else if (strcmp(dirname,"..") == 0 ){
+                        printf("the user enter ------ >: %s\n",dirname);
+                        int previous_dir = dir_table[i]->previous_index;
+                        traking_dir = dir_table[previous_dir];
+                    }
+            }
+    }
 
     return 0;
 }
@@ -284,10 +301,18 @@ int main(){
     init_dir(dirtable);
     init_root(dirtable);
     //print_direction(dirtable[0]);
-    Create_directory("direction1",dirtable,dirtable[0]);
-    Create_directory("direction2",dirtable,dirtable[0]);    
+    traking_dir = dirtable[0];
+    Create_directory("direction1",dirtable,traking_dir);
+    print_direction(traking_dir,dirtable);
+    Create_directory("direction2",dirtable,traking_dir);
+    print_direction(traking_dir,dirtable);
 
-    print_direction(dirtable[0],dirtable);
+    Change_directory("direction1",traking_dir,dirtable);
+    print_direction(traking_dir,dirtable);
+    Change_directory("..",traking_dir,dirtable);
+    print_direction(traking_dir,dirtable);
+
+    
     //init - testing
     
     
