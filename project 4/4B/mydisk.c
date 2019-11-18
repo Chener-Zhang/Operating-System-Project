@@ -156,21 +156,24 @@ int char_reset(){
 //print out the direction easy for my testing and tracking
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){
 
+    //Tracking;
     // This is the current path;
-    printf("Current Direction: [%s] ", dir->name);
-    printf("current index: [%d] ",dir->current_index);
-    printf("previous index: [%d] ",dir->previous_index);
-    printf("used index: [%d] \n\n",dir->used);
-
+    //printf("Current: [%s]\n", dir->name);
+    //printf("Current Direction: [%s] ", dir->name);
+    //printf("current index: [%d] ",dir->current_index);
+    //printf("previous index: [%d] ",dir->previous_index);
+    //printf("used index: [%d] \n\n",dir->used);
+    
     // This is what the current path has contains;
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index){
-            printf("Direction: %s\n", list[i]->name);
-            printf("current index: %d\n",list[i]->current_index);
-            printf("previous index: %d\n",list[i]->previous_index);
-            printf("used index: %d\n",list[i]->used);
-            printf("\n");
+            printf("%s\n", list[i]->name);
+            //printf("Direction: %s\n", list[i]->name);
+            //printf("current index: %d\n",list[i]->current_index);
+            //printf("previous index: %d\n",list[i]->previous_index);
+            //printf("used index: %d\n",list[i]->used);
+            //printf("\n");
         }
 
     }
