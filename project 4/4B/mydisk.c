@@ -342,14 +342,23 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){
 
     
+
+    
+    
     //printf("the current dir is -----------%d\n",current_dir->current_index);
-
+    // if user enter ".." - > means the previous dir
     if (strcmp(dirname,"..") == 0 ){            
-        int previous_dir = current_dir->previous_index;
-        traking_dir = dir_table[previous_dir];
+        // adding the new case if the current is the root;
+        if(current_dir->current_index == 0){
+            printf("It is the root, you cannot go previous\n ");
+            return -1;
+        }else{
+        int previous_dir = current_dir->previous_index; // redire the current 
+        traking_dir = dir_table[previous_dir]; // go to the previosu dir
         return 1;
+        }
+     
     }
-
 
     for (int i = 0; i < direction_list; i++)
     {            
