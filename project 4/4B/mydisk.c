@@ -62,6 +62,8 @@ printf("\n\n\n");
                 Change_directory(argument,traking_dir,dirtable);
             }else if(strcmp(command,"mkdir")== 0){
                 Create_directory(argument,dirtable,traking_dir);
+            }else if(strcmp(command,"rm")){
+                Delete_directory(argument,dirtable,traking_dir);
             }
             else{
                 printf("checking your input\n");
@@ -70,7 +72,7 @@ printf("\n\n\n");
 
         }
         char_reset();
-        print_list();
+        
     }
     
     
@@ -411,7 +413,7 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
 
     }
-    
+    print_list();
     return 0;
 }
 
