@@ -404,6 +404,7 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                         memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
                         dir_table[i]->current_index = 0;
                         dir_table[i]->previous_index = -1;
+                        dir_table[i]->used = 0;
                         return 1;
                 }
             }
