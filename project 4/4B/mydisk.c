@@ -23,12 +23,23 @@ struct File filetable[file_list]; //{file1,file2,file3}
 // --------------------------------------------- Global Var ---------------------------------------------//
 // --------------------------------------------- some small function ---------------------------------------------//
 
-void print_direction( struct Direction *dir){
+void print_direction( struct Direction *dir,struct Direction *list[]){
 
-    printf("name: %s\n", dir->name);
-    printf("current index: %d\n",dir->current_index);
-    printf("previous index: %d\n",dir->previous_index);
-    printf("used index: %d\n",dir->used);
+    printf("Current Direction: [%s] ", dir->name);
+    printf("current index: [%d] ",dir->current_index);
+    printf("previous index: [%d] ",dir->previous_index);
+    printf("used index: [%d] \n\n",dir->used);
+
+    for (int i = 0; i < direction_list; i++)
+    {
+        if(list[i]->previous_index == dir->current_index){
+            printf("Direction: %s\n", list[i]->name);
+            printf("current index: %d\n",list[i]->current_index);
+            printf("previous index: %d\n",list[i]->previous_index);
+            printf("used index: %d\n",list[i]->used);
+        }
+    } 
+
     // adding more information;
 }
 
@@ -51,7 +62,8 @@ int init_dir(struct Direction *list[]){
     {
         list[i] = (struct Direction*) malloc(sizeof(struct Direction));
         memset(list[i]->name, 0, sizeof *list[i]->name);    
-        
+        list[i]->previous_index = -1;
+
     }
     return 0;
 }
@@ -243,14 +255,16 @@ int main(){
     write_disk(file_information_index,"first part");
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
-    read_disk(file_information_index);
+    //read_disk(file_information_index);
 
 
-    //init - testig
+    //init - testing
     init_dir(dirtable);
     init_root(dirtable);
-    print_direction(dirtable[0]);
-    
+    //print_direction(dirtable[0]);
+    Create_directory("hello",dirtable,dirtable[0]);
+    print_direction(dirtable[0],dirtable);
+    //init - testing
     
     
 
