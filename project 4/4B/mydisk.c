@@ -47,14 +47,14 @@ printf("\n\n\n");
     write_disk(file_information_index,"Super block");
     write_disk(fat_table_storage_index,"Meda block");
     write_disk(data_entry_index,"Data block");
-
+    //debugging.......
+    init_block_allocation();
+    //debugging.......
+    /* -------
     // DISK INITING ----------------------
     init_dir(dirtable);
     init_root(dirtable);
-    init_file(filetable);
-    
-
-    /* -------
+    init_file(filetable);    
     // while loop
     while(1){
         parsing();
@@ -230,7 +230,10 @@ int get_free_space_filetable(struct File *list[]){ // file
     return -1;
 }
 int init_block_allocation(){ // set the index for the block;
-    
+    lseek(fd, 0, SEEK_SET);
+    void *addr = mmap(NULL, 0, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    int *array = addr;
+    array[0] = 'j';
 
     return 0;
 }
