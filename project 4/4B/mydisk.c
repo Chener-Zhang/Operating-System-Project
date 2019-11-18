@@ -97,11 +97,11 @@ int parsing(){
     }
 
     strcpy(command,strtok(user_input," \n")); // assign first arg -> cmd;
-    printf("[%s]\n", command);
+    //printf("[%s]\n", command);
     int command_len =(int)strlen(command);
     
-    printf("command len : %d \n",command_len);
-    printf("user_input_len len : %d \n",user_input_len);
+    //printf("command len : %d \n",command_len);
+    //printf("user_input_len len : %d \n",user_input_len);
     if(command_len == user_input_len - 1){
         return 1;
     }else if (command_len == user_input_len - 2){
@@ -109,7 +109,7 @@ int parsing(){
     }else{
         strcpy(argument,strtok(copy," \t\n"));
         strcpy(argument,strtok(NULL," \t\n"));
-        printf("[%s]\n",argument);
+      //  printf("[%s]\n",argument);
         return 2;
     }
 }
@@ -343,26 +343,31 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 
     
     //printf("the current dir is -----------%d\n",current_dir->current_index);
+
+    if (strcmp(dirname,"..") == 0 ){            
+        int previous_dir = current_dir->previous_index;
+        traking_dir = dir_table[previous_dir];
+        return 1;
+    }
+
+
     for (int i = 0; i < direction_list; i++)
     {            
             if(dir_table[i]->previous_index == current_dir->current_index){ // current = 1
 
                     if(strcmp(dirname,dir_table[i]->name)==0 ){                                  
                         traking_dir = dir_table[i];                        
+                        return 1;
                     }                     
 
             }
 
     }
+    printf("Direction does not exits \n");
 
-
-    if (strcmp(dirname,"..") == 0 ){            
-        int previous_dir = current_dir->previous_index;
-        traking_dir = dir_table[previous_dir];
-    }
     
 
-    return 0;
+    return -1;
 }
 
 
@@ -383,6 +388,6 @@ int Delete_directory(char *dirname){
 
 
 
-// --------------------------------------------- some small function ---------------------------------------------//
+
 
 
