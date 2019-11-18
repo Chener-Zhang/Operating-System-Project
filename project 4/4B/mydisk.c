@@ -90,9 +90,10 @@ int print_list(){
     {
         printf("%d:[%d] |",i,dirtable[i]->current_index);
     }
-    
+    printf("\n");
     return 0;
 }
+
 // basically the shell thing; PARSING!!!
 int parsing(){
     char user_input[20];
@@ -397,7 +398,19 @@ int Fine_directory(char *dirname){
 }
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
-int Delete_directory(char *dirname){
+int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
+
+        for (int i = 0; i < direction_list; i++)
+    {
+            if(dir_table[i]->previous_index == current_dir->current_index){
+                        if(strcmp(dirname,dir_table[i]->name)==0 ){
+                        perror("you cannot create a dir with same name \n");
+                        return -1;
+                }
+            }
+
+
+    }
     
     return 0;
 }
