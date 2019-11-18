@@ -341,10 +341,6 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){
 
-    
-
-    
-    
     //printf("the current dir is -----------%d\n",current_dir->current_index);
     // if user enter ".." - > means the previous dir
     if (strcmp(dirname,"..") == 0 ){            
