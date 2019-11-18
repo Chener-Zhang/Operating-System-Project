@@ -38,16 +38,17 @@ int begin(){
 printf("\n\n\n");
     
     
-    // DISK INITING ----------------------    
+    // DISK INITING ----------------------
     char name[] = "disk";
     create_disk(name);
     open_disk(name);
     write_disk(file_information_index,"first part");
     write_disk(fat_table_storage_index,"second part");
     write_disk(data_entry_index,"third part");
-    // DISK INITING ----------------------        
+    // DISK INITING ----------------------
     init_dir(dirtable);
     init_root(dirtable);
+    init_file(filetable);
     
     // while loop
     while(1){
@@ -57,7 +58,7 @@ printf("\n\n\n");
             break;
         }else{
             if(strcmp(command,"ls") == 0){
-                print_direction(traking_dir,dirtable);                    
+                print_direction(traking_dir,dirtable,filetable);
             }else if(strcmp(command,"cd") == 0){
                 Change_directory(argument,traking_dir,dirtable);
             }else if(strcmp(command,"mkdir")== 0){
@@ -88,13 +89,13 @@ printf("\n\n\n");
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
-int init_filelis(struct File *list[]){
+int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {
         
-        memset(list[i]->name, 0, sizeof *list[i]->name);   
+        memset(list[i]->name, 0, sizeof *list[i]->name);
         list[i]->below_direction = -1;
-        list[i]->size = 0;    
+        list[i]->size = 0;
         list[i]->used = 0;
 
     }
@@ -143,15 +144,15 @@ int parsing(){
 }
 
 // -------------Done with the shell thing------------------->
-// reset my char[]; clean my space 
+// reset my char[]; clean my space
 int char_reset(){
-    memset(command, 0, sizeof(command)); 
-    memset(argument, 0, sizeof(command)); 
+    memset(command, 0, sizeof(command));
+    memset(argument, 0, sizeof(command));
     return 0;
 }
 
 //print out the direction easy for my testing and tracking
-void print_direction( struct Direction *dir,struct Direction *list[]){
+void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){
 
     // This is the current path;
     printf("Current Direction: [%s] ", dir->name);
@@ -169,7 +170,17 @@ void print_direction( struct Direction *dir,struct Direction *list[]){
             printf("used index: %d\n",list[i]->used);
             printf("\n");
         }
-    } 
+
+    }
+    for (int i = 0; i < file_list; i++)
+    {
+        printf("current index : %d", dir->current_index);
+        printf("file below index : %d", file_table[i]->below_direction);
+        if(dir->current_index == file_table[i]->below_direction){
+            printf("%s\n",file_table[i]->name);
+        }
+    }
+    
     
     // adding more information;
 }
@@ -215,7 +226,7 @@ int init_dir(struct Direction *list[]){
     for (int i = 0; i < direction_list; i++)
     {
         list[i] = (struct Direction*) malloc(sizeof(struct Direction));
-        memset(list[i]->name, 0, sizeof *list[i]->name);    
+        memset(list[i]->name, 0, sizeof *list[i]->name);
         list[i]->previous_index = -1;
     }
     return 0;
@@ -404,13 +415,13 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 
     //printf("the current dir is -----------%d\n",current_dir->current_index);
     // if user enter ".." - > means the previous dir
-    if (strcmp(dirname,"..") == 0 ){            
+    if (strcmp(dirname,"..") == 0 ){
         // adding the new case if the current is the root;
         if(current_dir->current_index == 0){
             printf("It is the root, you cannot go previous\n ");
             return -1;
         }else{
-        int previous_dir = current_dir->previous_index; // redire the current 
+        int previous_dir = current_dir->previous_index; // redire the current
         traking_dir = dir_table[previous_dir]; // go to the previosu dir
         return 1;
         }
@@ -418,13 +429,13 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
     }
 
     for (int i = 0; i < direction_list; i++)
-    {            
+    {
             if(dir_table[i]->previous_index == current_dir->current_index){ // current = 1
 
-                    if(strcmp(dirname,dir_table[i]->name)==0 ){                                  
-                        traking_dir = dir_table[i];                        
+                    if(strcmp(dirname,dir_table[i]->name)==0 ){
+                        traking_dir = dir_table[i];
                         return 1;
-                    }                     
+                    }
 
             }
 
@@ -452,7 +463,6 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                         return 1;
                 }
             }
-
     }
     print_list();
     return 0;

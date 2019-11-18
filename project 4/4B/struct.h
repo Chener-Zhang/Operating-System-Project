@@ -38,7 +38,6 @@ struct Block{
 // ---------------- Function declares --------------------------- 
 int char_reset();
 int parsing();
-void print_direction( struct Direction *dir,struct Direction *list[]);
 int get_free_space(struct Direction *list[]);
 int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
@@ -51,6 +50,7 @@ int read_disk(int block_index);
 int detele_block(int block_index);
 int close_disk(int fd);
 
+int init_file(struct File *list[]);
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
 int Write_file(char* filename, char* words);
 int Read_file(char *filename);
@@ -60,6 +60,7 @@ int get_current_direction();
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
+void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]);
 int print_list();
 int begin();
 // ---------------- Function declares ---------------------------
