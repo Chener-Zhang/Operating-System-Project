@@ -168,7 +168,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index){
-            printf("\t\t %s\n", list[i]->name);
+            printf("\t %s\n", list[i]->name);
             //printf("Direction: %s\n", list[i]->name);
             //printf("current index: %d\n",list[i]->current_index);
             //printf("previous index: %d\n",list[i]->previous_index);
@@ -183,7 +183,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
         //printf("c[%d] : f[%d]\n", dir->current_index,file_table[i]->below_direction);        
         // debuging........
         if(dir->current_index == file_table[i]->below_direction){
-            printf("\t\t%s\n",file_table[i]->name);
+            printf("\t%s\n",file_table[i]->name);
         }
     }
     
