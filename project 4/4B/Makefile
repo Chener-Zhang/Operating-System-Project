@@ -7,5 +7,8 @@ rm:
 	rm mydisk
 
 
-
+shell:
+	gcc -o shell shell.c
+	./shell
+	rm shell
 	
