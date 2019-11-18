@@ -83,8 +83,12 @@ printf("\n\n\n");
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
-// basically the shell thing; 
-//Parsing;
+//Print my list;
+int print_list(){
+    
+    return 0;
+}
+// basically the shell thing; PARSING!!!
 int parsing(){
     char user_input[20];
     char copy[20];
@@ -389,7 +393,7 @@ int Fine_directory(char *dirname){
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname){
-
+    
     return 0;
 }
 
