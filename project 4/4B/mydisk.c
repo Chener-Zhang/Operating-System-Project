@@ -140,11 +140,15 @@ int get_current_direction(){
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
-int Create_directory(char *dirname, struct Direction *current_dir){
+int Create_directory(char *dirname, struct Direction *dir_table[]){
     //check if exist
+
     for (int i = 0; i < direction_list; i++)
     {
-        
+        if(strcmp(dirname,dir_table[i]->name)==0){
+                perror("you cannot create a dir with same name\n");
+        }   
+
     }
     
     return 1;
@@ -224,8 +228,14 @@ int main(){
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
 
+
+    //init - testig
     init_dir(dirtable);
-    print_direction(dirtable[0]);
+    strcpy(dirtable[1]->name,"hello");
+    
+    
+    
+
 
     close_disk(fd);
     printf("\n\n\n");
