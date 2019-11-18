@@ -174,8 +174,10 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     }
     for (int i = 0; i < file_list; i++)
     {
-        printf("current index : %d", dir->current_index);
-        printf("file below index : %d", file_table[i]->below_direction);
+        // debuging........
+        printf("current index : %d\n", dir->current_index);
+        printf("file below index : %d\n", file_table[i]->below_direction);
+        // debuging........
         if(dir->current_index == file_table[i]->below_direction){
             printf("%s\n",file_table[i]->name);
         }
