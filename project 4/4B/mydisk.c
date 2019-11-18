@@ -65,7 +65,7 @@ printf("\n\n\n");
             }
             else{
                 printf("checking your input\n");
-                return -1;
+                
             }
 
         }
@@ -110,7 +110,7 @@ int parsing(){
         strcpy(argument,strtok(copy," \t\n"));
         strcpy(argument,strtok(NULL," \t\n"));
       //  printf("[%s]\n",argument);
-        return 2;
+        return 1;
     }
 }
 
