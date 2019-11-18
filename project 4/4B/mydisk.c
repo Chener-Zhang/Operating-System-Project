@@ -329,7 +329,7 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
                 strcpy(file_table[i]->name,filename);
                 file_table[i]->below_direction = current_dir->current_index;
                 int position = get_free_space_filetable(file_table);
-                
+
             }
 
     }
@@ -457,13 +457,4 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
     print_list();
     return 0;
 }
-
-
-
-
-
-
-
-
-
 
