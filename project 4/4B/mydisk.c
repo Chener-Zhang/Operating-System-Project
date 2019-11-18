@@ -69,7 +69,7 @@ printf("\n\n\n");
                 printf("checking your input\n");
                 
             }
-
+ 
         }
         char_reset();
         
