@@ -14,13 +14,12 @@ int file_information_index; // for disk_split() function;
 int fat_table_storage_index; // for disk_split() function;
 int data_entry_index; // for disk_split() function;
 
-int root_index = 0; //the root;
+
+struct Direction dirtable[direction_list]; // {direction1,direction2,direction3.....}
+struct File filetable[file_list]; //{file1,file2,file3}
 
 
-int data_block_checking_list[100];//{1,0,1,0,0,0,1} tracking of the block whether it used; 
-//the int inside of the list can be motify;
 
-struct Direction dirtable[direction_list];
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
