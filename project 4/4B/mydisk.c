@@ -243,21 +243,25 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){
 
     
+    //printf("the current dir is -----------%d\n",current_dir->current_index);
     for (int i = 0; i < direction_list; i++)
-    {
-            
-            if(dir_table[i]->previous_index == current_dir->current_index){
+    {            
+            if(dir_table[i]->previous_index == current_dir->current_index){ // current = 1
 
                     if(strcmp(dirname,dir_table[i]->name)==0 ){                                  
-                        traking_dir = dir_table[i];
-                        
-                    } else if (strcmp(dirname,"..") == 0 ){
-                        printf("the user enter ------ >: %s\n",dirname);
-                        int previous_dir = dir_table[i]->previous_index;
-                        traking_dir = dir_table[previous_dir];
-                    }
+                        traking_dir = dir_table[i];                        
+                    }                     
+
             }
+
     }
+
+
+    if (strcmp(dirname,"..") == 0 ){            
+        int previous_dir = current_dir->previous_index;
+        traking_dir = dir_table[previous_dir];
+    }
+    
 
     return 0;
 }
@@ -306,6 +310,7 @@ int main(){
     print_direction(traking_dir,dirtable);
     Create_directory("direction2",dirtable,traking_dir);
     print_direction(traking_dir,dirtable);
+
 
     Change_directory("direction1",traking_dir,dirtable);
     print_direction(traking_dir,dirtable);
