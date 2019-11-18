@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "struct.h": "c",
-        "algorithm": "c",
-        "stdio.h": "c"
-    }
-}
