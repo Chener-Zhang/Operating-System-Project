@@ -7,7 +7,7 @@
 #include "struct.h"
 // --------------------------------------------- Global Var ---------------------------------------------//
 int number_of_block = 60;
-int each_block_size = 16; 
+int each_block_size = 16;
 int fd;
 
 int file_information_index; // for disk_split() function;
@@ -33,7 +33,7 @@ int disk_split(){
 // --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){
     int file_size_counter;
-    fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);  
+    fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
 
     disk_split();
@@ -60,7 +60,7 @@ int open_disk(char *name){
 int write_disk(int block_index, char* words){
       
     lseek(fd, block_index * each_block_size, SEEK_SET);
-    write(fd,words,strlen(words));    
+    write(fd,words,strlen(words));
 
     return 0;
 }
@@ -69,7 +69,7 @@ int write_disk(int block_index, char* words){
 int read_disk(int block_index){
 
 
-    lseek(fd, block_index * each_block_size, SEEK_SET);    
+    lseek(fd, block_index * each_block_size, SEEK_SET);
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
     
@@ -86,11 +86,11 @@ int read_disk(int block_index){
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
 
 int detele_block(int block_index){
-    lseek(fd, block_index * each_block_size, SEEK_SET);  
+    lseek(fd, block_index * each_block_size, SEEK_SET);
     // slight change here
     char buf[each_block_size];
     memset(buf, 0, strlen(buf));
-    write(fd, buf, strlen(buf));    
+    write(fd, buf, strlen(buf));
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
@@ -101,7 +101,7 @@ int close_disk(int fd){
 
 
 
-// Note: Above is the creation of a disk; working on nov 17,2019; 
+// Note: Above is the creation of a disk; working on nov 17,2019;
 
 
 
@@ -176,7 +176,8 @@ int Delete_directory(char *dirname){
 void print_direction( struct Direction *dir){
 
     printf("name: %s\n", dir->name);
-    printf("index: %d\n",dir->current_index);
+    printf("current index: %d\n",dir->current_index);
+    printf("previous index: %d\n",dir->previous_index);
     // adding more information;
 }
 
@@ -194,11 +195,12 @@ int get_free_space(int list[]){
     return -1;
 }
 
-// initilization of direction struct 
+// initilization of direction struct
 int init_dir(struct Direction *list[]){
     for (int i = 0; i < direction_list; i++)
     {
-        list[i] = NULL;
+        list[i] = (struct Direction*) malloc(sizeof(struct Direction));
+        memset(list[i]->name, 0, sizeof *list[i]->name);    
         
     }
     return 0;
@@ -210,7 +212,7 @@ int init_dir(struct Direction *list[]){
 
 
 // --------------------------------------------- Main ---------------------------------------------//
-int main(){ 
+int main(){
     printf("\n\n\n");
     
     char name[] = "disk";
@@ -225,7 +227,7 @@ int main(){
     init_dir(dirtable);
     print_direction(dirtable[0]);
 
-    close_disk(fd);    
+    close_disk(fd);
     printf("\n\n\n");
     return 0;
 }
