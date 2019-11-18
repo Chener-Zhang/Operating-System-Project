@@ -37,16 +37,22 @@ void print_direction( struct Direction *dir,struct Direction *list[]){
             printf("current index: %d\n",list[i]->current_index);
             printf("previous index: %d\n",list[i]->previous_index);
             printf("used index: %d\n",list[i]->used);
+            printf("\n");
         }
     } 
+    
 
     // adding more information;
 }
 
 // Get the free space;
 int get_free_space(struct Direction *list[]){
-    for (int i = 0; i < direction_list; i++)
+
+    for (int i = 1; i < direction_list; i++)
     {
+
+    //debug tracker;
+    //printf("%d\n",ci);
        if(list[i]->used == 0){
            return i;
        }
@@ -206,11 +212,16 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     }
 
     //working....
+
     int position = get_free_space(dir_table);
+
+//    printf("position: %d\n",position);
+
     strcpy(dir_table[position]->name,dirname);
 
     dir_table[position]->current_index = position;
     dir_table[position]->previous_index = current_dir->current_index;
+    dir_table[position]->used = 1;
 
 
     return 1;
