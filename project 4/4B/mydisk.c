@@ -15,10 +15,8 @@ int fat_table_storage_index; // for disk_split() function;
 int data_entry_index; // for disk_split() function;
 
 
-struct Direction dirtable[direction_list]; // {direction1,direction2,direction3.....}
+struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
 struct File filetable[file_list]; //{file1,file2,file3}
-
-
 
 
 
@@ -143,9 +141,12 @@ int get_current_direction(){
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
 int Create_directory(char *dirname, struct Direction *current_dir){
-
+    //check if exist
+    for (int i = 0; i < direction_list; i++)
+    {
+        
+    }
     
-
     return 1;
 }
 
@@ -173,6 +174,7 @@ int Delete_directory(char *dirname){
 // --------------------------------------------- some small function ---------------------------------------------//
 
 void print_direction( struct Direction *dir){
+
     printf("name: %s\n", dir->name);
     printf("index: %d\n",dir->current_index);
     // adding more information;
@@ -193,10 +195,12 @@ int get_free_space(int list[]){
 }
 
 // initilization of direction struct 
-int init_dir(struct Direction *dir, char name[]){
-    strcpy(dir->name, name);
-    dir->current_index = -1;  
-
+int init_dir(struct Direction *list[]){
+    for (int i = 0; i < direction_list; i++)
+    {
+        list[i] = NULL;
+        
+    }
     return 0;
 }
 
@@ -218,22 +222,8 @@ int main(){
     write_disk(data_entry_index,"third part");
     read_disk(file_information_index);
 
-
-
-    //  init root 
-
-    
-    
-
-
-
-    
-    
-    
-
-
-    
-
+    init_dir(dirtable);
+    print_direction(dirtable[0]);
 
     close_disk(fd);    
     printf("\n\n\n");
