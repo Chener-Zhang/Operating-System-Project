@@ -345,19 +345,19 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     for (int i = 0; i < file_list; i++)
     {
                         
-            if(dir_table[i]->previous_index == current_dir->current_index){
-                        if(strcmp(filename,dir_table[i]->name) == 0 ){
-                        perror("you cannot create a dir with same name \n");
-                        return -1;
-                }
+            if(file_table[i]->below_direction == current_dir->current_index){
+                if(strcmp(file_table[i]->name,filename) == 0 ){
+                    printf("you cannot create the file has same name as %s",filename);
+                    return -1;
+                }                
             }
-
 
     }
 
     strcpy(file_table[position]->name,filename);
-    //file_table[position]->below_direction = current_dir->current_index;
+    file_table[position]->below_direction = current_dir->current_index;
     file_table[position]->used = 1;
+
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
