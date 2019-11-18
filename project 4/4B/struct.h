@@ -8,7 +8,7 @@
 
 #define name_size  30   
 #define bloc_entry_number  20   
-
+#define direction_list 20
 
 
 

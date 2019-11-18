@@ -16,11 +16,12 @@ int data_entry_index; // for disk_split() function;
 
 int root_index = 0; //the root;
 
+
 int data_block_checking_list[100];//{1,0,1,0,0,0,1} tracking of the block whether it used; 
 //the int inside of the list can be motify;
 
-struct Direction* current_direction; // current;
-struct Direction* Root_direction; // Root;
+struct Direction dirtable[direction_list];
+
 
 // --------------------------------------------- Global Var ---------------------------------------------//
 
@@ -181,7 +182,7 @@ void print_direction( struct Direction *dir){
 // Get the free space;
 int get_free_space(int list[]){
 
-    for (int i = 0; i < file_list_number; i++)
+    for (int i = 0; i < 10; i++)
     {
         if(list[i] == 0){
             return i;
@@ -222,13 +223,13 @@ int main(){
 
     //  init root 
 
-    Root_direction = (struct Direction*) malloc(sizeof(struct Direction));    
-    init_dir(Root_direction,"root");
+    
+    
 
 
 
-    Create_directory("hello_direction",Root_direction);
-    print_direction(Root_direction);
+    
+    
     
 
 
