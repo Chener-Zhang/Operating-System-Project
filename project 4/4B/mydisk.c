@@ -92,7 +92,7 @@ printf("\n\n\n");
 int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {
-        
+        list[i] = (struct File*) malloc(sizeof(struct File));
         memset(list[i]->name, 0, sizeof *list[i]->name);
         list[i]->below_direction = -1;
         list[i]->size = 0;
