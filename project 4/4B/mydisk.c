@@ -202,20 +202,30 @@ int get_current_direction(){
 // working .............
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
     //check if exist
+    int position = get_free_space(dir_table);
+    if(position < 0){
+        perror("fail to create direction");
+        return -1;
+    }
+
     for (int i = 0; i < direction_list; i++)
     {
-        if(strcmp(dirname,dir_table[i]->name)==0 ){
-                perror("you cannot create a dir with same name\n");
-                return -1;
-        }   
+            if(dir_table[i]->previous_index == current_dir->current_index){
+                        if(strcmp(dirname,dir_table[i]->name)==0 ){
+                        perror("you cannot create a dir with same name \n");
+                        return -1;
+                }
+            }
+
 
     }
 
-    //working....
+    /*
+    Write in to the disk
+    */
 
-    int position = get_free_space(dir_table);
 
-//    printf("position: %d\n",position);
+    // printf("position: %d\n",position);
 
     strcpy(dir_table[position]->name,dirname);
 
@@ -231,6 +241,7 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 // --------------------------------------------- Change a Direction---------------------------------------------//
 
 int Change_directory(char *dirname, int current_d_index, int previous_d_index){
+
     return 0;
 }
 
@@ -274,7 +285,8 @@ int main(){
     init_root(dirtable);
     //print_direction(dirtable[0]);
     Create_directory("direction1",dirtable,dirtable[0]);
-    Create_directory("direction2",dirtable,dirtable[0]);
+    Create_directory("direction2",dirtable,dirtable[0]);    
+
     print_direction(dirtable[0],dirtable);
     //init - testing
     
