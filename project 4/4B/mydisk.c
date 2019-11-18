@@ -174,7 +174,7 @@ int get_current_direction(){
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
-int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current){
+int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
     //check if exist
     for (int i = 0; i < direction_list; i++)
     {
@@ -188,9 +188,10 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     //working....
     int position = get_free_space(dir_table);
     strcpy(dir_table[position]->name,dirname);
-    dir_table[position]->current_index = position;
 
-    
+    dir_table[position]->current_index = position;
+    dir_table[position]->previous_index = current_dir->current_index;
+
 
     return 1;
 }
