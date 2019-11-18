@@ -80,18 +80,21 @@ int parsing(){
 
     if(user_input_len == 1){
         return 0;
-    }    
+    }
 
     strcpy(command,strtok(user_input," \n")); // assign first arg -> cmd;
     printf("[%s]\n", command);
     int command_len =(int)strlen(command);
     
+    printf("command len : %d \n",command_len);
+    printf("user_input_len len : %d \n",user_input_len);
     if(command_len == user_input_len - 1){
         return 1;
+    }else if (command_len == user_input_len - 2){
+        return 1;
     }else{
-            
         strcpy(argument,strtok(copy," \t\n"));
-        strcpy(argument,strtok(NULL," \n\t"));
+        strcpy(argument,strtok(NULL," \t\n"));
         printf("[%s]\n",argument);
         return 2;
     }
