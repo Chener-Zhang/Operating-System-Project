@@ -175,8 +175,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     for (int i = 0; i < file_list; i++)
     {
         // debuging........
-        printf("current index : %d\n", dir->current_index);
-        printf("file below index : %d\n", file_table[i]->below_direction);
+        printf("c[%d] : f[%d]\n", dir->current_index,file_table[i]->below_direction);        
         // debuging........
         if(dir->current_index == file_table[i]->below_direction){
             printf("%s\n",file_table[i]->name);
@@ -336,17 +335,29 @@ int close_disk(int fd){
 
 // --------------------------------------------- Create a File---------------------------------------------//
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
-    for (int i = 0; i < direction_list; i++)
-    {
-            if(dir_table[i]->previous_index == current_dir->current_index){ // check within the same dir_path
-                strcpy(file_table[i]->name,filename);
-                file_table[i]->below_direction = current_dir->current_index;
-                int position = get_free_space_filetable(file_table);
+    //check if exist
+    int position = get_free_space_filetable(file_table);
+    if(position < 0){
+        perror("fail to create direction");
+        return -1;
+    }
 
+    for (int i = 0; i < file_list; i++)
+    {
+                        
+            if(dir_table[i]->previous_index == current_dir->current_index){
+                        if(strcmp(filename,dir_table[i]->name) == 0 ){
+                        perror("you cannot create a dir with same name \n");
+                        return -1;
+                }
             }
+
 
     }
 
+    strcpy(file_table[position]->name,filename);
+    //file_table[position]->below_direction = current_dir->current_index;
+    file_table[position]->used = 1;
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
@@ -383,6 +394,8 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
     for (int i = 0; i < direction_list; i++)
     {
+            //printf("previous index = %d ",dir_table[i]->previous_index);
+            //printf("current index = %d\n",current_dir->current_index);
             if(dir_table[i]->previous_index == current_dir->current_index){
                         if(strcmp(dirname,dir_table[i]->name)==0 ){
                         perror("you cannot create a dir with same name \n");

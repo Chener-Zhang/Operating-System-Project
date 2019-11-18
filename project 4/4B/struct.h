@@ -8,8 +8,8 @@
 
 #define name_size  30   
 #define bloc_entry_number  20   
-#define direction_list 10
-#define file_list 20
+#define direction_list 5
+#define file_list 5
 
 
 
