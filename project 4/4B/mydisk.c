@@ -262,7 +262,8 @@ int main(){
     init_dir(dirtable);
     init_root(dirtable);
     //print_direction(dirtable[0]);
-    Create_directory("hello",dirtable,dirtable[0]);
+    Create_directory("direction1",dirtable,dirtable[0]);
+    Create_directory("direction2",dirtable,dirtable[0]);
     print_direction(dirtable[0],dirtable);
     //init - testing
     
