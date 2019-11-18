@@ -78,13 +78,14 @@ printf("\n\n\n");
     close_disk(fd);
     printf("\n\n\n");
     return 0;
+
 }
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
-
+// basically the shell thing; 
+//Parsing;
 int parsing(){
-
     char user_input[20];
     char copy[20];
     printf(">"); // print ">";
@@ -114,20 +115,24 @@ int parsing(){
     }
 }
 
+// -------------Done with the shell thing------------------->
+// reset my char[]; clean my space 
 int char_reset(){
     memset(command, 0, sizeof(command)); 
     memset(argument, 0, sizeof(command)); 
     return 0;
 }
 
-
+//print out the direction easy for my testing and tracking
 void print_direction( struct Direction *dir,struct Direction *list[]){
 
+    // This is the current path;
     printf("Current Direction: [%s] ", dir->name);
     printf("current index: [%d] ",dir->current_index);
     printf("previous index: [%d] ",dir->previous_index);
     printf("used index: [%d] \n\n",dir->used);
 
+    // This is what the current path has contains;
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index){
@@ -139,13 +144,12 @@ void print_direction( struct Direction *dir,struct Direction *list[]){
         }
     } 
     
-
     // adding more information;
 }
 
 // Get the free space;
+// return the list if it has the space;
 int get_free_space(struct Direction *list[]){
-
     for (int i = 1; i < direction_list; i++)
     {
 
@@ -160,22 +164,23 @@ int get_free_space(struct Direction *list[]){
     return -1;
 }
 
-// initilization of direction struct
+// initilization of direction struct for all;
+
 int init_dir(struct Direction *list[]){
     for (int i = 0; i < direction_list; i++)
     {
         list[i] = (struct Direction*) malloc(sizeof(struct Direction));
         memset(list[i]->name, 0, sizeof *list[i]->name);    
         list[i]->previous_index = -1;
-
     }
     return 0;
 }
 
+// set my root direction
 int init_root(struct Direction *list[]){
     strcpy(list[0]->name,"root");
     list[0]->current_index = 0;
-    list[0]->previous_index = -1;
+    list[0]->previous_index = -1; // root previous = -1;
     list[0]->used = 1;
     traking_dir = list[0];
     return 0;
@@ -384,6 +389,7 @@ int Fine_directory(char *dirname){
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname){
+
     return 0;
 }
 
