@@ -48,6 +48,7 @@ printf("\n\n\n");
     // DISK INITING ----------------------        
     init_dir(dirtable);
     init_root(dirtable);
+    
     // while loop
     while(1){
         parsing();
@@ -56,10 +57,13 @@ printf("\n\n\n");
             break;
         }else{
             if(strcmp(command,"ls") == 0){
-                    printf("you have enter ls\n");
+                print_direction(traking_dir,dirtable);                    
             }else if(strcmp(command,"cd") == 0){
-                printf("you have enter cd \n");
-            }else{
+                Change_directory(argument,traking_dir,dirtable);
+            }else if(strcmp(command,"mkdir")== 0){
+                Create_directory(argument,dirtable,traking_dir);
+            }
+            else{
                 printf("checking your input\n");
                 return -1;
             }
@@ -173,6 +177,7 @@ int init_root(struct Direction *list[]){
     list[0]->current_index = 0;
     list[0]->previous_index = -1;
     list[0]->used = 1;
+    traking_dir = list[0];
     return 0;
 }
 
