@@ -7,28 +7,22 @@
 #include "struct.h"
 
 
-
-int my_shell(){
-    char user_input[20];
-    gets(user_input);
-    printf(">\n");
-    printf("you have enter \n [%s]\n",user_input);
-
-    if(strcmp(user_input,"quit")== 0){        
-            exit(0);
+int main(int argc, char **argv)
+{
+    if (argc < 2) {
+        fprintf(stderr, "usage: %s file\n", argv[0]);
+        return 1;
     }
 
-    return 0;
-}
-
-int main(){
-
-
-    while(1){
-
-        my_shell();
-
-    
+    FILE *fp = fopen(argv[1], "rb");
+    if (!fp) {
+        // alternatively, just `perror(argv[1])`
+        fprintf(stderr, "cannot open %s: %s\n", argv[1], strerror(errno));
+        return 1;
     }
+
+    // read from fp here
+
+    fclose(fp);
     return 0;
 }
