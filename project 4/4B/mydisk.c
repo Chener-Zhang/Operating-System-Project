@@ -7,7 +7,8 @@
 #include <errno.h>
 #include "struct.h"
 // --------------------------------------------- Global Var ---------------------------------------------//
-int number_of_block = 60;
+
+int number_of_block = 100;
 int each_block_size = 16;
 int fd;
 
