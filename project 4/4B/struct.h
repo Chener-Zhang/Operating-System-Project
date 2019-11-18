@@ -8,7 +8,7 @@
 
 #define name_size  30   
 #define bloc_entry_number  20   
-#define direction_list 20
+#define direction_list 10
 #define file_list 20
 
 
@@ -57,6 +57,7 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Fine_directory(char *dirname);
 int Delete_directory(char *dirname);
+int print_list();
 int begin();
 // ---------------- Function declares ---------------------------
 

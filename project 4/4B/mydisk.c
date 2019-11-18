@@ -70,6 +70,7 @@ printf("\n\n\n");
 
         }
         char_reset();
+        print_list();
     }
     
     
@@ -85,6 +86,10 @@ printf("\n\n\n");
 
 //Print my list;
 int print_list(){
+    for (int i = 0; i < direction_list; i++)
+    {
+        printf("%d:[%d] |",i,dirtable[i]->current_index);
+    }
     
     return 0;
 }
