@@ -289,10 +289,11 @@ int close_disk(int fd){
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
-int Create_file(char *filename){
+int Create_file(char *filename, struct File *current_file, struct Direction *current_dir,struct Direction *dirtable[]){
+
     return 0;
 }
-
+// --------------------------------------------- Write a File---------------------------------------------//
 int Write_file(char* filename, char* words){
 
     return 0;

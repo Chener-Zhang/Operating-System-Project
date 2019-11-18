@@ -15,8 +15,8 @@
 
 struct File { 
     char name[name_size]; //index of the block which contains the imformation of the file;
-    int direction_below; // where the file below;
     int block_entry[bloc_entry_number]; // add additional imformation here
+    int size;
     // int next_block_entry;
     
 };
@@ -49,7 +49,7 @@ int read_disk(int block_index);
 int detele_block(int block_index);
 int close_disk(int fd);
 
-int Create_file(char *filename);
+int Create_file(char *filename, struct File *current_file, struct Direction *current_dir,struct Direction *dirtable[]);
 int Write_file(char* filename, char* words);
 int Read_file(char *filename);
 int Delete_file(char *filename);
