@@ -35,8 +35,9 @@ int data_block_entry_index = 32 ; // for disk_split() function;
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
 struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
+struct Block *blocktable[block_list];
 struct Direction *traking_dir;
-struct Block *block_table[block_list];
+
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
@@ -44,7 +45,7 @@ struct Block *block_table[block_list];
 // --------------------------------------------- Main ---------------------------------------------//
 int main(){
 
-
+/*
     // testing ------- >
     printf("\n\n\n");
     char name[] = "disk";
@@ -57,9 +58,9 @@ int main(){
     close_disk(fd);
     printf("\n\n\n");
     // testing ------- >
+*/
 
-
-    //begin();
+    begin();
     return 0;
 }
 
@@ -81,6 +82,7 @@ printf("\n\n\n");
     init_dir(dirtable);
     init_root(dirtable);
     init_file(filetable);    
+    init_block(blocktable);
     // while loop
     while(1){
         parsing();
@@ -100,6 +102,8 @@ printf("\n\n\n");
                 Create_file(argument,traking_dir,dirtable,filetable);
             }else if(strcmp(command,"rm") == 0){
                 Delete_file(argument,dirtable,traking_dir,filetable);
+            }else if(strcmp(command,"write") == 0){
+                Write_file(argument,traking_dir,dirtable,filetable,blocktable);
             }
             else{
                 printf("checking your input\n");
@@ -385,7 +389,7 @@ int close_disk(int fd){
 
 
 
-// Note: Above is the creation of a disk; working on nov 17,2019;
+
 
 
 
@@ -424,23 +428,30 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
-int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
+int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[]){
+            //working --------------------------------
 
-//working --------------------------------
-    for (int i = 0; i < file_list; i++)
-    {
-                        
-            if(file_table[i]->below_direction == current_dir->current_index){
-                if(strcmp(file_table[i]->name,filename) == 0 ){
-                    
-                    
-                }                
-            }
-    }
-//working --------------------------------    
+                                char user_input[20];    
+                                
+                                
+                                fgets(user_input,20,stdin); // get user_input;    
+                                int user_input_len = (int)strlen(user_input);
+
+                                for (int i = 0; i < file_list; i++)
+                                {                                                    
+                                        if(file_table[i]->below_direction == current_dir->current_index){
+                                            if(strcmp(file_table[i]->name,filename) == 0 ){
+                                                int free_block_id = get_free_space_blocktable(block_table);
+
+                                                write_disk(meda_block + i,filename);
+                                                write_disk(data_block_entry_index + i,user_input);
+                                            }                
+                                        }
+                                }
+                //working --------------------------------    
 
 
-
+                
     return 0;
 }
 // --------------------------------------------- Read a File---------------------------------------------//
@@ -469,7 +480,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
 
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
-// working .............
+
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
     //check if exist
     int position = get_free_space_dirtable(dir_table);
