@@ -55,7 +55,7 @@ struct Block{
 // ---------------- Function declares --------------------------- 
 int char_reset();
 int parsing();
-int get_free_space(struct Direction *list[]);
+int get_free_space_dirtable(struct Direction *list[]);
 int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
 int init_root(struct Direction *list[]);

@@ -155,6 +155,7 @@ int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION
 
     return 0;
 };
+
 //Print my list;
 int print_list(){
     for (int i = 0; i < direction_list; i++)
@@ -244,7 +245,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
 
 // Get the free space;
 // return the list if it has the space;
-int get_free_space(struct Direction *list[]){ // dir
+int get_free_space_dirtable(struct Direction *list[]){ // dir
     for (int i = 1; i < direction_list; i++)
     {
 
@@ -254,7 +255,7 @@ int get_free_space(struct Direction *list[]){ // dir
            return i;
        }
     }
-    printf("The spcae is full now\n");
+    printf("The space is full now\n");
     // all full return -1;
     return -1;
 }
@@ -271,13 +272,24 @@ int get_free_space_filetable(struct File *list[]){ // file
            return i;
        }
     }
-    printf("The spcae is full now\n");
+    printf("The space is full now\n");
     // all full return -1;
     return -1;
 }
 
+int get_free_space_blocktable(struct Block *list[]){
+       for (int i = 1; i < block_list; i++)
+    {    
+       if(list[i]->used == 0){           
+           return i;
+       }       
+    }
+    printf("The space is full now\n");
+    // all full return -1;    
+    return -1;
+}
 
-// --------------------------------------------- some small function ---------------------------------------------//
+// ------------------------------------- some small function Finish ---------------------------------------------//
 
 // initilization of direction struct for all;
 
@@ -455,18 +467,12 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
     return 0;
 }
 
-// --------------------------------------------- Get a Direction---------------------------------------------//
-
-int get_current_direction(){
-
-    return 0;
-}
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
 // working .............
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
     //check if exist
-    int position = get_free_space(dir_table);
+    int position = get_free_space_dirtable(dir_table);
     if(position < 0){
         perror("fail to create direction");
         return -1;
