@@ -10,7 +10,7 @@
 int string_spilit(int start, int end, char letter[]);
 
 
-char words[50];
+
 int main(){
 
     int block_size = 5;
@@ -33,15 +33,14 @@ int main(){
 
     //block write;
 
-    memset(words,0,sizeof(words));
+
 
     for (int i = 0; i < block_size; i++)
     {
         printf("%c",user_input[i]);
-        
-
+        char c = user_input[i];        
     }
-    printf("\n");
+
 
     int end_index_catcher;
 
