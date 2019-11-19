@@ -29,7 +29,7 @@ data - > 32 ---> 2^5;
 */
 
 int super_block = 0 ; // for disk_split() function;
-int meda_block = 31 ; // for disk_split() function;
+int meda_block = 1 ; // for disk_split() function;
 int data_block_entry_index = 32 ; // for disk_split() function;
 
 
@@ -52,6 +52,7 @@ int main(){
     write_disk(super_block,"Super block");
     write_disk(meda_block,"Meda block");
     write_disk(data_block_entry_index,"Data block");
+
     close_disk(fd);
     printf("\n\n\n");
     // testing ------- >
