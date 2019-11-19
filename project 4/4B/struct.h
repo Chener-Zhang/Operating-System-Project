@@ -9,8 +9,10 @@
 #define name_size  30   //define
 #define bloc_entry_number  20   // for calculation
 #define direction_list 10  // [#] plugin number 
+// DIY the var here:
 #define file_list 10     // [#] plugin number 
-#define block_list 10
+#define block_list 10   // [#] plugin number 
+
 
 
 // Note from myself: Assignment requirement;  
@@ -72,7 +74,7 @@ int init_block(struct Block *lisk[]);
 
 int init_file(struct File *list[]);
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
-int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[]);
+int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[],struct Block *meta_block_table[]);
 int Read_file(char *filename);
 int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 

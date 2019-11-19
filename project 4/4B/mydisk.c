@@ -17,6 +17,8 @@ int each_block_size = 16;
 int fd;
 
 
+
+
 char command[20];
 char argument[20];
 
@@ -36,6 +38,7 @@ int data_block_entry_index = 32 ; // for disk_split() function;
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
 struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
 struct Block *blocktable[block_list];
+struct Block *metabloktable[block_list];
 struct Direction *traking_dir;
 
 
@@ -103,7 +106,7 @@ printf("\n\n\n");
             }else if(strcmp(command,"rm") == 0){
                 Delete_file(argument,dirtable,traking_dir,filetable);
             }else if(strcmp(command,"write") == 0){
-                Write_file(argument,traking_dir,dirtable,filetable,blocktable);
+                Write_file(argument,traking_dir,dirtable,filetable,blocktable,metabloktable);
             }
             else{
                 printf("checking your input\n");
@@ -428,30 +431,27 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
-int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[]){
+int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[],struct Block *meta_block_table[]){
             //working --------------------------------
+                        char user_input[20];                                                                    
+                        fgets(user_input,20,stdin); // get user_input;    
+                        int user_input_len = (int)strlen(user_input);
 
-                                char user_input[20];    
-                                
-                                
-                                fgets(user_input,20,stdin); // get user_input;    
-                                int user_input_len = (int)strlen(user_input);
-
-                                for (int i = 0; i < file_list; i++)
-                                {                                                    
-                                        if(file_table[i]->below_direction == current_dir->current_index){
-                                            if(strcmp(file_table[i]->name,filename) == 0 ){
-                                                int free_block_id = get_free_space_blocktable(block_table);
-
-                                                write_disk(meda_block + i,filename);
-                                                write_disk(data_block_entry_index + i,user_input);
-                                            }                
-                                        }
+                        for (int i = 0; i < file_list; i++)
+                        {                                                    
+                                if(file_table[i]->below_direction == current_dir->current_index){
+                                    if(strcmp(file_table[i]->name,filename) == 0 ){
+                                        int free_block_id_data = get_free_space_blocktable(block_table);
+                                        int free_block_id_meta = get_free_space_blocktable(meta_block_table);
+                                        write_disk(meda_block + free_block_id_data,filename);
+                                        write_disk(data_block_entry_index + i,user_input);
+                                    }                
                                 }
+                        }
                 //working --------------------------------    
 
 
-                
+
     return 0;
 }
 // --------------------------------------------- Read a File---------------------------------------------//
