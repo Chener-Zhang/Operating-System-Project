@@ -137,6 +137,23 @@ int init_file(struct File *list[]){
     
     return 0;
 }
+
+int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION ALGORIHEM
+    for (int i = 0; i < file_list; i++)
+    {
+        list[i] = (struct Block*) malloc(sizeof(struct Block));
+        list[i]->next_block = -1; // list[0] = -1 = NULL / do not have the next, next is nothing;
+        list[i]->used = 0;
+        list[i]->is_full = 0;
+        list[i]->size_remain = each_block_size;
+    }
+    // init the first;
+    
+    //debuging.....
+    list[i]->next_block = -1;
+    //debuging.....
+    return 0;
+};
 //Print my list;
 int print_list(){
     for (int i = 0; i < direction_list; i++)

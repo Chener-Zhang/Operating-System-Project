@@ -66,6 +66,7 @@ int detele_block(int block_index);
 int close_disk(int fd);
 
 int init_block_allocation();
+int init_block(struct Block *lisk[]);
 
 int init_file(struct File *list[]);
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
