@@ -148,9 +148,9 @@ int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION
         list[i]->size_remain = each_block_size;
     }
     // init the first;
-    
+
     //debuging.....
-    list[i]->next_block = -1;
+    list[0]->next_block = -1;
     //debuging.....
     return 0;
 };
@@ -337,6 +337,7 @@ int open_disk(char *name){
 int write_disk(int block_index, char* words){
       
     lseek(fd, block_index * each_block_size, SEEK_SET);
+
     write(fd,words,strlen(words));
 
     return 0;
