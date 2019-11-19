@@ -455,6 +455,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             //something need to happen;                                            
                                             int block_needs = user_input_len/each_block_size;
                                             int Remainder = user_input_len % each_block_size; 
+                                            
                                         }else{
                                             write_disk(meda_block + free_block_id_data,filename);
                                             write_disk(data_block_entry_index + i,user_input);
