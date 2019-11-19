@@ -38,13 +38,15 @@ int main(){
     {
         memcpy(buffer, user_input,block_size);
     }
-    
+    printf("block 1\n");
     printf("[%s]\n",buffer);
+    printf("\n");
 
+
+    printf("block 2\n");
     int end_index_from_loop;
-
     //memset(buffer,0,sizeof(buffer));
-    for (int i = 1; i < blocks_need - 1 ; i++)
+    for (int i = 1; i < blocks_need; i++)
     {            
             int index_start = i * block_size;
             int index_end = index_start + block_size;            
@@ -52,10 +54,14 @@ int main(){
             printf("[%s]\n",buffer);
             end_index_from_loop = index_end;
     }
+    if(remainder == 0){
+        return 0;
+    }else{
+            printf("block last\n");
+            memcpy(buffer, &user_input[end_index_from_loop],block_size);
+            printf("[%s]\n",buffer);
+    }
 
-        memcpy(buffer, &user_input[end_index_from_loop],block_size);
-        
-        printf("\n[%s]\n",buffer);
 
     
 
