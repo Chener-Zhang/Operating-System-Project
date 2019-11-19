@@ -442,13 +442,24 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 if(file_table[i]->below_direction == current_dir->current_index){ // check dir heri
                                     if(strcmp(file_table[i]->name,filename) == 0 ){  // check the file exist
 
-
-                                        //debuging........
+                                                                      
                                         int free_block_id_data = get_free_space_blocktable(block_table);
-                                        int free_block_id_meta = get_free_space_blocktable(meta_block_table);                                                                                
-                                        write_disk(meda_block + free_block_id_data,filename);
-                                        write_disk(data_block_entry_index + i,user_input);
-                                        //debuging........
+                                        int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
+                                    
+                                        if(free_block_id_data == -1 || free_block_id_meta == -1){
+                                                printf("Allocation fail\n");
+                                                return -1;
+                                        }
+                                    //debuging........       
+                                        if(user_input_len > each_block_size){
+                                            //something need to happen;                                            
+                                            int block_needs = user_input_len/each_block_size;
+                                            int Remainder = user_input_len % each_block_size; 
+                                        }else{
+                                            write_disk(meda_block + free_block_id_data,filename);
+                                            write_disk(data_block_entry_index + i,user_input);
+                                        }                                                                                
+                                    //debuging........
 
 
 
