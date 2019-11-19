@@ -6,7 +6,7 @@
 
 
 
-#define name_size  30   //define
+#define name_size  10   //define
 #define bloc_entry_number  20   // for calculation
 #define direction_list 10  // [#] plugin number 
 // DIY the var here:
