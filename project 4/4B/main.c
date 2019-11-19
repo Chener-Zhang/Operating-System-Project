@@ -9,6 +9,8 @@
 
 int string_spilit(int start, int end, char letter[]);
 
+
+char words[50];
 int main(){
 
     int block_size = 5;
@@ -30,20 +32,37 @@ int main(){
 
 
     //block write;
-    int end_index_catcher;
-            for (int i = 0; i < blocks_need ; i++)
-            {
-                    int index_start = i * block_size;
-                    int index_end = index_start + block_size;
-                    printf("start index %d  end index %d\n",index_start,index_end);
-                    string_spilit(index_start,index_end,user_input);
-                    end_index_catcher = index_end;
-            }
-    
-    printf("%d ---", end_index_catcher);
-            
 
-    printf("\n\n");
+    memset(words,0,sizeof(words));
+
+    for (int i = 0; i < block_size; i++)
+    {
+        printf("%c",user_input[i]);
+        
+
+    }
+    printf("\n");
+
+    int end_index_catcher;
+
+    for (int i = 1; i < blocks_need - 1 ; i++)
+    {
+            int index_start = i * block_size;
+            int index_end = index_start + block_size;
+            printf("start index %d  end index %d\n",index_start,index_end);
+            string_spilit(index_start,index_end,user_input);
+            end_index_catcher = index_end;
+    }
+    
+
+    for (int i = end_index_catcher; i < user_input_len; i++)
+    {
+        printf("%c",user_input[i]);
+
+    }
+    
+
+    printf("\n");
     return 0;
 }
 
