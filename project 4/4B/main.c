@@ -32,44 +32,34 @@ int main(){
 
 
     //block write;
-
-
+    char buffer[50];
 
     for (int i = 0; i < block_size; i++)
     {
-        printf("%c",user_input[i]);
-        char c = user_input[i];        
+        memcpy(buffer, user_input,block_size);
     }
+    
+    printf("[%s]\n",buffer);
 
+    int end_index_from_loop;
 
-    int end_index_catcher;
-
+    //memset(buffer,0,sizeof(buffer));
     for (int i = 1; i < blocks_need - 1 ; i++)
-    {
+    {            
             int index_start = i * block_size;
-            int index_end = index_start + block_size;
-            printf("start index %d  end index %d\n",index_start,index_end);
-            string_spilit(index_start,index_end,user_input);
-            end_index_catcher = index_end;
+            int index_end = index_start + block_size;            
+            memcpy(buffer, &user_input[index_start],block_size);
+            printf("[%s]\n",buffer);
+            end_index_from_loop = index_end;
     }
-    
 
-    for (int i = end_index_catcher; i < user_input_len; i++)
-    {
-        printf("%c",user_input[i]);
+        memcpy(buffer, &user_input[end_index_from_loop],block_size);
+        
+        printf("\n[%s]\n",buffer);
 
-    }
     
 
     printf("\n");
     return 0;
 }
 
-
-int string_spilit(int start, int end, char letter[]){
-    for (int i = start; i < end; i++){
-        printf("%c",letter[i]);
-    }
-    printf("\n");
-    return 0;
-}
