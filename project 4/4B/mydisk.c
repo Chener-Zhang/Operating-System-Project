@@ -86,6 +86,7 @@ printf("\n\n\n");
     init_root(dirtable);
     init_file(filetable);    
     init_block(blocktable);
+    init_block(metabloktable);
     // while loop
     while(1){
         parsing();
@@ -455,8 +456,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             return -1;
                     }
                     else{
-                        
-                        
+                            return 0;
+
                         }
 
                 }    

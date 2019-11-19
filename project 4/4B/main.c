@@ -94,7 +94,7 @@ int main(){
                 printf("[%s]\n",buffer);
             } 
             printf("\n");            
-            /*                                           
+            
             write_disk(meda_block + free_block_id_data,filename);
             write_disk(data_block_entry_index + i,user_input);
            
