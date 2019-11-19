@@ -471,7 +471,12 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             memcpy(buffer, user_input,each_block_size - 1);
                             printf("block 1: \n");
                             printf("[%s]\n",buffer);
+                            // ------- block 1 allocation -- free_block_id_data
                             
+                                            // first entry -- init 
+                                             blocktable[free_block_id_data]->used = 1;                                            
+                                          
+                                            // first entry -- init 
                             printf("block 2 begin: \n");
                             int end_index_from_loop;                        
                             for (int i = 1; i < blocks_need; i++)
