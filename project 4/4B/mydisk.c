@@ -19,7 +19,7 @@ char argument[20];
 
 int file_information_index; // for disk_split() function;
 int fat_table_storage_index; // for disk_split() function;
-int data_entry_index; // for disk_split() function;
+int data_block_entry_index; // for disk_split() function;
 
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
@@ -31,7 +31,22 @@ struct Direction *traking_dir;
 
 // --------------------------------------------- Main ---------------------------------------------//
 int main(){
-    begin();
+
+
+    // testing ------- >
+    printf("\n\n\n");
+    char name[] = "disk";
+    create_disk(name);
+    open_disk(name);
+    write_disk(file_information_index,"Super block");
+    write_disk(fat_table_storage_index,"Meda block");
+    write_disk(data_block_entry_index,"Data block");
+    close_disk(fd);
+    printf("\n\n\n");
+    // testing ------- >
+
+
+    //begin();
     return 0;
 }
 
@@ -46,7 +61,7 @@ printf("\n\n\n");
     open_disk(name);
     write_disk(file_information_index,"Super block");
     write_disk(fat_table_storage_index,"Meda block");
-    write_disk(data_entry_index,"Data block");
+    write_disk(data_block_entry_index,"Data block");
     //debugging.......
     //init_block_allocation();
     //debugging.......
@@ -266,7 +281,7 @@ int init_root(struct Direction *list[]){
 int disk_split(){
     file_information_index = 0;
     fat_table_storage_index = number_of_block / 3;
-    data_entry_index = fat_table_storage_index * 2;
+    data_block_entry_index = fat_table_storage_index * 2;
     return 0;
 }
 
