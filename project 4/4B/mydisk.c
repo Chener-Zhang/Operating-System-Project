@@ -302,7 +302,7 @@ int create_disk(char *name ){
 
     for (file_size_counter = 0;  file_size_counter < number_of_block; file_size_counter++){
                 write(fd, buf, each_block_size);
-        }
+    }
 
     close(fd);
     return 0;
@@ -399,7 +399,25 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
-int Write_file(char* filename, char* words){
+int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
+
+//working --------------------------------
+    for (int i = 0; i < file_list; i++)
+    {
+                        
+            if(file_table[i]->below_direction == current_dir->current_index){
+                if(strcmp(file_table[i]->name,filename) == 0 ){
+                    printf("you cannot create the file has same name as %s",filename);
+                    return -1;
+                }                
+            }
+
+    }
+//working --------------------------------    
+
+
+
+
 
     return 0;
 }
