@@ -48,9 +48,9 @@ printf("\n\n\n");
     write_disk(fat_table_storage_index,"Meda block");
     write_disk(data_entry_index,"Data block");
     //debugging.......
-    init_block_allocation();
+    //init_block_allocation();
     //debugging.......
-    /* -------
+     
     // DISK INITING ----------------------
     init_dir(dirtable);
     init_root(dirtable);
@@ -86,7 +86,7 @@ printf("\n\n\n");
     }
     
     // while loop
-    */
+    
 
     close_disk(fd);
     printf("\n\n\n");
