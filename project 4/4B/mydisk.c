@@ -17,7 +17,7 @@ int fd;
 char command[20];
 char argument[20];
 
-int file_information_index; // for disk_split() function;
+int super_block; // for disk_split() function;
 int fat_table_storage_index; // for disk_split() function;
 int data_block_entry_index; // for disk_split() function;
 
@@ -38,7 +38,7 @@ int main(){
     char name[] = "disk";
     create_disk(name);
     open_disk(name);
-    write_disk(file_information_index,"Super block");
+    write_disk(super_block,"Super block");
     write_disk(fat_table_storage_index,"Meda block");
     write_disk(data_block_entry_index,"Data block");
     close_disk(fd);
@@ -59,7 +59,7 @@ printf("\n\n\n");
     char name[] = "disk";
     create_disk(name);
     open_disk(name);
-    write_disk(file_information_index,"Super block");
+    write_disk(super_block,"Super block");
     write_disk(fat_table_storage_index,"Meda block");
     write_disk(data_block_entry_index,"Data block");
     //debugging.......
@@ -279,7 +279,7 @@ int init_root(struct Direction *list[]){
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
 int disk_split(){
-    file_information_index = 0;
+    super_block = 0;
     fat_table_storage_index = number_of_block / 3;
     data_block_entry_index = fat_table_storage_index * 2;
     return 0;
