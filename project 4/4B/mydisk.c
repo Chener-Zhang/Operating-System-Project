@@ -29,7 +29,7 @@ data - > 32 ---> 2^5;
 */
 
 int super_block = 0 ; // for disk_split() function;
-int fat_table_storage_index = 31 ; // for disk_split() function;
+int meda_block = 31 ; // for disk_split() function;
 int data_block_entry_index = 32 ; // for disk_split() function;
 
 
@@ -50,7 +50,7 @@ int main(){
     create_disk(name);
     open_disk(name);
     write_disk(super_block,"Super block");
-    write_disk(fat_table_storage_index,"Meda block");
+    write_disk(meda_block,"Meda block");
     write_disk(data_block_entry_index,"Data block");
     close_disk(fd);
     printf("\n\n\n");
@@ -71,7 +71,7 @@ printf("\n\n\n");
     create_disk(name);
     open_disk(name);
     write_disk(super_block,"Super block");
-    write_disk(fat_table_storage_index,"Meda block");
+    write_disk(meda_block,"Meda block");
     write_disk(data_block_entry_index,"Data block");
     //debugging.......
     //init_block_allocation();
