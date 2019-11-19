@@ -10,7 +10,7 @@
 #define bloc_entry_number  20   // for calculation
 #define direction_list 10  // [#] plugin number 
 #define file_list 10     // [#] plugin number 
-
+#define block_list 10
 // Note from myself: Assignment requirement;  
 // 16,384 blocks total     ---- 2^14
 // 8,192 for data blocks   ----- 2^13
@@ -23,14 +23,16 @@ meta -  > 32 --- 2^5;
 data - > 32 ---> 2^5;
 */
 //-------------------------------------------------------------------------------------------------------->
-
+struct File;
+struct Direction;
+struct Block;
 
 struct File { 
     char name[name_size]; //index of the block which contains the imformation of the file;
-    int block_entry[bloc_entry_number]; // add additional imformation here
     int below_direction;
     int size;
     int used;
+    int first_block_entry;
     // int next_block_entry;    
 };
 
@@ -45,6 +47,7 @@ struct Direction{
 struct Block{
     int index; // the id / the index of the block
     int size_remain; // the size of a single block remain 
+    int is_full;
     struct Block *next;
     // add additional imformation here
 };

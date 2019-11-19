@@ -36,6 +36,7 @@ int data_block_entry_index = 32 ; // for disk_split() function;
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
 struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
 struct Direction *traking_dir;
+struct Block *block_table[block_list];
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
@@ -407,15 +408,12 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         
             if(file_table[i]->below_direction == current_dir->current_index){
                 if(strcmp(file_table[i]->name,filename) == 0 ){
-                    printf("you cannot create the file has same name as %s",filename);
-                    return -1;
+                    
+                    
                 }                
             }
-
     }
 //working --------------------------------    
-
-
 
 
 
