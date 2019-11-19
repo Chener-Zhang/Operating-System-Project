@@ -7,8 +7,8 @@ rm:
 	rm mydisk
 
 
-shell:
-	gcc -o shell shell.c
-	./shell
-	rm shell
+main:
+	gcc -o main main.c
+	./main
+	rm main
 	
