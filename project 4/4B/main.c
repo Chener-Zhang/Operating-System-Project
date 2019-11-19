@@ -24,15 +24,24 @@ int main(){
 
     int blocks_need = user_input_len / block_size;
     int remainder = user_input_len % block_size;
+
     printf("needs %d of blocks \n",blocks_need);
     printf("remainder is  %d \n",remainder);
     
+            for (int i = 0; i < blocks_need - 1; i++)
+            {
+                    int index_start = i * block_size;
+                    int index_end = index_start + block_size;
+                    printf("start index %d  end index %d\n",index_start,index_end);
+            }
+    
+
     printf("\n\n");
     return 0;
 }
 
 
 int string_spilit(int start, int end, char letter[]){
-
+    
     return 0;
 }
