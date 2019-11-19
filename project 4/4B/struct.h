@@ -45,7 +45,7 @@ struct Direction{
 };
 
 struct Block{
-    int block_index; // the id / the index of the block
+    int next_block; // the id / the index of the block
     int size_remain; // the size of a single block remain 
     int is_full;
     int used;     
