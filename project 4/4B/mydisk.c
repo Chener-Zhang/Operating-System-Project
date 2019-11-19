@@ -439,12 +439,22 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                         for (int i = 0; i < file_list; i++)
                         {                                                    
-                                if(file_table[i]->below_direction == current_dir->current_index){
-                                    if(strcmp(file_table[i]->name,filename) == 0 ){
+                                if(file_table[i]->below_direction == current_dir->current_index){ // check dir heri
+                                    if(strcmp(file_table[i]->name,filename) == 0 ){  // check the file exist
+
+
+                                        //debuging........
                                         int free_block_id_data = get_free_space_blocktable(block_table);
-                                        int free_block_id_meta = get_free_space_blocktable(meta_block_table);
+                                        int free_block_id_meta = get_free_space_blocktable(meta_block_table);                                                                                
                                         write_disk(meda_block + free_block_id_data,filename);
                                         write_disk(data_block_entry_index + i,user_input);
+                                        //debuging........
+
+
+
+                                    }else{
+                                        printf("File does not exit!\n");
+                                        return -1;
                                     }                
                                 }
                         }
