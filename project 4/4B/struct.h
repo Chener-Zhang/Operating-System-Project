@@ -11,6 +11,18 @@
 #define direction_list 10  // [#] plugin number 
 #define file_list 10     // [#] plugin number 
 
+// Note from myself: Assignment requirement;  
+// 16,384 blocks total     ---- 2^14
+// 8,192 for data blocks   ----- 2^13
+// 8191 for meda -- 2^13 - 1
+// 1 for super   --- 2^0
+/*
+just for testing easy to read;
+super - > 1;
+meta -  > 32 --- 2^5;
+data - > 32 ---> 2^5;
+*/
+//-------------------------------------------------------------------------------------------------------->
 
 
 struct File { 

@@ -7,6 +7,9 @@
 #include <errno.h>
 #include <sys/mman.h>
 #include "struct.h"
+
+
+
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
