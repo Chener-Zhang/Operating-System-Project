@@ -478,7 +478,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 {            
                                     int index_start = i * each_block_size;
                                     int index_end = index_start + each_block_size;            
-                                    memcpy(buffer, &user_input[index_start],each_block_size);
+                                    memcpy(buffer, &user_input[index_start],each_block_size - 1);
                                     printf("[%s]\n",buffer);
                                     end_index_from_loop = index_end;
                                 }
