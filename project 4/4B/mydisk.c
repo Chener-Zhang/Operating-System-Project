@@ -147,9 +147,12 @@ int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION
     }
     // init the first;
 
-    //debuging.....
+    //init the first block    
     list[0]->next_block = -1;
-    //debuging.....
+    list[0]->used = 1;
+    list[0]->is_full = 1;
+    list[0]->size_remain = 0;
+
     return 0;
 };
 //Print my list;
