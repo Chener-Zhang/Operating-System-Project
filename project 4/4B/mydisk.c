@@ -20,9 +20,17 @@ int fd;
 char command[20];
 char argument[20];
 
-int super_block; // for disk_split() function;
-int fat_table_storage_index; // for disk_split() function;
-int data_block_entry_index; // for disk_split() function;
+
+/*
+just for testing easy to read;
+super - > 1;
+meta -  > 32 - 1 = 31 ; --- 2^5;
+data - > 32 ---> 2^5;
+*/
+
+int super_block = 0 ; // for disk_split() function;
+int fat_table_storage_index = 31 ; // for disk_split() function;
+int data_block_entry_index = 32 ; // for disk_split() function;
 
 
 struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
@@ -281,20 +289,12 @@ int init_root(struct Direction *list[]){
 }
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
-int disk_split(){
-    super_block = 0;
-    fat_table_storage_index = number_of_block / 3;
-    data_block_entry_index = fat_table_storage_index * 2;
-    return 0;
-}
+// write something here;
 
 // --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){
     int file_size_counter;
-    fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-
-    disk_split();
+    fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);    
 
     char buf[each_block_size];
     memset(buf, 0, each_block_size);

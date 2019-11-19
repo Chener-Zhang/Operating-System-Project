@@ -55,7 +55,7 @@ int get_free_space(struct Direction *list[]);
 int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
 int init_root(struct Direction *list[]);
-int disk_split();
+
 int create_disk(char *name);
 int open_disk(char *name);
 int write_disk(int block_index, char* words);
