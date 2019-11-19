@@ -459,41 +459,45 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         printf("The length of the letter is %d\n",user_input_len);    
 
                         printf("you have reach here \n");
-                                        /*
-                                        //----------------------------------move from main -----------------------------                                         
-                                        int blocks_need = user_input_len/each_block_size;
-                                        int remainder = user_input_len % each_block_size; 
-                                        char buffer[each_block_size];  
                                         
-                                        printf("needs %d of blocks \n",blocks_need);
-                                        printf("remainder is  %d \n",remainder);
+                            //----------------------------------move from main -----------------------------                                         
+                            int blocks_need = user_input_len/each_block_size;
+                            int remainder = user_input_len % each_block_size; 
+                            char buffer[each_block_size];  
+                            
+                            printf("needs %d of blocks \n",blocks_need);
+                            printf("remainder is  %d \n",remainder);
 
-                                        memcpy(buffer, user_input,each_block_size - 1);
-                                        printf("block 1\n");
-                                        printf("[%s]\n",buffer);
-                                        printf("\n");
-                                        printf("block 2\n");
-                                        int end_index_from_loop;                        
-                                        for (int i = 1; i < blocks_need; i++){            
-                                            int index_start = i * each_block_size;
-                                            int index_end = index_start + each_block_size;            
-                                            memcpy(buffer, &user_input[index_start],each_block_size);
-                                            printf("[%s]\n",buffer);
-                                            end_index_from_loop = index_end;
-                                        }
-                                        if(remainder == 0){
-                                            return 0;
-                                        }else{
-                                            printf("block last\n");
-                                            memcpy(buffer, &user_input[end_index_from_loop],each_block_size);
-                                            printf("[%s]\n",buffer);
-                                        } 
-                                        printf("\n");            
+                            memcpy(buffer, user_input,each_block_size - 1);
+                            printf("block 1: \n");
+                            printf("[%s]\n",buffer);
+                            
+                            printf("block 2 begin: \n");
+                            int end_index_from_loop;                        
+                            for (int i = 1; i < blocks_need; i++)
+                                {            
+                                    int index_start = i * each_block_size;
+                                    int index_end = index_start + each_block_size;            
+                                    memcpy(buffer, &user_input[index_start],each_block_size);
+                                    printf("[%s]\n",buffer);
+                                    end_index_from_loop = index_end;
+                                }
+                            if(remainder == 0)
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                printf("block last: \n");
+                                memcpy(buffer, &user_input[end_index_from_loop],each_block_size);
+                                printf("[%s]\n",buffer);
+                            } 
+                            printf("\n");            
+                            
+                            //write_disk(meda_block + free_block_id_data,filename);
+                            //write_disk(data_block_entry_index + i,user_input);           
+                            //----------------------------------move from main -----------------------------
                                         
-                                        write_disk(meda_block + free_block_id_data,filename);
-                                        write_disk(data_block_entry_index + i,user_input);           
-                                        //----------------------------------move from main -----------------------------
-                                        */
 
                         return 0;
 
