@@ -23,7 +23,9 @@ int main(){
     printf("The length of the letter is %d\n",user_input_len);    
 
     int blocks_need = user_input_len / block_size;
+    int remainder = user_input_len % block_size;
     printf("needs %d of blocks \n",blocks_need);
+    printf("remainder is  %d \n",remainder);
     
     printf("\n\n");
     return 0;
