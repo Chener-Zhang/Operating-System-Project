@@ -178,7 +178,7 @@ int parsing(){
     char user_input[20];
     char copy[20];
     printf(">"); // print ">";
-    fgets(user_input,20,stdin); // get user_input;
+    fgets(user_input,sizeof(user_input),stdin); // get user_input;
     strcpy(copy, user_input); // copy = user_input;
     int user_input_len = (int)strlen(user_input);
 

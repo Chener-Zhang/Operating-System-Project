@@ -16,13 +16,13 @@ int main(){
     printf("\n\n");
     char user_input[50];    
     printf(">"); // print ">";
-    fgets(user_input,20,stdin); // get user_input;    
-    
+    fgets(user_input,sizeof(user_input),stdin); // get user_input;    
+
     int user_input_len = (int)strlen(user_input);    
     printf("[%s]\n",user_input);
     printf("The length of the letter is %d\n",user_input_len);    
 
-    int blocks_need = user_input_len/block_size;
+    int blocks_need = user_input_len / block_size;
     printf("needs %d of blocks \n",blocks_need);
     
     printf("\n\n");
