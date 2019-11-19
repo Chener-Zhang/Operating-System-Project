@@ -45,11 +45,10 @@ struct Direction{
 };
 
 struct Block{
-    int index; // the id / the index of the block
+    int block_index; // the id / the index of the block
     int size_remain; // the size of a single block remain 
     int is_full;
-    struct Block *next;
-    // add additional imformation here
+    int used;     
 };
 // ---------------- Function declares --------------------------- 
 int char_reset();
