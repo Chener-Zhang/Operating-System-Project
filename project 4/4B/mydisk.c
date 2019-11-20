@@ -13,14 +13,10 @@
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
-int each_block_size = 16;
+int each_block_size = 32;
 int fd;
-
-
-
-
-char command[20];
-char argument[20];
+char command[50];
+char argument[50];
 
 
 /*
@@ -381,10 +377,11 @@ int read_disk(int block_index){
 }
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
 //working...
-int detele_block(int block_index){
+int delete_block(int block_index){
     lseek(fd, block_index * each_block_size, SEEK_SET);
+
     // slight change here
-    char buf[each_block_size];
+    char buf[each_block_size];    
     memset(buf, 0, each_block_size);
     write(fd, buf, each_block_size);
     return 0;
@@ -622,7 +619,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                             printf("\n");
 
                                                         
-                            detele_block(data_block_entry_index + current);
+                            delete_block(data_block_entry_index + current);
 
                             current = blocktable[i]->next_block;                            
                             //printf("current %d\n",current);                            
@@ -716,6 +713,7 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
             if(dir_table[i]->previous_index == current_dir->current_index){ // current = 1
 
                     if(strcmp(dirname,dir_table[i]->name)==0 ){
+
                         traking_dir = dir_table[i];
                         return 1;
                     }
@@ -724,8 +722,6 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 
     }
     printf("Direction does not exits \n");
-
-    
 
     return -1;
 }
