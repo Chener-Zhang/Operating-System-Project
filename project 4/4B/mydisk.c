@@ -365,7 +365,6 @@ int read_disk(int block_index){
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
     
-
     if(strcmp(read_buffer, "\0") == 0){
         printf("It is empty\n");
         return 0;
@@ -458,21 +457,21 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                     else{
                         
                         int user_input_len = (int)strlen(user_input); 
-                        printf("The length of the letter is %d\n",user_input_len);    
+                        //printf("The length of the letter is %d\n",user_input_len);    
 
-                        printf("you have reach here \n");
+                        //printf("you have reach here \n");
                                         
                             //----------------------------------move from main -----------------------------                                         
                             int blocks_need = user_input_len/each_block_size;
                             int remainder = user_input_len % each_block_size; 
                             char buffer[each_block_size];  
                             
-                            printf("needs %d of blocks \n",blocks_need);
-                            printf("remainder is  %d \n",remainder);
+                            //printf("needs %d of blocks \n",blocks_need);
+                            //printf("remainder is  %d \n",remainder);
 
                             memcpy(buffer, user_input,each_block_size - 1);
-                            printf("block 1: \n");
-                            printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                            //printf("block 1: \n");
+                            //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                             // ------- block 1 allocation -- free_block_id_data
                             
                                             // first entry -- init 
@@ -496,7 +495,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 else
                                 {
                                 // ------- block 2 - n allocation -- free_block_id_data --- begin 
-                                                    printf("block 2 begin: \n");                                                        
+                                                    //printf("block 2 begin: \n");                                                        
                                                     int end_index_from_loop;// get index from the below loop                    
                                                     for (int i = 1; i < blocks_need; i++)
                                                     {            
@@ -516,7 +515,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
 
                                                             // connecting block finished
-                                                            printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                                            //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                                             end_index_from_loop = index_end;
                                                     }                                                    
 
@@ -529,7 +528,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 else                                
                                 {
                                 // ------- last block for remaind words - n allocation -- free_block_id_data
-                                        printf("block last: \n");
+                                        //printf("block last: \n");
                                         int free_space = get_free_space_blocktable(block_table); 
                                         block_table[tracking_current_block]->next_block = free_space;
                                         block_table[free_space]->used = 1;
@@ -539,7 +538,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                         //write the block --  need to write here
                                         write_disk(data_block_entry_index + free_space,buffer);
                                         //write the block -- need to write here finished
-                                        printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                        //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                 } 
                                             printf("\n"); 
 
@@ -574,15 +573,16 @@ int Read_file(char *filename, struct Direction *dir_table[], struct Direction *c
                 if(strcmp(filename,file_table[i]->name)==0 )
                 {
                     int current = file_table[i]->first_block_entry;
-                    printf("current %d\n",current);                            
+                    //printf("current %d\n",current);                            
                     for (int i = 0; i < block_list; i++)
                     {
                         if(current == i)
                         {   
 
                             printf("\n");
+                            read_disk(data_block_entry_index + current);
                             current = blocktable[i]->next_block;
-                            printf("current %d\n",current);                            
+                            
                             //update tracker                            
                         }                                                                               
                     }                    
@@ -635,7 +635,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
 
                             previous = current;
                             //update tracker
-                            printf("previous %d\n",previous);
+                            //printf("previous %d\n",previous);
                         }                                                                               
                     }                    
                     //delete the block
