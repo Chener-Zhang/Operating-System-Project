@@ -557,7 +557,31 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
 // --------------------------------------------- Read a File---------------------------------------------//
 int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
+   for (int i = 0; i < file_list; i++)
+    {
+            if(file_table[i]->below_direction == current_dir->current_index)
+            {   
 
+                if(strcmp(filename,file_table[i]->name)==0 )
+                {
+                    int current = file_table[i]->first_block_entry;
+                    printf("current %d\n",current);                            
+                    for (int i = 0; i < block_list; i++)
+                    {
+                        if(current == i)
+                        {   
+
+                            printf("\n");
+                            current = blocktable[i]->next_block;
+                            printf("current %d\n",current);                            
+                            //update tracker                            
+                        }                                                                               
+                    }                    
+                    
+                    return 1;
+                }
+            }
+    }        
     return 0;
 }
 
@@ -582,8 +606,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     for (int i = 0; i < block_list; i++)
                     {
                         if(current == i)
-                        {
-                                                        
+                        {                                                        
                             printf("\n");
                             current = blocktable[i]->next_block;
                             printf("current %d\n",current);                            
@@ -593,18 +616,13 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                             previous = current;
                             //update tracker
                             printf("previous %d\n",previous);
-                        }
-                                                                               
-
-                    }
-                    
+                        }                                                                               
+                    }                    
                     //delete the block
-
                 return 1;
                 }
             }
-    }
-    
+    }    
     return 0;
 }
 
