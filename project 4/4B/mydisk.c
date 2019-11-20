@@ -733,17 +733,24 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
         for (int i = 0; i < direction_list; i++)
     {
-            if(dir_table[i]->previous_index == current_dir->current_index){
-                        if(strcmp(dirname,dir_table[i]->name)==0 ){
-                        memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
-                        dir_table[i]->current_index = 0;
-                        dir_table[i]->previous_index = -1;
-                        dir_table[i]->used = 0;
-                        return 1;
+            if(dir_table[i]->previous_index == current_dir->current_index)
+            {
+                if(strcmp(dirname,dir_table[i]->name)==0 )
+                {
+
+                    memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
+                    dir_table[i]->current_index = 0;
+                    dir_table[i]->previous_index = -1;
+                    dir_table[i]->used = 0;
+
+                  
+                    return 1;
                 }
             }
     }
-    print_list();
+
+
+    //print_list();
     return 0;
 }
 
