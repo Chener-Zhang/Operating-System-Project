@@ -45,10 +45,10 @@ struct Direction *traking_dir;
 
 // --------------------------------------------- Global Var ---------------------------------------------//
 
-// --------------------------------------------- Main ---------------------------------------------//
+// --------------------------------------------- Main function---------------------------------------------//
 int main(){
 
-/*
+
     // testing ------- >
     printf("\n\n\n");
     char name[] = "disk";
@@ -56,14 +56,15 @@ int main(){
     open_disk(name);
     write_disk(super_block,"Super block");
     write_disk(meda_block,"Meda block");
-    write_disk(data_block_entry_index,"Data block");
+    write_disk(data_block_entry_index,"Data block");        
+    
 
     close_disk(fd);
     printf("\n\n\n");
     // testing ------- >
-*/
 
-    begin();
+
+    //begin();
     return 0;
 }
 
@@ -378,13 +379,13 @@ int read_disk(int block_index){
     
 }
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
-
+//working...
 int detele_block(int block_index){
     lseek(fd, block_index * each_block_size, SEEK_SET);
     // slight change here
     char buf[each_block_size];
-    memset(buf, 0, strlen(buf));
-    write(fd, buf, strlen(buf));
+    memset(buf, 0, each_block_size);
+    write(fd, buf, each_block_size);
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
@@ -618,10 +619,20 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         if(current == i)
                         {                                                        
                             printf("\n");
+
+                            
+                            
+                            //detele_block(data_block_entry_index + current + 1);
                             current = blocktable[i]->next_block;
+                            
                             //printf("current %d\n",current);                            
                             blocktable[previous]->next_block = 0;
                             //printf("previous %d\n",previous);
+
+                                                        
+                            
+                            
+
                             blocktable[previous]->used = 0;
                             
 
