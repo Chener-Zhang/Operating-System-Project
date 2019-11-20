@@ -13,14 +13,14 @@
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
-int each_block_size = 16;
+int each_block_size = 32;
 int fd;
 
 
 
 
-char command[20];
-char argument[20];
+char command[50];
+char argument[50];
 
 
 /*
