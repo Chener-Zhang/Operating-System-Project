@@ -474,30 +474,47 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             // ------- block 1 allocation -- free_block_id_data
                             
                                             // first entry -- init 
-                                             blocktable[free_block_id_data]->used = 1;                                            
-                                          
-                                            // first entry -- init 
-                            printf("block 2 begin: \n");
-                            int end_index_from_loop;                        
-                            for (int i = 1; i < blocks_need; i++)
-                                {            
-                                    int index_start = i * each_block_size;
-                                    int index_end = index_start + each_block_size;            
-                                    memcpy(buffer, &user_input[index_start],each_block_size - 1);
-                                    printf("[%s]\n",buffer);
-                                    end_index_from_loop = index_end;
+                                            blocktable[free_block_id_data]->used = 1;                                            
+                                             
+                                            //write the block -- 
+
+                                            // first entry -- Finish 
+
+                                // ------- block 2 - n allocation -- free_block_id_data --- begin 
+                                printf("block 2 begin: \n");
+                                if(blocks_need == 0){ // if the words < size of each block
+                                    block_table[free_block_id_data]->next_block = -1;
                                 }
-                            if(remainder == 0)
-                            {
-                                return 0;
-                            }
-                            else
-                            {
-                                printf("block last: \n");
-                                memcpy(buffer, &user_input[end_index_from_loop],each_block_size);
-                                printf("[%s]\n",buffer);
-                            } 
-                            printf("\n");            
+                                else
+                                {
+                                            int end_index_from_loop;                        
+                                            for (int i = 1; i < blocks_need; i++)
+                                                {            
+                                                    int index_start = i * each_block_size;
+                                                    int index_end = index_start + each_block_size;            
+                                                    memcpy(buffer, &user_input[index_start],each_block_size - 1);
+                                                    printf("[%s]\n",buffer);
+
+                                                    end_index_from_loop = index_end;
+                                                }
+
+                                            if(remainder == 0)
+                                            {
+                                                return 0;
+                                            }
+                                            // ------- block 2 - n allocation -- free_block_id_data --- Finished;
+                                
+                                            else
+                                            // ------- last block for remaind words - n allocation -- free_block_id_data
+                                            {
+                                                    printf("block last: \n");
+                                                    memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
+                                                    printf("[%s]\n",buffer);
+                                            } 
+                                            printf("\n"); 
+
+                                }
+                                           
                             
                             //write_disk(meda_block + free_block_id_data,filename);
                             //write_disk(data_block_entry_index + i,user_input);           
