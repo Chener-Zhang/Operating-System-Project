@@ -99,7 +99,7 @@ printf("\n\n\n");
             }else if(strcmp(command,"mkdir")== 0){
                 Create_directory(argument,dirtable,traking_dir);
             }else if(strcmp(command,"rmr") == 0){
-                Delete_directory(argument,dirtable,traking_dir);
+                Delete_directory(argument,dirtable,traking_dir,filetable);
             }else if(strcmp(command,"touch") == 0){
                 Create_file(argument,traking_dir,dirtable,filetable);
             }else if(strcmp(command,"rm") == 0){
@@ -237,11 +237,12 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
         }
 
     }
+
     for (int i = 0; i < file_list; i++)
     {
-        // debuging........
+        
         //printf("c[%d] : f[%d]\n", dir->current_index,file_table[i]->below_direction);        
-        // debuging........
+        
         if(dir->current_index == file_table[i]->below_direction){
             printf("\t%s\n",file_table[i]->name);
         }
@@ -729,20 +730,40 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
-int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
+int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
 
         for (int i = 0; i < direction_list; i++)
     {
             if(dir_table[i]->previous_index == current_dir->current_index)
             {
-                if(strcmp(dirname,dir_table[i]->name)==0 )
+                
+                if(strcmp(dirname,dir_table[i]->name) == 0 )
                 {
+
+
+                    //debuging.....   
+
+
+
+                            //print_direction(dir_table[i],dirtable,filetable);                            
+                                for (int i = 0; i < direction_list; i++)
+                                {
+                                    if(dir_table[i]->previous_index == current_dir->current_index){
+                                        printf("\t %s\n", file_table[i]->name);                               
+                                    }
+
+                                }
+                                                
+                            //  printf("the current direction = %d\n",current_dir->current_index);
+                    //debuging.....
+                    
 
                     memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
                     dir_table[i]->current_index = 0;
                     dir_table[i]->previous_index = -1;
                     dir_table[i]->used = 0;
-
+                
+                    
                   
                     return 1;
                 }
