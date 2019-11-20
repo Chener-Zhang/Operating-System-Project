@@ -13,14 +13,14 @@
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
-int each_block_size = 32;
+int each_block_size = 16;
 int fd;
 
 
 
 
-char command[50];
-char argument[50];
+char command[20];
+char argument[20];
 
 
 /*
@@ -620,6 +620,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         if(current == i)
                         {                                                        
                             printf("\n");
+
                                                         
                             detele_block(data_block_entry_index + current);
 
