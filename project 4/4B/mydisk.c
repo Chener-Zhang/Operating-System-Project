@@ -484,6 +484,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             
 
                                             //write the block -- need to write here
+                                            write_disk(data_block_entry_index + free_block_id_data,buffer);
+                                            //write the block -- need to write here
 
                                             // first entry -- Finish 
 
@@ -507,7 +509,13 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                             block_table[tracking_current_block]->next_block = free_space;
                                                             block_table[free_space]->used = 1;
                                                             tracking_current_block = free_space;
-                                                            //write the block -- need to write
+                                                            
+
+                                                            //write the block -- need to write here
+                                                            write_disk(data_block_entry_index + tracking_current_block,buffer);
+                                                            //write the block -- need to write here finished
+
+
                                                             // connecting block finished
                                                             printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                                             end_index_from_loop = index_end;
@@ -524,12 +532,14 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 // ------- last block for remaind words - n allocation -- free_block_id_data
                                         printf("block last: \n");
                                         int free_space = get_free_space_blocktable(block_table); 
-                                        //write the block --  need to write here
                                         block_table[tracking_current_block]->next_block = free_space;
                                         block_table[free_space]->used = 1;
                                         tracking_current_block = free_space;
                                         block_table[tracking_current_block]->next_block = 0;
                                         memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
+                                        //write the block --  need to write here
+                                        write_disk(data_block_entry_index + free_space,buffer);
+                                        //write the block -- need to write here finished
                                         printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                 } 
                                             printf("\n"); 
