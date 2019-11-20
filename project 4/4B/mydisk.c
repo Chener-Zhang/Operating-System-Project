@@ -477,7 +477,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             // first entry -- init 
                                             blocktable[free_block_id_data]->used = 1;                                            
                                              
-                                            //write the block -- 
+                                            //write the block -- need to write here
 
                                             // first entry -- Finish 
 
@@ -501,6 +501,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                             block_table[tracking_current_block]->next_block = free_space;
                                                             block_table[free_space]->used = 1;
                                                             tracking_current_block = free_space;
+                                                            //write the block -- need to write
                                                             // connecting block finished
                                                             printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                                             end_index_from_loop = index_end;
@@ -517,7 +518,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                 // ------- last block for remaind words - n allocation -- free_block_id_data
                                         printf("block last: \n");
                                         int free_space = get_free_space_blocktable(block_table); 
-
+                                        //write the block --  need to write here
                                         block_table[tracking_current_block]->next_block = free_space;
                                         block_table[free_space]->used = 1;
                                         tracking_current_block = free_space;
@@ -538,11 +539,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         return 0;
 
                         }
-
                 }    
-            }
-
-            
+            }            
         }
     return 0;         
 }
