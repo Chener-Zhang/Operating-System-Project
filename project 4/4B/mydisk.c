@@ -108,6 +108,8 @@ printf("\n\n\n");
                 Delete_file(argument,dirtable,traking_dir,filetable);
             }else if(strcmp(command,"write") == 0){
                 Write_file(argument,traking_dir,dirtable,filetable,blocktable,metabloktable);
+            }else if(strcmp(command,"read") == 0){
+                Read_file(argument,dirtable,traking_dir,filetable);
             }
             else{
                 printf("checking your input\n");
@@ -554,7 +556,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 }
 
 // --------------------------------------------- Read a File---------------------------------------------//
-int Read_file(char *filename){
+int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
+
     return 0;
 }
 

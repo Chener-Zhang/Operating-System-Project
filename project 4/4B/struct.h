@@ -75,7 +75,7 @@ int init_block(struct Block *lisk[]);
 int init_file(struct File *list[]);
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
 int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[],struct Block *meta_block_table[]);
-int Read_file(char *filename);
+int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 
 int get_current_direction();
