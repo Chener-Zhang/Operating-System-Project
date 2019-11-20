@@ -741,19 +741,16 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 {
 
 
-                    //debuging.....   
-
-
-
+                    //debuging.....                               
                             //print_direction(dir_table[i],dirtable,filetable);                            
                                 for (int i = 0; i < direction_list; i++)
                                 {
                                     if(dir_table[i]->previous_index == current_dir->current_index){
-                                        printf("\t %s\n", file_table[i]->name);                               
+                                        printf("\t %s\n", file_table[i]->name);                                                                       
+                                        //Delete_file(file_table[i]->name,dirtable,current_dir,file_table);
                                     }
 
-                                }
-                                                
+                                }                                                
                             //  printf("the current direction = %d\n",current_dir->current_index);
                     //debuging.....
                     
