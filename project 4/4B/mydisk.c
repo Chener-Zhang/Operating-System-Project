@@ -564,16 +564,31 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
     for (int i = 0; i < file_list; i++)
     {
 
-            if(file_table[i]->below_direction == current_dir->current_index){                
-                        if(strcmp(filename,file_table[i]->name)==0 ){
-                            memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
-                            file_table[i]->below_direction = -1;
-                            file_table[i]->used = 0;
+            if(file_table[i]->below_direction == current_dir->current_index)
+            {   
 
+                if(strcmp(filename,file_table[i]->name)==0 )
+                {
+                    memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
+                    file_table[i]->below_direction = -1;
+                    file_table[i]->used = 0;
 
+                    //delete the block
+                    int tracker = file_table[i]->first_block_entry;
+                    for (int i = 0; i < block_list; i++)
+                    {
+                        if(tracker == i)
+                        {
+                            printf("%d - ",i);                            
+                            tracker = blocktable[i]->next_block;
 
+                            //update tracker
+                        }
+                    }
+                    
+                    //delete the block
 
-                        return 1;
+                return 1;
                 }
             }
     }
