@@ -455,7 +455,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             return -1;
                     }
                     else{
-                        //working --------------------------------
+                        
                         int user_input_len = (int)strlen(user_input); 
                         printf("The length of the letter is %d\n",user_input_len);    
 
@@ -475,8 +475,12 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             // ------- block 1 allocation -- free_block_id_data
                             
                                             // first entry -- init 
+                                            
                                             blocktable[free_block_id_data]->used = 1;                                            
-                                             
+                                            // very important to connect the first one;
+                                            file_table[i]->first_block_entry = free_block_id_data;
+                                            
+
                                             //write the block -- need to write here
 
                                             // first entry -- Finish 
@@ -535,10 +539,14 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             //write_disk(data_block_entry_index + i,user_input);           
                             //----------------------------------move from main -----------------------------
                                         
-
+                        //int tester = file_table[i]->first_block_entry; tracking make sure my code works corrent
+                        //printf("Entry -> %d\n",tester);
+                        //printf("Second connection -> %d\n",blocktable[tester]->next_block);
                         return 0;
 
                         }
+
+                    
                 }    
             }            
         }
@@ -561,6 +569,10 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                             memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
                             file_table[i]->below_direction = -1;
                             file_table[i]->used = 0;
+
+
+
+
                         return 1;
                 }
             }
