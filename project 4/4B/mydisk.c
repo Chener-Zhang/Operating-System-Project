@@ -48,7 +48,7 @@ struct Direction *traking_dir;
 // --------------------------------------------- Main function---------------------------------------------//
 int main(){
 
-
+    /*
     // testing ------- >
     printf("\n\n\n");
     char name[] = "disk";
@@ -62,9 +62,10 @@ int main(){
     close_disk(fd);
     printf("\n\n\n");
     // testing ------- >
+    */
 
 
-    //begin();
+    begin();
     return 0;
 }
 
@@ -619,12 +620,10 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         if(current == i)
                         {                                                        
                             printf("\n");
+                                                        
+                            detele_block(data_block_entry_index + current);
 
-                            
-                            
-                            //detele_block(data_block_entry_index + current + 1);
-                            current = blocktable[i]->next_block;
-                            
+                            current = blocktable[i]->next_block;                            
                             //printf("current %d\n",current);                            
                             blocktable[previous]->next_block = 0;
                             //printf("previous %d\n",previous);
