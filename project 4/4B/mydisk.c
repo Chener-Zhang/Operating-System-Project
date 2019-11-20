@@ -574,14 +574,17 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     file_table[i]->used = 0;
 
                     //delete the block
-                    int tracker = file_table[i]->first_block_entry;
+                    int current = file_table[i]->first_block_entry;
+                    int previous = file_table[i]->first_block_entry;
                     for (int i = 0; i < block_list; i++)
                     {
-                        if(tracker == i)
+                        if(current == i)
                         {
                             printf("%d - ",i);                            
-                            tracker = blocktable[i]->next_block;
-
+                            current = blocktable[i]->next_block;
+                            blocktable[previous]->next_block = 0;
+                            previous = current;
+                            
                             //update tracker
                         }
                     }
