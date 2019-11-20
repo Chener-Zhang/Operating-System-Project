@@ -619,10 +619,12 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         {                                                        
                             printf("\n");
                             current = blocktable[i]->next_block;
-                            printf("current %d\n",current);                            
+                            //printf("current %d\n",current);                            
                             blocktable[previous]->next_block = 0;
-                            printf("previous %d\n",previous);
+                            //printf("previous %d\n",previous);
                             blocktable[previous]->used = 0;
+                            
+
                             previous = current;
                             //update tracker
                             printf("previous %d\n",previous);
