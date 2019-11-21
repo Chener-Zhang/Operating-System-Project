@@ -636,11 +636,14 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     file_table[i]->below_direction = -1;
                     file_table[i]->used = 0;
 
-                    // debuging -------------------->    
-                    printf("%d\n",file_table[i]->meta_block_entry);                    
-                    delete_block(file_table[i]->meta_block_entry); 
                     
-                    // debuging -------------------->
+                    //printf("%d\n",file_table[i]->meta_block_entry);                    
+                    delete_block(file_table[i]->meta_block_entry); 
+
+                    int free_meta_entry = file_table[i]->meta_block_entry;
+                                    
+                    metabloktable[free_meta_entry - meda_block]->used = 0;
+                    
 
 
                     //delete the block
