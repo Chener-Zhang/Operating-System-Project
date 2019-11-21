@@ -419,7 +419,8 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     //check if exist
     int position = get_free_space_filetable(file_table);
     int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
-    char meta_buffer[each_block_size];    
+    char meta_buffer[each_block_size];   
+
     if(position < 0){
         perror("fail to create direction");
         return -1;
@@ -642,10 +643,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
 
                     int free_meta_entry = file_table[i]->meta_block_entry;
                                     
-                    metabloktable[free_meta_entry - meda_block]->used = 0;
-                    
-
-
+                    metabloktable[free_meta_entry - meda_block]->used = 0;                    
                     //delete the block
                     int current = file_table[i]->first_block_entry;
                     int previous = file_table[i]->first_block_entry;
@@ -706,9 +704,16 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
     }
 
-    /*
-    Write in to the disk
-    */
+    
+    //Write in to the disk + meta_block_writing;    
+    int free_block_id_meta = get_free_space_blocktable(metabloktable); 
+    //printf("free space %d\n",free_block_id_meta);
+    char meta_buffer[each_block_size];   
+    memcpy(meta_buffer,dirname,each_block_size-1);       
+    //printf("%s\n",meta_buffer);
+    int meta_index = meda_block + free_block_id_meta;                                     
+    write_disk(meta_index, meta_buffer); 
+    
 
 
     // printf("position: %d\n",position);
