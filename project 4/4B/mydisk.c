@@ -657,14 +657,17 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         }                                                                               
                     }                    
                     //delete the block
-                    
-                    
-                return 1;
+
+                //delete direction tracker
+                dir_table[current_dir->current_index]->n_things_inside --;
+                //printf("%d\n",dir_table[current_dir->current_index]->n_things_inside);
+
+                return 0;
                 }
             }
     }    
 
-    return 0;
+    return -1;
 }
 
 
@@ -756,26 +759,35 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
-    //debug
-    if(current_dir->n_things_inside > 0){
-        printf("You have something inside of this direction, you cannot delete");
-        return -1;
-    }
 
-    //debug
         for (int i = 0; i < direction_list; i++)
     {
             if(dir_table[i]->previous_index == current_dir->current_index)
             {
                 
+                
+
+
                 if(strcmp(dirname,dir_table[i]->name) == 0 )
                 {
+                        
+                
+                
+                
+                if(dir_table[i]->n_things_inside > 0){
+                    printf("current index : %d\n",current_dir->current_index);
+                    printf("%d\n",dir_table[i]->n_things_inside);
+                    printf("You have something inside of this direction, you cannot delete");
+                    return -1;
+                }else{
+                    // successful delete the direction;
                     memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
                     dir_table[i]->current_index = 0;
                     dir_table[i]->previous_index = -1;
                     dir_table[i]->used = 0;                                     
                     dir_table[i]->n_things_inside = 0;
                     return 1;
+                }                                                       
                 }
             }
     }
