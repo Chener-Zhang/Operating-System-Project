@@ -100,11 +100,11 @@ printf("\n\n\n");
             }else if(strcmp(command,"rmr") == 0){
                 Delete_directory(argument,dirtable,traking_dir,filetable);
             }else if(strcmp(command,"touch") == 0){
-                Create_file(argument,traking_dir,dirtable,filetable);
+                Create_file(argument,traking_dir,dirtable,filetable,metabloktable);
             }else if(strcmp(command,"rm") == 0){
                 Delete_file(argument,dirtable,traking_dir,filetable);
             }else if(strcmp(command,"write") == 0){
-                Write_file(argument,traking_dir,dirtable,filetable,blocktable,metabloktable);
+                Write_file(argument,traking_dir,dirtable,filetable,blocktable);
             }else if(strcmp(command,"read") == 0){
                 Read_file(argument,dirtable,traking_dir,filetable);
             }
@@ -415,9 +415,11 @@ int close_disk(int fd){
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
-int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
+int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *meta_block_table[]){
     //check if exist
     int position = get_free_space_filetable(file_table);
+    int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
+    char meta_buffer[each_block_size];    
     if(position < 0){
         perror("fail to create direction");
         return -1;
@@ -430,16 +432,24 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
                 if(strcmp(file_table[i]->name,filename) == 0 ){
                     printf("you cannot create the file has same name as %s",filename);
                     return -1;                    
-                }                
+                }        
             }
 
     }
-
+   
     strcpy(file_table[position]->name,filename);
     file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
 
+    // meta_block_writing;    
+    memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
+    int meta_index = meda_block + free_block_id_meta;                                     
+    write_disk(meta_index, meta_buffer);  
 
+    file_table[position]->meta_block_entry = meta_index;
+    printf("%d\n",file_table[position]->meta_block_entry);    
+    metabloktable[free_block_id_meta]->used = 1;
+    // meta_block_writing;    
 
     //Note tracking for delete the direction;
     int current_id = current_dir->current_index;   
@@ -449,7 +459,7 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
-int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[],struct Block *meta_block_table[])
+int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[])
 {
         char user_input[100];  // DIY                                                                  
         fgets(user_input,sizeof(user_input),stdin);  // get user_input;    
@@ -463,11 +473,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                     // if this part fail return -1;                               
                     int free_block_id_data = get_free_space_blocktable(block_table);
-                    int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
+                    
                     int tracking_current_block = free_block_id_data;
                     
 
-                    if(free_block_id_data == -1 || free_block_id_meta == -1)
+                    if(free_block_id_data == -1)
                     {
                             printf("Allocation fail\n");
                             return -1;
@@ -500,15 +510,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             
 
                                             //write the data_ block -- need to write here
-                                            write_disk(data_block_entry_index + free_block_id_data,buffer);                                            
-                                            //write the mata_block -- need to write here
-
-                                            //debuging...
-                                            char meta_buffer[each_block_size];
-                                            memcpy(meta_buffer,file_table[i]->name,each_block_size-1);                                            
-                                            write_disk(meda_block + free_block_id_meta, meta_buffer);
-                                            metabloktable[free_block_id_meta]->used = 1;
-                                            //debuging...                                            
+                                            write_disk(data_block_entry_index + free_block_id_data,buffer);                                                                                                                                    
                                             //write the block -- need to write here
                                             // first entry -- Finish 
 
@@ -634,6 +636,13 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     file_table[i]->below_direction = -1;
                     file_table[i]->used = 0;
 
+                    // debuging -------------------->    
+                    printf("%d\n",file_table[i]->meta_block_entry);                    
+                    delete_block(file_table[i]->meta_block_entry); 
+                    
+                    // debuging -------------------->
+
+
                     //delete the block
                     int current = file_table[i]->first_block_entry;
                     int previous = file_table[i]->first_block_entry;
@@ -641,10 +650,9 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     {
                         if(current == i)
                         {                                                        
-                            printf("\n");
-
-                                                        
-                            delete_block(data_block_entry_index + current);
+                            printf("\n");                                                        
+                            
+                            delete_block(data_block_entry_index + current);                           
 
                             current = blocktable[i]->next_block;                            
                             //printf("current %d\n",current);                            
@@ -763,32 +771,28 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
         for (int i = 0; i < direction_list; i++)
     {
             if(dir_table[i]->previous_index == current_dir->current_index)
-            {
-                
-                
-
-
+            {                                
                 if(strcmp(dirname,dir_table[i]->name) == 0 )
                 {
-                        
-                
-                
-                
+
                 if(dir_table[i]->n_things_inside > 0){
                     printf("current index : %d\n",current_dir->current_index);
                     printf("%d\n",dir_table[i]->n_things_inside);
-                    printf("You have something inside of this direction, you cannot delete");
+                    printf("You have something inside of this direction, Delete fail\n");
                     return -1;
-                }else{
-                    // successful delete the direction;
-                    memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
-                    dir_table[i]->current_index = 0;
-                    dir_table[i]->previous_index = -1;
-                    dir_table[i]->used = 0;                                     
-                    dir_table[i]->n_things_inside = 0;
-                    return 1;
-                }                                                       
+                }else
+                        {
+                            // successful delete the direction;
+                            memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
+                            dir_table[i]->current_index = 0;
+                            dir_table[i]->previous_index = -1;
+                            dir_table[i]->used = 0;                                     
+                            dir_table[i]->n_things_inside = 0;
+                            return 1;
+                        }                                                       
                 }
+            printf("Direction does not exit\n");
+            return -1;
             }
     }
     //print_list();
