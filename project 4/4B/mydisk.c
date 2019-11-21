@@ -457,6 +457,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                     int free_block_id_data = get_free_space_blocktable(block_table);
                     int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
                     int tracking_current_block = free_block_id_data;
+                    
 
                     if(free_block_id_data == -1 || free_block_id_meta == -1)
                     {
@@ -490,10 +491,17 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             file_table[i]->first_block_entry = free_block_id_data;
                                             
 
-                                            //write the block -- need to write here
-                                            write_disk(data_block_entry_index + free_block_id_data,buffer);
-                                            //write the block -- need to write here
+                                            //write the data_ block -- need to write here
+                                            write_disk(data_block_entry_index + free_block_id_data,buffer);                                            
+                                            //write the mata_block -- need to write here
 
+                                            //debuging...
+                                            char meta_buffer[each_block_size];
+                                            memcpy(meta_buffer,file_table[i]->name,each_block_size-1);                                            
+                                            write_disk(meda_block + free_block_id_meta, meta_buffer);
+                                            metabloktable[free_block_id_meta]->used = 1;
+                                            //debuging...                                            
+                                            //write the block -- need to write here
                                             // first entry -- Finish 
 
 

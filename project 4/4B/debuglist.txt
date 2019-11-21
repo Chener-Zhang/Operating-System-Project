@@ -1,12 +1,6 @@
 1: 
 rmr - rm file 
 
-2:
-mount unfinished
-
-3: 
-unmount unfinished
-
 4: 
 printf method elimination
 
