@@ -44,7 +44,8 @@ struct Direction{
     char name[name_size];// name of the direction    
     int current_index;
     int previous_index;   
-    int used;     
+    int used;   
+    int n_things_inside;  
     // add additional imformation here
 };
 

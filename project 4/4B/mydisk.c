@@ -307,6 +307,7 @@ int init_dir(struct Direction *list[]){
         list[i] = (struct Direction*) malloc(sizeof(struct Direction));
         memset(list[i]->name, 0, sizeof *list[i]->name);
         list[i]->previous_index = -1;
+        list[i]->n_things_inside = 0;
     }
     return 0;
 }
@@ -428,15 +429,16 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
             if(file_table[i]->below_direction == current_dir->current_index){
                 if(strcmp(file_table[i]->name,filename) == 0 ){
                     printf("you cannot create the file has same name as %s",filename);
-                    return -1;
+                    return -1;                    
                 }                
             }
 
     }
 
     strcpy(file_table[position]->name,filename);
-    file_table[position]->below_direction = current_dir->current_index;
+    file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
+
 
     return 0;
 }
@@ -747,7 +749,13 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
+    //debug
+    if(current_dir->n_things_inside > 0){
+        printf("You have something inside of this direction, you cannot delete");
+        return -1;
+    }
 
+    //debug
         for (int i = 0; i < direction_list; i++)
     {
             if(dir_table[i]->previous_index == current_dir->current_index)
@@ -755,35 +763,15 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 
                 if(strcmp(dirname,dir_table[i]->name) == 0 )
                 {
-
-
-                    //debuging.....                               
-                            //print_direction(dir_table[i],dirtable,filetable);                            
-                                for (int i = 0; i < direction_list; i++)
-                                {
-                                    if(dir_table[i]->previous_index == current_dir->current_index){
-                                        printf("\t %s\n", file_table[i]->name);                                                                       
-                                        //Delete_file(file_table[i]->name,dirtable,current_dir,file_table);
-                                    }
-
-                                }                                                
-                            //  printf("the current direction = %d\n",current_dir->current_index);
-                    //debuging.....
-                    
-
                     memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
                     dir_table[i]->current_index = 0;
                     dir_table[i]->previous_index = -1;
-                    dir_table[i]->used = 0;
-                
-                    
-                  
+                    dir_table[i]->used = 0;                                     
+                    dir_table[i]->n_things_inside = 0;
                     return 1;
                 }
             }
     }
-
-
     //print_list();
     return 0;
 }
