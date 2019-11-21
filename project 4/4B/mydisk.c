@@ -448,7 +448,7 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     write_disk(meta_index, meta_buffer);  
 
     file_table[position]->meta_block_entry = meta_index;
-    printf("%d\n",file_table[position]->meta_block_entry);    
+    //printf("%d\n",file_table[position]->meta_block_entry);    
     metabloktable[free_block_id_meta]->used = 1;
     // meta_block_writing;    
 
@@ -789,7 +789,7 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 {
 
                 if(dir_table[i]->n_things_inside > 0){
-                    printf("current index : %d\n",current_dir->current_index);
+                    //printf("current index : %d\n",current_dir->current_index);
                     printf("%d\n",dir_table[i]->n_things_inside);
                     printf("You have something inside of this direction, Delete fail\n");
                     return -1;
