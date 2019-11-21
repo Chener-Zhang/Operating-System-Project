@@ -47,6 +47,7 @@ struct Direction{
     int previous_index;   
     int used;   
     int n_things_inside;  
+    int meta_block_entry;
     // add additional imformation here
 };
 

@@ -640,10 +640,9 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     
                     //printf("%d\n",file_table[i]->meta_block_entry);                    
                     delete_block(file_table[i]->meta_block_entry); 
+                    int free_meta_entry = file_table[i]->meta_block_entry;                                    
+                    metabloktable[free_meta_entry - meda_block]->used = 0;
 
-                    int free_meta_entry = file_table[i]->meta_block_entry;
-                                    
-                    metabloktable[free_meta_entry - meda_block]->used = 0;                    
                     //delete the block
                     int current = file_table[i]->first_block_entry;
                     int previous = file_table[i]->first_block_entry;
@@ -707,11 +706,17 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     
     //Write in to the disk + meta_block_writing;    
     int free_block_id_meta = get_free_space_blocktable(metabloktable); 
+    metabloktable[free_block_id_meta]->used = 1;
     //printf("free space %d\n",free_block_id_meta);
     char meta_buffer[each_block_size];   
     memcpy(meta_buffer,dirname,each_block_size-1);       
     //printf("%s\n",meta_buffer);
     int meta_index = meda_block + free_block_id_meta;                                     
+
+    dirtable[position]->meta_block_entry = meta_index;
+    //printf("the entry is : %d",meta_index);
+    
+
     write_disk(meta_index, meta_buffer); 
     
 
@@ -791,7 +796,12 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 }else
                         {
                             // successful delete the direction;
-                            memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));
+                            //printf("meta_index = %d\n",dir_table[i]->meta_block_entry);                            
+                            int meta_entry = dir_table[i]->meta_block_entry;
+                            delete_block(meta_entry);
+                            metabloktable[meta_entry - meda_block]->used = 0;
+
+                            memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
                             dir_table[i]->current_index = 0;
                             dir_table[i]->previous_index = -1;
                             dir_table[i]->used = 0;                                     
