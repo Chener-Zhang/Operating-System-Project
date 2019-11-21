@@ -72,8 +72,7 @@ printf("\n\n\n");
     
     // DISK INITING ----------------------
     char name[] = "disk";
-    create_disk(name);
-    open_disk(name);
+    mount(name);    
     write_disk(super_block,"Super block");
     write_disk(meda_block,"Meda block");
     write_disk(data_block_entry_index,"Data block");
@@ -122,7 +121,7 @@ printf("\n\n\n");
     // while loop
     
 
-    close_disk(fd);
+    unmount(fd);
     printf("\n\n\n");
     return 0;
 
@@ -228,7 +227,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index){
-            printf("\t %s\n", list[i]->name);
+            printf("\t%s\n", list[i]->name);
             //printf("Direction: %s\n", list[i]->name);
             //printf("current index: %d\n",list[i]->current_index);
             //printf("previous index: %d\n",list[i]->previous_index);
@@ -323,7 +322,16 @@ int init_root(struct Direction *list[]){
 }
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
-// write something here;
+int mount(char *name){
+    create_disk(name);
+    open_disk(name);
+    return 0;
+}
+
+int unmount(int fd){
+    close_disk(fd);
+    return 0;
+}
 
 // --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){

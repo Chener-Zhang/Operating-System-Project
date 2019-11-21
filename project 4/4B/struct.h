@@ -57,6 +57,11 @@ struct Block{
 // ---------------- Function declares --------------------------- 
 int char_reset();
 int parsing();
+
+
+int mount(char *name);
+int unmount(int fd);
+
 int get_free_space_dirtable(struct Direction *list[]);
 int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
@@ -78,7 +83,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 
-int get_current_direction();
+
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
