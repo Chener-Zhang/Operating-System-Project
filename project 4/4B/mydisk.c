@@ -440,6 +440,12 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     file_table[position]->used = 1;
 
 
+
+    //Note tracking for delete the direction;
+    int current_id = current_dir->current_index;   
+    dir_table[current_id]->n_things_inside ++;
+    //printf("%d\n",dir_table[current_id]->n_things_inside);
+
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
@@ -644,24 +650,20 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                             //printf("current %d\n",current);                            
                             blocktable[previous]->next_block = 0;
                             //printf("previous %d\n",previous);
-
-                                                        
-                            
-                            
-
-                            blocktable[previous]->used = 0;
-                            
-
+                            blocktable[previous]->used = 0;                            
                             previous = current;
                             //update tracker
                             //printf("previous %d\n",previous);
                         }                                                                               
                     }                    
                     //delete the block
+                    
+                    
                 return 1;
                 }
             }
     }    
+
     return 0;
 }
 
@@ -702,6 +704,11 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     dir_table[position]->current_index = position;
     dir_table[position]->previous_index = current_dir->current_index;
     dir_table[position]->used = 1;
+
+    // tracking for the deletion
+    dir_table[current_dir->current_index]->n_things_inside++;
+    //printf("%d\n",dir_table[current_dir->current_index]->n_things_inside);
+    // tracking for the deletion
 
 
     return 1;
