@@ -38,6 +38,7 @@ struct File {
     int used;
     int first_block_entry;
     int meta_block_entry;
+    
     // int next_block_entry;    
 };
 
