@@ -445,16 +445,18 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
 // --------------------------------------------- Write a File---------------------------------------------//
 int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[])
 {
-        char user_input[100];  // DIY                                                                  
-        fgets(user_input,sizeof(user_input),stdin);  // get user_input;    
+            
 
         for (int i = 0; i < file_list; i++)
         {                                                    
             if(file_table[i]->below_direction == current_dir->current_index)// check dir heri
             { 
+                
                 if(strcmp(file_table[i]->name,filename) == 0 )// check the file exist
                 {  
 
+                    char user_input[100];  // DIY                                                                  
+                    fgets(user_input,sizeof(user_input),stdin);  // get user_input;
                     // if this part fail return -1;                               
                     int free_block_id_data = get_free_space_blocktable(block_table);
                     
@@ -568,6 +570,10 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         }
 
                     
+                }else
+                {
+                    printf("\n The file does not exit \n");
+                    return -1;
                 }    
             }            
         }
