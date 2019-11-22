@@ -500,20 +500,10 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                         memcpy(buffer, user_input,each_block_size - 1);
                                         printf("block 1: \n");
                                         printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
-                                        // ------- block 1 allocation -- free_block_id_data
-                                        
-                                                        // first entry -- init 
-                                                                                              
-                                                        blocktable[free_block_id_data]->used = 1;                                            
-                                                        // very important to connect the first one;
-                                                        file_table[i]->first_block_entry = free_block_id_data;
-                                                        
-
-                                                        //write the data_ block -- need to write here
-                                                        write_disk(data_block_entry_index + free_block_id_data,buffer,0);                                                                                                                                    
-                                                        //write the block -- need to write here
-                                                        // first entry -- Finish 
-
+                                        // ------- block 1 allocation -- free_block_id_data                                                                    
+                                            blocktable[free_block_id_data]->used = 1;                                                                                                    
+                                            file_table[i]->first_block_entry = free_block_id_data;
+                                            write_disk(data_block_entry_index + free_block_id_data,buffer,0);                                                                                                                                    
                                             if(blocks_need == 0 && remainder < each_block_size){
                                                 //debuging
                                                 printf("right here\n");
@@ -525,9 +515,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                 //debuging
                                                 return 0;
                                             }
-                                            if(blocks_need == 0 && remainder == 0){ // if the words < size of each block
+                                            else if(blocks_need == 0 && remainder == 0)
+                                            { // if the words < size of each block
                                                 // add something here
                                                 block_table[free_block_id_data]->next_block = -1;
+                                                return 0;
                                             }
                                             
                                             
@@ -743,6 +735,11 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                     memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
                     file_table[i]->below_direction = -1;
                     file_table[i]->used = 0;
+
+                    file_table[i]->last_block_id = 0;
+                    file_table[i]->last_pointer = 0;
+                    file_table[i]->last_pointer_remainder = 0;
+
 
                     
                     //printf("%d\n",file_table[i]->meta_block_entry);                    
