@@ -140,6 +140,7 @@ int init_file(struct File *list[]){
         list[i]->used = 0;
         list[i]->last_pointer = 0;
         list[i]->last_pointer_remainder = 0;
+        list[i]->last_block_id = 0;
     }
     
     return 0;
@@ -153,6 +154,7 @@ int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION
         list[i]->used = 0;
         list[i]->is_full = 0;
         list[i]->size_remain = each_block_size;
+        
     }
     // init the first;
 
@@ -561,6 +563,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                     block_table[free_space]->used = 1;
                                                     tracking_current_block = free_space;
                                                     block_table[tracking_current_block]->next_block = 0;
+                                                    
                                                     memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
                                                     //write the block --  need to write here
                                                     write_disk(data_block_entry_index + free_space,buffer,0);
@@ -571,6 +574,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                                                     file_table[i]->last_pointer = tracker;      
                                                     file_table[i]->last_pointer_remainder = remainder;      
+                                                    file_table[i]->last_block_id = tracking_current_block;
+
                                                     //printf("the name is %s + last pointer is %d",file_table[i]->name,file_table[i]->last_pointer);                                                                                         
                                                     //printf("the last block entry index is %d\n",tracker);
                                                     
@@ -609,12 +614,23 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             char buffer[each_block_size];
                             memcpy(buffer,user_input,current_block_remain - 1);
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
-                            printf("buffer is [%s]\n",buffer);
-                            
+
+
+                            //debuging
+                            printf("connection\n");
+                            // connect 
+                            int connection = file_table[i]->last_block_id;
+                            blocktable[connection]->next_block = tracking_current_block;
+                            // connect
+                            //printf("connection [%d] tracking_current_block [%d]\n",connection,tracking_current_block);
+                            //debuging
+
+
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
                             //printf("the remainderis : [%d]\n",remainder);
 
+                            
                             int end_index_from_loop;// get index from the below loop                    
                             for (int i = 1; i < blocks_need; i++)
                             {            
@@ -622,7 +638,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                     int index_start = i * each_block_size + remainder;
                                     int index_end = index_start + each_block_size;                                        
                                     memcpy(buffer, &user_input[index_start],each_block_size - 1);                                     
-                                    int free_space = get_free_space_blocktable(block_table);      
+                                    int free_space = get_free_space_blocktable(block_table); 
+                                    
 
                                     block_table[tracking_current_block]->next_block = free_space;
                                     block_table[free_space]->used = 1;

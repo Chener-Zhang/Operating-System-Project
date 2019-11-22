@@ -38,9 +38,9 @@ struct File {
     int used;
     int first_block_entry;
     int meta_block_entry;
-    //done
     int last_pointer;
     int last_pointer_remainder;
+    int last_block_id;
 };
 
 struct Direction{    
