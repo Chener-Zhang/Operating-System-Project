@@ -599,7 +599,6 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                         else // if last_pointer !=0;
                         {
-                            //debuging              
                             int free_block_id_data = get_free_space_blocktable(block_table);                                    
                             int tracking_current_block = free_block_id_data;                                             
                             // --------------------------> init variable
@@ -615,26 +614,20 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             memcpy(buffer,user_input,current_block_remain - 1);
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
 
-
-                            //debuging
-                            printf("connection\n");
+                            //printf("connection\n");
                             // connect 
                             int connection = file_table[i]->last_block_id;
                             blocktable[connection]->next_block = tracking_current_block;
                             // connect
-                            //printf("connection [%d] tracking_current_block [%d]\n",connection,tracking_current_block);
-                            //debuging
 
 
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
                             //printf("the remainderis : [%d]\n",remainder);
-
                             
                             int end_index_from_loop;// get index from the below loop                    
                             for (int i = 1; i < blocks_need; i++)
                             {            
-                                // need of debug!!!
                                     int index_start = i * each_block_size + remainder;
                                     int index_end = index_start + each_block_size;                                        
                                     memcpy(buffer, &user_input[index_start],each_block_size - 1);                                     
@@ -653,11 +646,45 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                     printf("[%d] - [%s]\n",tracking_current_block,buffer);    
                                     end_index_from_loop = index_end;        
                                     
-                            }       
+                            } if(remainder == 0)
+                            {
+                                return 0;
+                            }
 
                             // --------------------------- Last update remainder connection --------------------
+                                            {
+                                            // ------- last block for remaind words - n allocation -- free_block_id_data
+                                                    printf("block last: \n");
+                                                    // debuging
+                                                    int free_space = get_free_space_blocktable(block_table); 
+                                                    block_table[tracking_current_block]->next_block = free_space;
+                                                    block_table[free_space]->used = 1;
+                                                    tracking_current_block = free_space;
+                                                    block_table[tracking_current_block]->next_block = 0;
+                                                    
+                                                    memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
+                                                    //write the block --  need to write here
+                                                    write_disk(data_block_entry_index + free_space,buffer,0);
+
+                                                    
+                                                    int tracker = data_block_entry_index + free_space;
+                                                    //int len = (int)strlen(buffer);
+
+                                                    file_table[i]->last_pointer = tracker;      
+                                                    file_table[i]->last_pointer_remainder = remainder;      
+                                                    file_table[i]->last_block_id = tracking_current_block;
+
+                                                    //printf("the name is %s + last pointer is %d",file_table[i]->name,file_table[i]->last_pointer);                                                                                         
+                                                    //printf("the last block entry index is %d\n",tracker);
+                                                    
+
+                                                    //write the block -- need to write here finished
+                                                    printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                            } 
+                            // --------------------------- Last update remainder connection --------------------
+
                              
-                            //debuging
+                            
                             
                         }
                                          
