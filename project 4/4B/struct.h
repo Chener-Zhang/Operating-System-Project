@@ -37,10 +37,7 @@ struct File {
     int size;
     int used;
     int first_block_entry;
-    int meta_block_entry;
-    
-    
-    int last_block_id;
+    int meta_block_entry;        
 };
 
 struct Direction{    
