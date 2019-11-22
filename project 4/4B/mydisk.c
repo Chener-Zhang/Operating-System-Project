@@ -594,25 +594,29 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                         else // if last_pointer !=0;
                         {
-                            //debuging                                                        
+                            //debuging              
+                            int free_block_id_data = get_free_space_blocktable(block_table);                                    
+                            int tracking_current_block = free_block_id_data;                                             
                             // --------------------------> init variable
-                            
-                            //int blocks_need = user_input_len/each_block_size;
-                            //int remainder = user_input_len % each_block_size; 
-                            
-                            // --------------------------> First connection;
+                            int user_input_len = strlen(user_input);
+                            int blocks_need = user_input_len/each_block_size;
+                            int remainder = user_input_len % each_block_size;                             
+                            // -------------------------- First connection --------------------
                             printf("name %s + last_pointer - >%d\n",file_table[i]->name,file_table[i]->last_pointer);
                             int nbuffer_size =(int)strlen(user_input);
                             int current_block_remain = each_block_size - file_table[i]->last_pointer_remainder;                            
-                            printf("newbuffer size : %d, current block remain %d\n",nbuffer_size,current_block_remain);                            
-                            
+                            printf("newbuffer size : %d, current block remain %d\n",nbuffer_size,current_block_remain);                                                        
                             char buffer[each_block_size];
                             memcpy(buffer,user_input,current_block_remain - 1);
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
                             printf("buffer is [%s]\n",buffer);
 
-                            // --------------------------> Second continue;
-                            // --------------------------> Last update remainder connection;
+                            // --------------------------- Second Continue --------------------
+                            printf("block 2 begin: \n");               
+                            int end_index_from_loop;// get index from the below loop                    
+
+                            // --------------------------- Last update remainder connection --------------------
+                             
                             //debuging
                             
                         }
