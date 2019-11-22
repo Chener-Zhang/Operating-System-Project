@@ -38,9 +38,14 @@ struct File {
     int used;
     int first_block_entry;
     int meta_block_entry;
+<<<<<<< HEAD
     int last_pointer;
     int last_pointer_remainder;
     int last_block_id;
+=======
+    
+    // int next_block_entry;    
+>>>>>>> parent of 7037dc5... Update for Case
 };
 
 struct Direction{    
