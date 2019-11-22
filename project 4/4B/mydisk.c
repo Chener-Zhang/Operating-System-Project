@@ -490,7 +490,6 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                     //printf("The length of the letter is %d\n",user_input_len);    
                                     //printf("you have reach here \n");
                                                     
-                                        //----------------------------------move from main -----------------------------                                         
                                         int blocks_need = user_input_len/each_block_size;
                                         int remainder = user_input_len % each_block_size; 
                                         char buffer[each_block_size];  
@@ -515,12 +514,14 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                         //write the block -- need to write here
                                                         // first entry -- Finish 
 
-
-                                            if(blocks_need == 0){ // if the words < size of each block
+                                            if(blocks_need == 0 && remainder < each_block_size){
+                                                printf("right here\n");
+                                            }
+                                            if(blocks_need == 0 && remainder == 0){ // if the words < size of each block
                                                 // add something here
-
                                                 block_table[free_block_id_data]->next_block = -1;
                                             }
+                                            
                                             
                                             else
                                             {
@@ -550,10 +551,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                                 }                                                    
 
                                                                 if(remainder == 0)
-                                                                {
-                                                                    
+                                                                {                                                               
                                                                     return 0;
                                                                 }
+                                                                
+                                                                
                                             // ------- block 2 - n allocation -- free_block_id_data --- Finished;
                                             
                                             else                                
