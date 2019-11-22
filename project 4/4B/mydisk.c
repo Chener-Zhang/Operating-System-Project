@@ -610,20 +610,20 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             memcpy(buffer,user_input,current_block_remain - 1);
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
                             printf("buffer is [%s]\n",buffer);
-
+                            
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
-                            //printf("the buffer size is : %d",)
+                            //printf("the remainderis : [%d]\n",remainder);
+
                             int end_index_from_loop;// get index from the below loop                    
                             for (int i = 1; i < blocks_need; i++)
                             {            
                                 // need of debug!!!
-                                    int index_start = i * each_block_size + nbuffer_size;
-                                    int index_end = index_start + each_block_size;  
-                                      
-                                    memcpy(buffer, &user_input[index_start],each_block_size - 1); 
+                                    int index_start = i * each_block_size + remainder;
+                                    int index_end = index_start + each_block_size;                                        
+                                    memcpy(buffer, &user_input[index_start],each_block_size - 1);                                     
+                                    int free_space = get_free_space_blocktable(block_table);      
 
-                                    int free_space = get_free_space_blocktable(block_table);                                                                                                
                                     block_table[tracking_current_block]->next_block = free_space;
                                     block_table[free_space]->used = 1;
                                     tracking_current_block = free_space;
@@ -634,8 +634,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                                     // connecting block finished
                                     printf("[%d] - [%s]\n",tracking_current_block,buffer);    
-                                    end_index_from_loop = index_end;
-        
+                                    end_index_from_loop = index_end;        
                                     
                             }       
 
