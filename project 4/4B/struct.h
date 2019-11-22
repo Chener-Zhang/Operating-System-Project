@@ -37,7 +37,8 @@ struct File {
     int size;
     int used;
     int first_block_entry;
-    int meta_block_entry;        
+    int meta_block_entry; 
+    char time_of_creation[30];       
 };
 
 struct Direction{    
@@ -47,6 +48,7 @@ struct Direction{
     int used;   
     int n_things_inside;  
     int meta_block_entry;
+    char time_of_creation[30];       
     // add additional imformation here
 };
 

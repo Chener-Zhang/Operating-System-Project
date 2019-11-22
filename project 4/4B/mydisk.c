@@ -95,20 +95,18 @@ printf("\n\n\n");
                 // write help
             }
             else{
-                printf("checking your input\n");
-                
+                printf("checking your input\n");                
             }
  
         }
-        char_reset();
-        
+        char_reset();        
     }
     
     // while loop
     
 
     unmount(fd);
-    printf("\n\n\n");
+    printf("\n\n");
     return 0;
 
 }
@@ -201,35 +199,21 @@ int char_reset(){
 //print out the direction easy for my testing and tracking
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){
 
-    //Tracking;
-    // This is the current path;
-    //printf("Current: [%s]\n", dir->name);
-    //printf("Current Direction: [%s] ", dir->name);
-    //printf("current index: [%d] ",dir->current_index);
-    //printf("previous index: [%d] ",dir->previous_index);
-    //printf("used index: [%d] \n\n",dir->used);
-    
     // This is what the current path has contains;
+    printf("\tName\t\t Time of creation \n");
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index){
-            printf("\t%s\n", list[i]->name);
-            //printf("Direction: %s\n", list[i]->name);
-            //printf("current index: %d\n",list[i]->current_index);
-            //printf("previous index: %d\n",list[i]->previous_index);
-            //printf("used index: %d\n",list[i]->used);
-            //printf("\n");
+            printf("\t%s \t\t %s\n", list[i]->name, list[i]->time_of_creation);
         }
 
     }
 
     for (int i = 0; i < file_list; i++)
-    {
-        
-        //printf("c[%d] : f[%d]\n", dir->current_index,file_table[i]->below_direction);        
-        
+    {                
         if(dir->current_index == file_table[i]->below_direction){
-            printf("\t%s\n",file_table[i]->name);
+            printf("\t%s \t\t %s\n ", file_table[i]->name,file_table[i]->time_of_creation);
+            //printf("\t%s\n",file_table[i]->name);
         }
     }
     
@@ -356,11 +340,9 @@ int write_disk(int block_index, char* words){
 // 0 - > NULL, 1 - > HAS SOMETHING
 int read_disk(int block_index){
 
-
     lseek(fd, block_index * each_block_size, SEEK_SET);
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    
     if(strcmp(read_buffer, "\0") == 0){
         printf("It is empty\n");
         return 0;
@@ -428,14 +410,16 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
 
     file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
-
+    
     // meta_block_writing;    
     memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
 
     time( &rawtime );
     timeinfo = localtime ( &rawtime );
     char *time = asctime (timeinfo);
-    strncat(meta_buffer, time, 20);
+    strncat(meta_buffer, time, 30);
+    strcpy(filetable[position]->time_of_creation,time);
+    //printf("%s",filetable[position]->time_of_creation);
 
     //   printf ( "Current local time and date: %s", asctime (timeinfo) );
 
@@ -614,15 +598,15 @@ int Read_file(char *filename, struct Direction *dir_table[], struct Direction *c
                             
                             //update tracker                            
                         }                                                                               
-                    }                    
-                    
-                    return 1;
+                    }                                        
+                    return 0;
                 }else{
                     printf("The file does not exit\n");
                     return -1;
                 }
-            }
+            }                    
     }        
+    printf("Invalid Enter\n");
     return 0;
 }
 
@@ -717,13 +701,13 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     //printf("%s\n",meta_buffer);
     int meta_index = meda_block + free_block_id_meta;                                     
 
-    dirtable[position]->meta_block_entry = meta_index;
-    //printf("the entry is : %d",meta_index);
-    
+    dirtable[position]->meta_block_entry = meta_index;    
+    //printf("the entry is : %d",meta_index);    
     time( &rawtime );
     timeinfo = localtime ( &rawtime );
     char *time = asctime (timeinfo);
     strncat(meta_buffer, time, 20);
+    strcpy(dirtable[position]->time_of_creation,time);
 
 
     write_disk(meta_index, meta_buffer); 
