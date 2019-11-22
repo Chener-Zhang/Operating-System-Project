@@ -613,6 +613,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
+                            //printf("the buffer size is : %d",)
                             int end_index_from_loop;// get index from the below loop                    
                             for (int i = 1; i < blocks_need; i++)
                             {            
