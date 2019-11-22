@@ -660,25 +660,17 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                     block_table[tracking_current_block]->next_block = free_space;
                                                     block_table[free_space]->used = 1;
                                                     tracking_current_block = free_space;
-                                                    block_table[tracking_current_block]->next_block = 0;
-                                                    
+                                                    block_table[tracking_current_block]->next_block = 0;                                                    
                                                     memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
                                                     //write the block --  need to write here
-                                                    write_disk(data_block_entry_index + free_space,buffer,0);
-
-                                                    
+                                                    write_disk(data_block_entry_index + free_space,buffer,0);                                                    
                                                     int tracker = data_block_entry_index + free_space;
                                                     //int len = (int)strlen(buffer);
 
                                                     file_table[i]->last_pointer = tracker;      
                                                     file_table[i]->last_pointer_remainder = remainder;      
                                                     file_table[i]->last_block_id = tracking_current_block;
-
-                                                    //printf("the name is %s + last pointer is %d",file_table[i]->name,file_table[i]->last_pointer);                                                                                         
-                                                    //printf("the last block entry index is %d\n",tracker);
-                                                    
-
-                                                    //write the block -- need to write here finished
+                                
                                                     printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                             } 
                             // --------------------------- Last update remainder connection --------------------
