@@ -652,34 +652,33 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 // --------------------------------------------- Change a Direction---------------------------------------------//
 
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){        
-    if (strcmp(dirname,"..") == 0 ){
-        // adding the new case if the current is the root;
-        if(current_dir->current_index == 0){
+    if (strcmp(dirname,"..") == 0 ){        
+        if(current_dir->current_index == 0)
+        {
             printf("It is the root, you cannot go previous\n");
             return -1;
-        }else{
-        int previous_dir = current_dir->previous_index; // redire the current
-        traking_dir = dir_table[previous_dir]; // go to the previosu dir
-        return 1;
         }
-     
+        else
+        {
+            int previous_dir = current_dir->previous_index; // redire the current
+            traking_dir = dir_table[previous_dir]; // go to the previosu dir
+            return 1;
+        }     
     }
 
     for (int i = 0; i < direction_list; i++)
     {
-            if(dir_table[i]->previous_index == current_dir->current_index){ // current = 1
-
-                    if(strcmp(dirname,dir_table[i]->name)==0 ){
-
+            if(dir_table[i]->previous_index == current_dir->current_index)
+            { 
+                    if(strcmp(dirname,dir_table[i]->name)==0 )
+                    {
                         traking_dir = dir_table[i];
-                        return 1;
+                        return 0;
                     }
-
             }
 
     }
     printf("Direction does not exits \n");
-
     return -1;
 }
 
@@ -687,39 +686,32 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
 
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
-
-        for (int i = 0; i < direction_list; i++)
+    for (int i = 0; i < direction_list; i++)
     {
-            if(dir_table[i]->previous_index == current_dir->current_index)
-            {                                
-                if(strcmp(dirname,dir_table[i]->name) == 0 )
-                {
-
-                if(dir_table[i]->n_things_inside > 0){
-                    //printf("current index : %d\n",current_dir->current_index);
-                    printf("%d\n",dir_table[i]->n_things_inside);
-                    printf("You have something inside of this direction, Delete fail\n");
-                    return -1;
-                }else
-                        {
-                            // successful delete the direction;
-                            //printf("meta_index = %d\n",dir_table[i]->meta_block_entry);                            
-                            int meta_entry = dir_table[i]->meta_block_entry;
-                            delete_block(meta_entry);
-                            metabloktable[meta_entry - meda_block]->used = 0;
-
-                            memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
-                            dir_table[i]->current_index = 0;
-                            dir_table[i]->previous_index = -1;
-                            dir_table[i]->used = 0;                                     
-                            dir_table[i]->n_things_inside = 0;
-                            return 1;
-                        }                                                       
-                }
-            printf("Direction does not exit\n");
-            return -1;
+        if(dir_table[i]->previous_index == current_dir->current_index)
+        {                                
+            if(strcmp(dirname,dir_table[i]->name) == 0 )
+            {
+            if(dir_table[i]->n_things_inside > 0){             
+                printf("%d\n",dir_table[i]->n_things_inside);
+                printf("You have something inside of this direction, Delete fail\n");
+                return -1;
+            }else
+                    {                                                
+                        int meta_entry = dir_table[i]->meta_block_entry;
+                        delete_block(meta_entry);
+                        metabloktable[meta_entry - meda_block]->used = 0;
+                        memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
+                        dir_table[i]->current_index = 0;
+                        dir_table[i]->previous_index = -1;
+                        dir_table[i]->used = 0;                                     
+                        dir_table[i]->n_things_inside = 0;
+                        return 1;
+                    }                                                       
             }
-    }
-    //print_list();
+        printf("Direction does not exit\n");
+        return -1;
+        }
+    }    
     return 0;
 }
