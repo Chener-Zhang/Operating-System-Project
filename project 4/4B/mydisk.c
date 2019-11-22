@@ -515,7 +515,15 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                         // first entry -- Finish 
 
                                             if(blocks_need == 0 && remainder < each_block_size){
+                                                //debuging
                                                 printf("right here\n");
+                                                int tracker = data_block_entry_index + free_block_id_data;
+                                                int next_begin_index = user_input_len;                                               
+                                                file_table[i]->last_pointer = tracker;      
+                                                file_table[i]->last_pointer_remainder = remainder;      
+                                                file_table[i]->last_block_id = tracking_current_block;
+                                                //debuging
+                                                return 0;
                                             }
                                             if(blocks_need == 0 && remainder == 0){ // if the words < size of each block
                                                 // add something here
