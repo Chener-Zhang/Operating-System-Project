@@ -599,11 +599,13 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             printf("name %s + last_pointer - >%d\n",file_table[i]->name,file_table[i]->last_pointer);
                             int nbuffer_size =(int)strlen(user_input);
                             int current_block_remain = each_block_size - file_table[i]->last_pointer_remainder;                            
-                            printf("newbuffer size : %d, current block remain %d\n",nbuffer_size,current_block_remain);
+                            printf("newbuffer size : %d, current block remain %d\n",nbuffer_size,current_block_remain);                            
                             
-                            write_disk(file_table[i]->last_pointer,"000",file_table[i]->last_pointer_remainder);
+                            char buffer[each_block_size];
+                            memcpy(buffer,user_input,current_block_remain - 1);
+                            write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
+                            printf("buffer is [%s]\n",buffer);
 
-                            //write_disk(file_table[i]->last_pointer,"0000",file_table[i]->last_pointer_remainder);
                             // --------------------------> Second continue;
                             // --------------------------> Last update remainder connection;
                             //debuging
