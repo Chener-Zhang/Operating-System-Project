@@ -72,6 +72,8 @@ int begin(){
             init_block(metabloktable);
 
             // while loop
+            printf("You are current in the root now\n");
+            printf("type: help\n");
             while(1)
             {
                 parsing();
@@ -95,8 +97,8 @@ int begin(){
                         Write_file(argument,traking_dir,dirtable,filetable,blocktable);
                     }else if(strcmp(command,"read") == 0){
                         Read_file(argument,dirtable,traking_dir,filetable);
-                    }else if(strcmp(command,"read") == 0){
-                        // write help
+                    }else if(strcmp(command,"help") == 0){
+                        help();
                     }
                     else{
                         printf("checking your input\n");                
@@ -114,6 +116,25 @@ int begin(){
 // --------------------------------------------- Some Useful function for myself---------------------------------------------//
 
 // initializing the file[]
+int help(){
+    //Direction cmd
+    printf("Command for dir\n");
+    printf("Type [ls] ----  view current direction, example : ls \n");
+    printf("Type [cd] [dirname] ----  change direction, example : cd dirname \n");
+    printf("Type [mkdir] [dirname] ----  create a direction, example : mkdir dirname \n");
+    printf("Type [rmr] [dirname] ----  remove a direction, example : rmr dirname \n");
+    //File cmd
+    printf("\n");
+    printf("Command for File\n");
+    printf("Type [touch] [filename] ----  create a file, example : touch filename \n");
+    printf("Type [rm] [filename] ----  remove a file, example : rm filename \n");
+    printf("Type [write] [filename] ----  write a file, example : write filename \n");
+    printf("Type [read] [filename] ----  read a file, example : read filename \n");
+    printf("\n");
+    printf("Other tips: \n");
+    printf("cd .. will be go to the previous direction \n");    
+    return 0;
+}
 int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {

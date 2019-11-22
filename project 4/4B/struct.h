@@ -92,6 +92,8 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]);
+
+int help();
 int print_list();
 int begin();
 // ---------------- Function declares ---------------------------
