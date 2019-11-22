@@ -381,68 +381,66 @@ int close_disk(int fd){
 
 
 
-
-
-
-
-
-// --------------------------------------------- File function---------------------------------------------//
+// --------------------------------------------- File function------------------------------------------------------------------------//
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *meta_block_table[]){
-    //check if exist
+    //Get the free space for data block
     int position = get_free_space_filetable(file_table);
+    //Get the free space for meta block
     int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
+    //init the meta buffer
     char meta_buffer[each_block_size];   
 
     if(position < 0){
-        perror("fail to create direction");
+        perror("fail to create direction\n");
         return -1;
     }
 
     for (int i = 0; i < file_list; i++)
     {
-                        
-            if(file_table[i]->below_direction == current_dir->current_index){
-                if(strcmp(file_table[i]->name,filename) == 0 ){
+            // check if within the current direction            
+            if(file_table[i]->below_direction == current_dir->current_index) 
+            {
+                // check if the file exit
+                if(strcmp(file_table[i]->name,filename) == 0 )
+                {
                     printf("you cannot create the file has same name as %s\n",filename);
                     return -1;                    
                 }        
             }
-
     }
-   
+    // if pass the checker, then init the value for the file;
     strcpy(file_table[position]->name,filename);
-
     file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
     
-    // meta_block_writing;    
+    // assiged meta block, put the imformation to metablock
     memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
-
+    // assign the time of creation;    
     time( &rawtime );
     timeinfo = localtime ( &rawtime );
     char *time = asctime (timeinfo);
     strncat(meta_buffer, time, 30);
     strcpy(filetable[position]->time_of_creation,time);
-    //printf("%s",filetable[position]->time_of_creation);
+    // assign the time of creation, Finished time assigned;    
 
-    //   printf ( "Current local time and date: %s", asctime (timeinfo) );
-
+    
+    /*
+    write the metablock to the disk
+    put the imformation to the disk through the meta block[]
+    */
     int meta_index = meda_block + free_block_id_meta;                                     
-    write_disk(meta_index, meta_buffer);  
-
-    file_table[position]->meta_block_entry = meta_index;
-    //printf("%d\n",file_table[position]->meta_block_entry);    
-    metabloktable[free_block_id_meta]->used = 1;
-    // meta_block_writing;    
-
-    //Note tracking for delete the direction;
+    int check = write_disk(meta_index, meta_buffer);  
+    if(check < 0){
+        printf("Fail to write into disk\n");
+    }
+    file_table[position]->meta_block_entry = meta_index;    
+    metabloktable[free_block_id_meta]->used = 1;        
     int current_id = current_dir->current_index;   
-    dir_table[current_id]->n_things_inside ++;
-    //printf("%d\n",dir_table[current_id]->n_things_inside);
-
+    dir_table[current_id]->n_things_inside ++;    
+    //Success return 0;
     return 0;
 }
 // --------------------------------------------- Write a File---------------------------------------------//
