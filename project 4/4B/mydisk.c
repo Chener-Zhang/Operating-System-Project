@@ -475,7 +475,6 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
             { 
                 if(strcmp(file_table[i]->name,filename) == 0 )// check the file exist
                 {  
-
                         if(file_table[i]->last_pointer == 0)// if last_pointer = 0;
                         {
                                     int free_block_id_data = get_free_space_blocktable(block_table);                                    
@@ -505,7 +504,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                         // ------- block 1 allocation -- free_block_id_data
                                         
                                                         // first entry -- init 
-                                                        
+                                                                                              
                                                         blocktable[free_block_id_data]->used = 1;                                            
                                                         // very important to connect the first one;
                                                         file_table[i]->first_block_entry = free_block_id_data;
@@ -518,6 +517,8 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
 
                                             if(blocks_need == 0){ // if the words < size of each block
+                                                // add something here
+
                                                 block_table[free_block_id_data]->next_block = -1;
                                             }
                                             
@@ -550,6 +551,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
                                                                 if(remainder == 0)
                                                                 {
+                                                                    
                                                                     return 0;
                                                                 }
                                             // ------- block 2 - n allocation -- free_block_id_data --- Finished;
@@ -618,7 +620,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             // connect 
                             int connection = file_table[i]->last_block_id;
                             blocktable[connection]->next_block = tracking_current_block;
-                            // connect
+                            // connected;
 
 
                             // --------------------------- Second Continue --------------------
@@ -895,7 +897,6 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                             int meta_entry = dir_table[i]->meta_block_entry;
                             delete_block(meta_entry);
                             metabloktable[meta_entry - meda_block]->used = 0;
-
                             memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
                             dir_table[i]->current_index = 0;
                             dir_table[i]->previous_index = -1;
