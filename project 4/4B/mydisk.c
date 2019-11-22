@@ -595,6 +595,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         else // if last_pointer !=0;
                         {
                             //debuging                                                        
+                            // --------------------------> init variable
+                            
+                            //int blocks_need = user_input_len/each_block_size;
+                            //int remainder = user_input_len % each_block_size; 
+                            
                             // --------------------------> First connection;
                             printf("name %s + last_pointer - >%d\n",file_table[i]->name,file_table[i]->last_pointer);
                             int nbuffer_size =(int)strlen(user_input);
