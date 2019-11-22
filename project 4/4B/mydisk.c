@@ -548,13 +548,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                 }
 
             
-            }else
-        {
-            printf("The file does not exit \n");
-            return -1;
-        }    
+            } 
         }            
     }
+    
+    printf("The file does not exit \n");
     return 0;         
 }
 
