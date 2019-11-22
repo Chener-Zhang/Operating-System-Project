@@ -321,40 +321,58 @@ int write_disk(int block_index, char* words){
     lseek(fd, block_index * each_block_size, SEEK_SET);
     write(fd,words,strlen(words));
     if(write < 0){
-        
+        printf("write fail\n");
+        return -1;
     }
     return 0;
 }
 // --------------------------------------------- Read a disk/block ---------------------------------------------//
+
 // 0 - > NULL, 1 - > HAS SOMETHING
 int read_disk(int block_index){
-
     lseek(fd, block_index * each_block_size, SEEK_SET);
+    if(lseek < 0){
+        printf("lseek fail\n");
+        return -1;
+    }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    if(strcmp(read_buffer, "\0") == 0){
+    if(strcmp(read_buffer, "\0") == 0)
+    {
         printf("It is empty\n");
-        return 0;
-    }else{
-        printf("%s\n",read_buffer);
-        return 1;
+        return -1;
     }
-    
+    else
+    {
+        printf("%s\n",read_buffer);
+        return 0;
+    }    
 }
+
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
-//working...
+
 int delete_block(int block_index){
     lseek(fd, block_index * each_block_size, SEEK_SET);
-
-    // slight change here
+    if(lseek < 0){
+        printf("lseek fail\n");
+        return -1;
+    }
     char buf[each_block_size];    
     memset(buf, 0, each_block_size);
-    write(fd, buf, each_block_size);
+    write(fd, buf, each_block_size);    
+    if(write < 0){
+        printf("write fail\n");
+        return -1;
+    }
     return 0;
 }
 // --------------------------------------------- Close a disk ---------------------------------------------//
 int close_disk(int fd){
     close(fd);
+    if(close < 0){
+        printf("close fail\n");
+        return -1;
+    }
     return 0;
 }
 
