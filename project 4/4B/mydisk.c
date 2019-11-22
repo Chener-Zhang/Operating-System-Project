@@ -616,68 +616,42 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
         perror("fail to create direction");
         return -1;
     }
-
     for (int i = 0; i < direction_list; i++)
-    {
-            //printf("previous index = %d ",dir_table[i]->previous_index);
-            //printf("current index = %d\n",current_dir->current_index);
-            if(dir_table[i]->previous_index == current_dir->current_index){
-                        if(strcmp(dirname,dir_table[i]->name)==0 ){
-                        perror("you cannot create a dir with same name \n");
-                        return -1;
+    {          
+            if(dir_table[i]->previous_index == current_dir->current_index)
+            {
+                if(strcmp(dirname,dir_table[i]->name)==0 )
+                {
+                perror("you cannot create a dir with same name \n");
+                return -1;
                 }
             }
-
-
-    }
-
-    
-    //Write in to the disk + meta_block_writing;    
-    int free_block_id_meta = get_free_space_blocktable(metabloktable); 
-    metabloktable[free_block_id_meta]->used = 1;
-    //printf("free space %d\n",free_block_id_meta);
-    char meta_buffer[each_block_size];   
-    memcpy(meta_buffer,dirname,each_block_size-1);       
-    //printf("%s\n",meta_buffer);
-    int meta_index = meda_block + free_block_id_meta;                                     
-
-    dirtable[position]->meta_block_entry = meta_index;    
-    //printf("the entry is : %d",meta_index);    
-    time( &rawtime );
-    timeinfo = localtime ( &rawtime );
-    char *time = asctime (timeinfo);
-    strncat(meta_buffer, time, 20);
-    strcpy(dirtable[position]->time_of_creation,time);
-
-
-    write_disk(meta_index, meta_buffer); 
-    
-
-
-    // printf("position: %d\n",position);
-
-    strcpy(dir_table[position]->name,dirname);
-
-    dir_table[position]->current_index = position;
-    dir_table[position]->previous_index = current_dir->current_index;
-    dir_table[position]->used = 1;
-
-    // tracking for the deletion
-    dir_table[current_dir->current_index]->n_things_inside++;
-    //printf("%d\n",dir_table[current_dir->current_index]->n_things_inside);
-    // tracking for the deletion
-
-
-    return 1;
+    }     
+        int free_block_id_meta = get_free_space_blocktable(metabloktable); 
+        metabloktable[free_block_id_meta]->used = 1;
+        char meta_buffer[each_block_size];   
+        memcpy(meta_buffer,dirname,each_block_size-1);           
+        int meta_index = meda_block + free_block_id_meta;                                     
+        dirtable[position]->meta_block_entry = meta_index;    
+        // timing creation    
+        time( &rawtime );
+        timeinfo = localtime ( &rawtime );
+        char *time = asctime (timeinfo);
+        strncat(meta_buffer, time, 20);
+        strcpy(dirtable[position]->time_of_creation,time);
+        write_disk(meta_index, meta_buffer); 
+        strcpy(dir_table[position]->name,dirname);
+        dir_table[position]->current_index = position;
+        dir_table[position]->previous_index = current_dir->current_index;
+        dir_table[position]->used = 1;    
+        dir_table[current_dir->current_index]->n_things_inside++;    
+        return 1;
 }
 
 
 // --------------------------------------------- Change a Direction---------------------------------------------//
 
-int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){
-
-    //printf("the current dir is -----------%d\n",current_dir->current_index);
-    // if user enter ".." - > means the previous dir
+int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){        
     if (strcmp(dirname,"..") == 0 ){
         // adding the new case if the current is the root;
         if(current_dir->current_index == 0){
