@@ -111,8 +111,9 @@ int begin(){
             return 0;
         }
 
-// --------------------------------------------- some small function ---------------------------------------------//
+// --------------------------------------------- Some Useful function for myself---------------------------------------------//
 
+// initializing the file[]
 int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {
@@ -121,33 +122,33 @@ int init_file(struct File *list[]){
         list[i]->below_direction = -1;
         list[i]->size = 0;
         list[i]->used = 0;
-
-    }
-    
+    }    
     return 0;
 }
 
-int init_block(struct Block *list[]){ // for the block table; - > FAT ALLOCATION ALGORIHEM
+// initializing the blocks[]
+int init_block(struct Block *list[]){ 
+    // for the block table; - > FAT ALLOCATION ALGORIHEM
     for (int i = 0; i < file_list; i++)
     {
         list[i] = (struct Block*) malloc(sizeof(struct Block));
         list[i]->next_block = -1; // list[0] = -1 = NULL / do not have the next, next is nothing;
-        list[i]->used = 0;
-        list[i]->is_full = 0;
-        list[i]->size_remain = each_block_size;
-    }
-    // init the first;
+        list[i]->used = 0; // check if used
+        list[i]->is_full = 0; // check if it full
+        list[i]->size_remain = each_block_size; // check the remain size
+    }    
 
     //init the first block    
-    list[0]->next_block = -1;
-    list[0]->used = 1;
-    list[0]->is_full = 1;
-    list[0]->size_remain = 0;
+    list[0]->next_block = -1; // if next block is avalaible
+    list[0]->used = 1; // check is used
+    list[0]->is_full = 1; // check if fulled
+    list[0]->size_remain = 0; // check the size remain
 
+    // if everything workds fine return 0
     return 0;
-};
+    }
 
-//Print my list;
+//Print my current table list for debug;
 int print_list(){
     for (int i = 0; i < direction_list; i++)
     {
@@ -161,35 +162,28 @@ int print_list(){
 int parsing(){
     char user_input[each_block_size];
     char copy[each_block_size];
-    printf(">"); // print ">";
-    fgets(user_input,sizeof(user_input),stdin); // get user_input;
-    strcpy(copy, user_input); // copy = user_input;
+    printf(">"); 
+    fgets(user_input,sizeof(user_input),stdin); 
+    strcpy(copy, user_input); 
     int user_input_len = (int)strlen(user_input);
-
     if(user_input_len == 1){
         return 0;
     }
-
-    strcpy(command,strtok(user_input," \n")); // assign first arg -> cmd;
-    //printf("[%s]\n", command);
-    int command_len =(int)strlen(command);
-    
-    //printf("command len : %d \n",command_len);
-    //printf("user_input_len len : %d \n",user_input_len);
+    strcpy(command,strtok(user_input," \n")); 
+    int command_len =(int)strlen(command);            
     if(command_len == user_input_len - 1){
         return 1;
     }else if (command_len == user_input_len - 2){
         return 1;
     }else{
         strcpy(argument,strtok(copy," \t\n"));
-        strcpy(argument,strtok(NULL," \t\n"));
-      //  printf("[%s]\n",argument);
+        strcpy(argument,strtok(NULL," \t\n"));      
         return 1;
     }
 }
-
 // -------------Done with the shell thing------------------->
-// reset my char[]; clean my space
+
+// reset my char[] clean my space // 
 int char_reset(){
     memset(command, 0, sizeof(command));
     memset(argument, 0, sizeof(command));
@@ -197,13 +191,12 @@ int char_reset(){
 }
 
 //print out the direction easy for my testing and tracking
-void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){
-
-    // This is what the current path has contains;
+void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){    
     printf("\tName\t\t Time of creation \n");
     for (int i = 0; i < direction_list; i++)
     {
-        if(list[i]->previous_index == dir->current_index){
+        if(list[i]->previous_index == dir->current_index)
+        {
             printf("\t%s \t\t %s\n", list[i]->name, list[i]->time_of_creation);
         }
 
@@ -212,49 +205,38 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     for (int i = 0; i < file_list; i++)
     {                
         if(dir->current_index == file_table[i]->below_direction){
-            printf("\t%s \t\t %s\n ", file_table[i]->name,file_table[i]->time_of_creation);
-            //printf("\t%s\n",file_table[i]->name);
+            printf("\t%s \t\t %s\n ", file_table[i]->name,file_table[i]->time_of_creation);    
         }
-    }
-    
-    
-    // adding more information;
+    }    
 }
 
-// Get the free space;
-// return the list if it has the space;
+// Get the free space + return the list if it has the space;
 int get_free_space_dirtable(struct Direction *list[]){ // dir
     for (int i = 1; i < direction_list; i++)
-    {
-
-    //debug tracker;
-    //printf("%d\n",ci);
+    {        
        if(list[i]->used == 0){
            return i;
        }
     }
-    printf("The space is full now\n");
-    // all full return -1;
+    printf("The space is full now\n");    
     return -1;
 }
-// -----------------------------
-// Get the free space;
-// return the list if it has the space;
-int get_free_space_filetable(struct File *list[]){ // file
+
+
+
+// Get the free space + return the list if it has the space;
+int get_free_space_filetable(struct File *list[]){ 
     for (int i = 1; i < direction_list; i++)
-    {
-
-    //debug tracker;
-    //printf("%d\n",ci);
+    {        
        if(list[i]->used == 0){
            return i;
        }
     }
-    printf("The space is full now\n");
-    // all full return -1;
+    printf("The space is full now\n");    
     return -1;
 }
 
+// Get the free space + return the list if it has the space;
 int get_free_space_blocktable(struct Block *list[]){
        for (int i = 1; i < block_list; i++)
     {    
@@ -262,12 +244,11 @@ int get_free_space_blocktable(struct Block *list[]){
            return i;
        }       
     }
-    printf("The space is full now\n");
-    // all full return -1;    
+    printf("The space is full now\n");    
     return -1;
 }
 
-// ------------------------------------- some small function Finish ---------------------------------------------//
+// --------------------------------------------- Some Useful function for myself Finished ---------------------------------------------//
 
 // initilization of direction struct for all;
 
