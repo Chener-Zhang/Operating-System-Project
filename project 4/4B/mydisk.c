@@ -13,7 +13,7 @@
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
-int each_block_size = 32;
+int each_block_size = 16;
 int fd;
 char command[50];
 char argument[50];
@@ -73,9 +73,10 @@ printf("\n\n\n");
     // DISK INITING ----------------------
     char name[] = "disk";
     mount(name);    
-    write_disk(super_block,"Super block");
-    write_disk(meda_block,"Meda block");
-    write_disk(data_block_entry_index,"Data block");
+
+    write_disk(super_block,"Super block",0);
+    write_disk(meda_block,"Meda block",0);
+    write_disk(data_block_entry_index,"Data block", 0);
 
      
     // DISK INITING ----------------------
@@ -138,6 +139,7 @@ int init_file(struct File *list[]){
         list[i]->size = 0;
         list[i]->used = 0;
         list[i]->last_pointer = 0;
+        list[i]->last_pointer_remainder = 0;
     }
     
     return 0;
@@ -358,9 +360,9 @@ int open_disk(char *name){
 }
 
 // --------------------------------------------- Write a disk/block ---------------------------------------------//
-int write_disk(int block_index, char* words){
+int write_disk(int block_index, char* words,int specific){
       
-    lseek(fd, block_index * each_block_size, SEEK_SET);
+    lseek(fd, block_index * each_block_size + specific, SEEK_SET);
 
     write(fd,words,strlen(words));
 
@@ -445,7 +447,7 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     // meta_block_writing;    
     memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
     int meta_index = meda_block + free_block_id_meta;                                     
-    write_disk(meta_index, meta_buffer);  
+    write_disk(meta_index, meta_buffer,0);  
 
     file_table[position]->meta_block_entry = meta_index;
     //printf("%d\n",file_table[position]->meta_block_entry);    
@@ -467,124 +469,147 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
         for (int i = 0; i < file_list; i++)
         {                                                    
-            if(file_table[i]->below_direction == current_dir->current_index)// check dir heri
+            if(file_table[i]->below_direction == current_dir->current_index)// check dir heri current location
             { 
                 if(strcmp(file_table[i]->name,filename) == 0 )// check the file exist
                 {  
 
-                    // if this part fail return -1;                               
-                    int free_block_id_data = get_free_space_blocktable(block_table);
-                    
-                    int tracking_current_block = free_block_id_data;
-                    
-
-                    if(free_block_id_data == -1)
-                    {
-                            printf("Allocation fail\n");
-                            return -1;
-                    }
-                    else{
-                        
-                        int user_input_len = (int)strlen(user_input); 
-                        //printf("The length of the letter is %d\n",user_input_len);    
-
-                        //printf("you have reach here \n");
+                        if(file_table[i]->last_pointer == 0)// if last_pointer = 0;
+                        {
+                                    int free_block_id_data = get_free_space_blocktable(block_table);                                    
+                                    int tracking_current_block = free_block_id_data;                                
+                                    if(free_block_id_data == -1) // if all full
+                                    {
+                                            printf("Allocation fail\n");
+                                            return -1;
+                                    }
+                                    else // if not full yet
+                                    {                                    
+                                    int user_input_len = (int)strlen(user_input); 
+                                    //printf("The length of the letter is %d\n",user_input_len);    
+                                    //printf("you have reach here \n");
+                                                    
+                                        //----------------------------------move from main -----------------------------                                         
+                                        int blocks_need = user_input_len/each_block_size;
+                                        int remainder = user_input_len % each_block_size; 
+                                        char buffer[each_block_size];  
                                         
-                            //----------------------------------move from main -----------------------------                                         
-                            int blocks_need = user_input_len/each_block_size;
-                            int remainder = user_input_len % each_block_size; 
-                            char buffer[each_block_size];  
-                            
-                            //printf("needs %d of blocks \n",blocks_need);
-                            //printf("remainder is  %d \n",remainder);
+                                        printf("needs %d of blocks \n",blocks_need);
+                                        printf("remainder is  %d \n",remainder);
 
-                            memcpy(buffer, user_input,each_block_size - 1);
-                            //printf("block 1: \n");
-                            //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
-                            // ------- block 1 allocation -- free_block_id_data
-                            
-                                            // first entry -- init 
-                                            
-                                            blocktable[free_block_id_data]->used = 1;                                            
-                                            // very important to connect the first one;
-                                            file_table[i]->first_block_entry = free_block_id_data;
-                                            
-
-                                            //write the data_ block -- need to write here
-                                            write_disk(data_block_entry_index + free_block_id_data,buffer);                                                                                                                                    
-                                            //write the block -- need to write here
-                                            // first entry -- Finish 
-
-
-                                if(blocks_need == 0){ // if the words < size of each block
-                                    block_table[free_block_id_data]->next_block = -1;
-                                }
-                                
-                                else
-                                {
-                                // ------- block 2 - n allocation -- free_block_id_data --- begin 
-                                                    //printf("block 2 begin: \n");                                                        
-                                                    int end_index_from_loop;// get index from the below loop                    
-                                                    for (int i = 1; i < blocks_need; i++)
-                                                    {            
-                                                            int index_start = i * each_block_size;
-                                                            int index_end = index_start + each_block_size;            
-                                                            memcpy(buffer, &user_input[index_start],each_block_size - 1);                                                                                                                       
-                                                            // connecting block begin
-                                                            int free_space = get_free_space_blocktable(block_table);                                                            
-                                                            block_table[tracking_current_block]->next_block = free_space;
-                                                            block_table[free_space]->used = 1;
-                                                            tracking_current_block = free_space;
-                                                            
-
-                                                            //write the block -- need to write here
-                                                            write_disk(data_block_entry_index + tracking_current_block,buffer);
-                                                            //write the block -- need to write here finished
-
-
-                                                            // connecting block finished
-                                                            //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
-                                                            end_index_from_loop = index_end;
-                                                    }                                                    
-
-                                                    if(remainder == 0)
-                                                    {
-                                                        return 0;
-                                                    }
-                                // ------- block 2 - n allocation -- free_block_id_data --- Finished;
-                                
-                                else                                
-                                {
-                                // ------- last block for remaind words - n allocation -- free_block_id_data
-                                        //printf("block last: \n");
-                                        int free_space = get_free_space_blocktable(block_table); 
-                                        block_table[tracking_current_block]->next_block = free_space;
-                                        block_table[free_space]->used = 1;
-                                        tracking_current_block = free_space;
-                                        block_table[tracking_current_block]->next_block = 0;
-                                        memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
-                                        //write the block --  need to write here
-                                        write_disk(data_block_entry_index + free_space,buffer);
-                                        //write the block -- need to write here finished
-                                        //printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
-                                } 
-                                            printf("\n"); 
-
-                                }
-                                           
-                            
-                            //write_disk(meda_block + free_block_id_data,filename);
-                            //write_disk(data_block_entry_index + i,user_input);           
-                            //----------------------------------move from main -----------------------------
+                                        memcpy(buffer, user_input,each_block_size - 1);
+                                        printf("block 1: \n");
+                                        printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                        // ------- block 1 allocation -- free_block_id_data
                                         
-                        //int tester = file_table[i]->first_block_entry; tracking make sure my code works corrent
-                        //printf("Entry -> %d\n",tester);
-                        //printf("Second connection -> %d\n",blocktable[tester]->next_block);
-                        return 0;
+                                                        // first entry -- init 
+                                                        
+                                                        blocktable[free_block_id_data]->used = 1;                                            
+                                                        // very important to connect the first one;
+                                                        file_table[i]->first_block_entry = free_block_id_data;
+                                                        
+
+                                                        //write the data_ block -- need to write here
+                                                        write_disk(data_block_entry_index + free_block_id_data,buffer,0);                                                                                                                                    
+                                                        //write the block -- need to write here
+                                                        // first entry -- Finish 
+
+
+                                            if(blocks_need == 0){ // if the words < size of each block
+                                                block_table[free_block_id_data]->next_block = -1;
+                                            }
+                                            
+                                            else
+                                            {
+                                            // ------- block 2 - n allocation -- free_block_id_data --- begin 
+                                                                printf("block 2 begin: \n");                                                        
+                                                                int end_index_from_loop;// get index from the below loop                    
+                                                                for (int i = 1; i < blocks_need; i++)
+                                                                {            
+                                                                        int index_start = i * each_block_size;
+                                                                        int index_end = index_start + each_block_size;            
+                                                                        memcpy(buffer, &user_input[index_start],each_block_size - 1);                                                                                                                       
+                                                                        // connecting block begin
+                                                                        int free_space = get_free_space_blocktable(block_table);                                                            
+                                                                        block_table[tracking_current_block]->next_block = free_space;
+                                                                        block_table[free_space]->used = 1;
+                                                                        tracking_current_block = free_space;
+                                                                        
+
+                                                                        //write the block -- need to write here
+                                                                        write_disk(data_block_entry_index + tracking_current_block,buffer,0);
+                                                                        //write the block -- need to write here finished
+
+
+                                                                        // connecting block finished
+                                                                        printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                                                        end_index_from_loop = index_end;
+                                                                }                                                    
+
+                                                                if(remainder == 0)
+                                                                {
+                                                                    return 0;
+                                                                }
+                                            // ------- block 2 - n allocation -- free_block_id_data --- Finished;
+                                            
+                                            else                                
+                                            {
+                                            // ------- last block for remaind words - n allocation -- free_block_id_data
+                                                    printf("block last: \n");
+                                                    int free_space = get_free_space_blocktable(block_table); 
+                                                    block_table[tracking_current_block]->next_block = free_space;
+                                                    block_table[free_space]->used = 1;
+                                                    tracking_current_block = free_space;
+                                                    block_table[tracking_current_block]->next_block = 0;
+                                                    memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);
+                                                    //write the block --  need to write here
+                                                    write_disk(data_block_entry_index + free_space,buffer,0);
+
+                                                    
+                                                    int tracker = data_block_entry_index + free_space;
+                                                    //int len = (int)strlen(buffer);
+
+                                                    file_table[i]->last_pointer = tracker;      
+                                                    file_table[i]->last_pointer_remainder = remainder;      
+                                                    //printf("the name is %s + last pointer is %d",file_table[i]->name,file_table[i]->last_pointer);                                                                                         
+                                                    //printf("the last block entry index is %d\n",tracker);
+                                                    
+
+                                                    //write the block -- need to write here finished
+                                                    printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
+                                            } 
+                                                        printf("\n"); 
+
+                                            }
+                                                                                                                                                                            
+                                        //----------------------------------move from main -----------------------------
+                                                    
+                                    //int tester = file_table[i]->first_block_entry; tracking make sure my code works corrent
+                                    //printf("Entry -> %d\n",tester);
+                                    //printf("Second connection -> %d\n",blocktable[tester]->next_block);
+                                    return 0;
+                                    }   
 
                         }
 
-                    
+                        else // if last_pointer !=0;
+                        {
+                            //debuging                                                        
+                            // --------------------------> First connection;
+                            printf("name %s + last_pointer - >%d\n",file_table[i]->name,file_table[i]->last_pointer);
+                            int nbuffer_size =(int)strlen(user_input);
+                            int current_block_remain = each_block_size - file_table[i]->last_pointer_remainder;                            
+                            printf("newbuffer size : %d, current block remain %d\n",nbuffer_size,current_block_remain);
+                            
+                            write_disk(file_table[i]->last_pointer,"000",file_table[i]->last_pointer_remainder);
+
+                            //write_disk(file_table[i]->last_pointer,"0000",file_table[i]->last_pointer_remainder);
+                            // --------------------------> Second continue;
+                            // --------------------------> Last update remainder connection;
+                            //debuging
+                            
+                        }
+                                         
                 }    
             }            
         }
@@ -717,7 +742,7 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     //printf("the entry is : %d",meta_index);
     
 
-    write_disk(meta_index, meta_buffer); 
+    write_disk(meta_index, meta_buffer,0); 
     
 
 

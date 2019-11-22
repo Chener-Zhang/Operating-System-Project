@@ -40,6 +40,7 @@ struct File {
     int meta_block_entry;
     //done
     int last_pointer;
+    int last_pointer_remainder;
 };
 
 struct Direction{    
@@ -73,7 +74,7 @@ int init_root(struct Direction *list[]);
 
 int create_disk(char *name);
 int open_disk(char *name);
-int write_disk(int block_index, char* words);
+int write_disk(int block_index, char* words,int specific);
 int read_disk(int block_index);
 int delete_block(int block_index);
 int close_disk(int fd);
