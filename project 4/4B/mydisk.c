@@ -205,7 +205,7 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     for (int i = 0; i < file_list; i++)
     {                
         if(dir->current_index == file_table[i]->below_direction){
-            printf("\t%s \t\t %s\n ", file_table[i]->name,file_table[i]->time_of_creation);    
+            printf("\t%s \t\t %s\n", file_table[i]->name,file_table[i]->time_of_creation);    
         }
     }    
 }
@@ -603,6 +603,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
             }
         }
     }    
+    printf("Invalid enter\n");
     return -1;
 }
 
@@ -692,8 +693,7 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
         {                                
             if(strcmp(dirname,dir_table[i]->name) == 0 )
             {
-            if(dir_table[i]->n_things_inside > 0){             
-                printf("%d\n",dir_table[i]->n_things_inside);
+            if(dir_table[i]->n_things_inside > 0){                             
                 printf("You have something inside of this direction, Delete fail\n");
                 return -1;
             }else
