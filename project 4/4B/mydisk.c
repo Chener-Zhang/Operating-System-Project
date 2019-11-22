@@ -522,23 +522,12 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                         }                         
 
                     printf("\n");                     
-                    }
-
-                                        
-                        
-                        //write_disk(meda_block + free_block_id_data,filename);
-                        //write_disk(data_block_entry_index + i,user_input);           
-                        //----------------------------------move from main -----------------------------
-                                    
-                    //int tester = file_table[i]->first_block_entry; tracking make sure my code works corrent
-                    //printf("Entry -> %d\n",tester);
-                    //printf("Second connection -> %d\n",blocktable[tester]->next_block);
+                    }     
                     return 0;
-
                     }
 
                 
-            }else
+                }else
             {
                 printf("The file does not exit \n");
                 return -1;
