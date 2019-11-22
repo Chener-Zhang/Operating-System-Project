@@ -1,7 +1,2 @@
-part I connection with part II second condition connection;
-
- 
-        
-                            
-                            
-                        
+1: test - hello + write f + hi
+2: test - hello this is m

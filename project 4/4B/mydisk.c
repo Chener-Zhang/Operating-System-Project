@@ -261,7 +261,7 @@ int get_free_space_dirtable(struct Direction *list[]){ // dir
     for (int i = 1; i < direction_list; i++)
     {
 
-    //debug tracker;
+    
     //printf("%d\n",ci);
        if(list[i]->used == 0){
            return i;
@@ -505,7 +505,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             file_table[i]->first_block_entry = free_block_id_data;
                                             write_disk(data_block_entry_index + free_block_id_data,buffer,0);                                                                                                                                    
                                             if(blocks_need == 0 && remainder < each_block_size){
-                                                //debuging
+                                                
                                                 printf("right here\n");
                                                 
                                                 
@@ -520,7 +520,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                 file_table[i]->last_block_id = tracking_current_block;
 
                                                 printf("len = [%d]\n",user_input_len);
-                                                //debuging
+                                                
                                                 return 0;
                                             }
                                             if(blocks_need == 0 && remainder == 0){ 
@@ -636,11 +636,12 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
 
                             //printf("connection\n");
+
                             // connect 
                             int connection = file_table[i]->last_block_id;
                             blocktable[connection]->next_block = tracking_current_block;
                             // connected;
-
+                    
 
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
