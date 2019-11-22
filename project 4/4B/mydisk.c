@@ -414,7 +414,7 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
                         
             if(file_table[i]->below_direction == current_dir->current_index){
                 if(strcmp(file_table[i]->name,filename) == 0 ){
-                    printf("you cannot create the file has same name as %s",filename);
+                    printf("you cannot create the file has same name as %s\n",filename);
                     return -1;                    
                 }        
             }
@@ -572,7 +572,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                     
                 }else
                 {
-                    printf("\n The file does not exit \n");
+                    printf("The file does not exit \n");
                     return -1;
                 }    
             }            
@@ -605,6 +605,9 @@ int Read_file(char *filename, struct Direction *dir_table[], struct Direction *c
                     }                    
                     
                     return 1;
+                }else{
+                    printf("The file does not exit\n");
+                    return -1;
                 }
             }
     }        
