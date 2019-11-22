@@ -263,11 +263,11 @@ int init_dir(struct Direction *list[]){
     return 0;
 }
 
-// set my root direction
+// Initilization for my Root
 int init_root(struct Direction *list[]){
     strcpy(list[0]->name,"root");
     list[0]->current_index = 0;
-    list[0]->previous_index = -1; // root previous = -1;
+    list[0]->previous_index = -1; 
     list[0]->used = 1;
     traking_dir = list[0];
     return 0;
@@ -284,16 +284,19 @@ int unmount(int fd){
     close_disk(fd);
     return 0;
 }
-
 // --------------------------------------------- Create a disk ---------------------------------------------//
 int create_disk(char *name ){
     int file_size_counter;
     fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);    
-
+    if(fd < 0){
+        printf("creation fail\n");
+        return -1;
+    }
     char buf[each_block_size];
     memset(buf, 0, each_block_size);
 
-    for (file_size_counter = 0;  file_size_counter < number_of_block; file_size_counter++){
+    for (file_size_counter = 0;  file_size_counter < number_of_block; file_size_counter++)
+    {
                 write(fd, buf, each_block_size);
     }
 
@@ -305,16 +308,21 @@ int create_disk(char *name ){
 // --------------------------------------------- Open a disk ---------------------------------------------//
 int open_disk(char *name){
     fd = open(name,O_RDWR,0644);
+    if(fd < 0)
+    {
+        printf("creation fail\n");
+        return -1;
+    }
     return 0;
 }
 
 // --------------------------------------------- Write a disk/block ---------------------------------------------//
-int write_disk(int block_index, char* words){
-      
+int write_disk(int block_index, char* words){      
     lseek(fd, block_index * each_block_size, SEEK_SET);
-
     write(fd,words,strlen(words));
-
+    if(write < 0){
+        
+    }
     return 0;
 }
 // --------------------------------------------- Read a disk/block ---------------------------------------------//
