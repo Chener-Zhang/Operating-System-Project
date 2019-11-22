@@ -22,19 +22,20 @@ char argument[50];
 
 
 /*
-just for testing easy to read;
+Just for testing easy to read;
 super - > 1;
 meta -  > 32 - 1 = 31 ; --- 2^5;
 data - > 32 ---> 2^5;
 */
+// --------------------------------------------- Global Var ---------------------------------------------//
 
 int super_block = 0 ; // for disk_split() function;
 int meda_block = 1 ; // for disk_split() function;
 int data_block_entry_index = 32 ; // for disk_split() function;
 
 
-struct Direction *dirtable[direction_list]; // {direction1,direction2,direction3.....}
-struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
+struct Direction *dirtable[direction_list]; 
+struct File *filetable[file_list]; 
 struct Block *blocktable[block_list];
 struct Block *metabloktable[block_list];
 struct Direction *traking_dir;
@@ -44,72 +45,71 @@ struct tm * timeinfo;
 
 // --------------------------------------------- Global Var ---------------------------------------------//
 
+
+
 // --------------------------------------------- Main function---------------------------------------------//
 int main(){
     begin();
     return 0;
 }
-
+// --------------------------------------------- Main function---------------------------------------------//
 
 int begin(){
-printf("\n\n\n");
-    // DISK INITING ----------------------
-    char name[] = "disk";
-    mount(name);    
-    write_disk(super_block,"Super block");
-    write_disk(meda_block,"Meda block");
-    write_disk(data_block_entry_index,"Data block");
+            printf("\n\n");
+            // DISK INITING ----------------------
+            char name[] = "disk";
+            mount(name);    
+            write_disk(super_block,"Super block");
+            write_disk(meda_block,"Meda block");
+            write_disk(data_block_entry_index,"Data block");
 
-     
-    // FILE INITING ----------------------
-    init_dir(dirtable);
-    init_root(dirtable);
-    init_file(filetable);    
-    init_block(blocktable);
-    init_block(metabloktable);
+            
+            // FILE INITING ----------------------
+            init_dir(dirtable);
+            init_root(dirtable);
+            init_file(filetable);    
+            init_block(blocktable);
+            init_block(metabloktable);
 
-    // while loop
-    while(1){
-        parsing();
-        if(strcmp(command,"quit") == 0){
-            printf("bye - bye : > \n");
-            break;
-        }else{
-            if(strcmp(command,"ls") == 0){
-                print_direction(traking_dir,dirtable,filetable);
-            }else if(strcmp(command,"cd") == 0){
-                Change_directory(argument,traking_dir,dirtable);
-            }else if(strcmp(command,"mkdir")== 0){
-                Create_directory(argument,dirtable,traking_dir);
-            }else if(strcmp(command,"rmr") == 0){
-                Delete_directory(argument,dirtable,traking_dir,filetable);
-            }else if(strcmp(command,"touch") == 0){
-                Create_file(argument,traking_dir,dirtable,filetable,metabloktable);
-            }else if(strcmp(command,"rm") == 0){
-                Delete_file(argument,dirtable,traking_dir,filetable);
-            }else if(strcmp(command,"write") == 0){
-                Write_file(argument,traking_dir,dirtable,filetable,blocktable);
-            }else if(strcmp(command,"read") == 0){
-                Read_file(argument,dirtable,traking_dir,filetable);
-            }else if(strcmp(command,"read") == 0){
-                // write help
+            // while loop
+            while(1)
+            {
+                parsing();
+                if(strcmp(command,"quit") == 0){
+                    printf("bye - bye : > \n");
+                    break;
+                }else{
+                    if(strcmp(command,"ls") == 0){
+                        print_direction(traking_dir,dirtable,filetable);
+                    }else if(strcmp(command,"cd") == 0){
+                        Change_directory(argument,traking_dir,dirtable);
+                    }else if(strcmp(command,"mkdir")== 0){
+                        Create_directory(argument,dirtable,traking_dir);
+                    }else if(strcmp(command,"rmr") == 0){
+                        Delete_directory(argument,dirtable,traking_dir,filetable);
+                    }else if(strcmp(command,"touch") == 0){
+                        Create_file(argument,traking_dir,dirtable,filetable,metabloktable);
+                    }else if(strcmp(command,"rm") == 0){
+                        Delete_file(argument,dirtable,traking_dir,filetable);
+                    }else if(strcmp(command,"write") == 0){
+                        Write_file(argument,traking_dir,dirtable,filetable,blocktable);
+                    }else if(strcmp(command,"read") == 0){
+                        Read_file(argument,dirtable,traking_dir,filetable);
+                    }else if(strcmp(command,"read") == 0){
+                        // write help
+                    }
+                    else{
+                        printf("checking your input\n");                
+                    }        
+                }
+                char_reset();        
             }
-            else{
-                printf("checking your input\n");                
-            }
- 
+    
+            // End of while loop    
+            unmount(fd);
+            printf("\n\n");
+            return 0;
         }
-        char_reset();        
-    }
-    
-    // while loop
-    
-
-    unmount(fd);
-    printf("\n\n");
-    return 0;
-
-}
 
 // --------------------------------------------- some small function ---------------------------------------------//
 
