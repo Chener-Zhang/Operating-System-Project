@@ -614,6 +614,29 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             // --------------------------- Second Continue --------------------
                             printf("block 2 begin: \n");               
                             int end_index_from_loop;// get index from the below loop                    
+                            for (int i = 1; i < blocks_need; i++)
+                            {            
+                                // need of debug!!!
+                                    int index_start = i * each_block_size + nbuffer_size;
+                                    int index_end = index_start + each_block_size;  
+                                      
+                                    memcpy(buffer, &user_input[index_start],each_block_size - 1); 
+
+                                    int free_space = get_free_space_blocktable(block_table);                                                                                                
+                                    block_table[tracking_current_block]->next_block = free_space;
+                                    block_table[free_space]->used = 1;
+                                    tracking_current_block = free_space;
+                                    
+                                    //write the block -- need to write here
+                                    write_disk(data_block_entry_index + tracking_current_block,buffer,0);
+                                    //write the block -- need to write here finished
+
+                                    // connecting block finished
+                                    printf("[%d] - [%s]\n",tracking_current_block,buffer);    
+                                    end_index_from_loop = index_end;
+        
+                                    
+                            }       
 
                             // --------------------------- Last update remainder connection --------------------
                              
