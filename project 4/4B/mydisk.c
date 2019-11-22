@@ -504,14 +504,11 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             blocktable[free_block_id_data]->used = 1;                                                                                                    
                                             file_table[i]->first_block_entry = free_block_id_data;
                                             write_disk(data_block_entry_index + free_block_id_data,buffer,0);                                                                                                                                    
-                                            if(blocks_need == 0 && remainder < each_block_size){
-                                                
-                                                printf("right here\n");
-                                                
-                                                
-                                                int tracker = data_block_entry_index + free_block_id_data;
-                                                int next_begin_index = user_input_len;                                                                                                                                               
-                                                
+                                            int tracker = data_block_entry_index + free_block_id_data;
+                                            int next_begin_index = user_input_len;   
+                                            if(blocks_need == 0 && remainder < each_block_size)
+                                            {                                                
+                                                printf("right here\n");                                                                                                                                                                                                                                            
                                                 file_table[i]->last_pointer = tracker;      
                                                 file_table[i]->last_pointer_remainder = remainder;      
                                                 file_table[i]->last_block_id = tracking_current_block;
@@ -524,18 +521,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                 // nothing inside; 
                                                 block_table[free_block_id_data]->next_block = -1;
                                                 return 0;
-                                            }else if(blocks_need == 1 && remainder == 0){
-
-                                                // connect 
-                                                int connection = file_table[i]->last_block_id;
-                                                blocktable[connection]->next_block = tracking_current_block;
-                                                printf("eneter again!\n");
-                                                // connected;
-                                                
-                                                return 0;
-                                            }
-                                            
-                                                                                      
+                                            }                                                                                                                       
                                             else
                                             {
                                                 printf("len = [%d]\n",remainder);
@@ -563,15 +549,13 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                                         printf("[%d] - [%s]\n",tracking_current_block,buffer);                                                                                                                        
                                                                         end_index_from_loop = index_end;
                                                                 }                                                    
-
                                                                 if(remainder == 0)
                                                                 {                                                               
                                                                     return 0;
                                                                 }
                                                                 
                                                                 
-                                            // ------- block 2 - n allocation -- free_block_id_data --- Finished;
-                                            
+                                            // ------- block 2 - n allocation -- free_block_id_data --- Finished;                                            
                                             else                                
                                             {
                                             // ------- last block for remaind words - n allocation -- free_block_id_data
@@ -631,7 +615,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                             char buffer[each_block_size];
                             memcpy(buffer,user_input,current_block_remain - 1);
                             write_disk(file_table[i]->last_pointer,buffer,file_table[i]->last_pointer_remainder);
-
+                            printf("last pointer in rewrite : %d\n",file_table[i]->last_pointer);
                             //printf("connection\n");
 
                             // connect 
