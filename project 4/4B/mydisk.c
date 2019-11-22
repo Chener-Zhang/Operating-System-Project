@@ -43,23 +43,6 @@ struct Direction *traking_dir;
 
 // --------------------------------------------- Main function---------------------------------------------//
 int main(){
-
-    /*
-    // testing ------- >
-    printf("\n\n\n");
-    char name[] = "disk";
-    create_disk(name);
-    open_disk(name);
-    write_disk(super_block,"Super block");
-    write_disk(meda_block,"Meda block");
-    write_disk(data_block_entry_index,"Data block");        
-    
-    close_disk(fd);
-    printf("\n\n\n");
-    // testing ------- >
-    */
-
-
     begin();
     return 0;
 }
@@ -67,8 +50,6 @@ int main(){
 
 int begin(){
 printf("\n\n\n");
-    
-    
     // DISK INITING ----------------------
     char name[] = "disk";
     mount(name);    
@@ -77,12 +58,13 @@ printf("\n\n\n");
     write_disk(data_block_entry_index,"Data block");
 
      
-    // DISK INITING ----------------------
+    // FILE INITING ----------------------
     init_dir(dirtable);
     init_root(dirtable);
     init_file(filetable);    
     init_block(blocktable);
     init_block(metabloktable);
+
     // while loop
     while(1){
         parsing();
@@ -106,6 +88,8 @@ printf("\n\n\n");
                 Write_file(argument,traking_dir,dirtable,filetable,blocktable);
             }else if(strcmp(command,"read") == 0){
                 Read_file(argument,dirtable,traking_dir,filetable);
+            }else if(strcmp(command,"read") == 0){
+                // write help
             }
             else{
                 printf("checking your input\n");
