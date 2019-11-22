@@ -6,7 +6,9 @@
 #include <strings.h>
 #include <errno.h>
 #include <sys/mman.h>
+#include <time.h>
 #include "struct.h"
+
 
 
 
@@ -36,7 +38,8 @@ struct File *filetable[file_list]; //{file1,file2,file3} - dir, FAT TABLE ALLO;
 struct Block *blocktable[block_list];
 struct Block *metabloktable[block_list];
 struct Direction *traking_dir;
-
+time_t rawtime;
+struct tm * timeinfo;
 
 
 // --------------------------------------------- Global Var ---------------------------------------------//
@@ -422,11 +425,20 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     }
    
     strcpy(file_table[position]->name,filename);
+
     file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
 
     // meta_block_writing;    
     memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
+
+    time( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    char *time = asctime (timeinfo);
+    strncat(meta_buffer, time, 20);
+
+    //   printf ( "Current local time and date: %s", asctime (timeinfo) );
+
     int meta_index = meda_block + free_block_id_meta;                                     
     write_disk(meta_index, meta_buffer);  
 
@@ -708,6 +720,11 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
     dirtable[position]->meta_block_entry = meta_index;
     //printf("the entry is : %d",meta_index);
     
+    time( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    char *time = asctime (timeinfo);
+    strncat(meta_buffer, time, 20);
+
 
     write_disk(meta_index, meta_buffer); 
     
