@@ -507,24 +507,41 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                             if(blocks_need == 0 && remainder < each_block_size){
                                                 //debuging
                                                 printf("right here\n");
+                                                
+                                                
                                                 int tracker = data_block_entry_index + free_block_id_data;
                                                 int next_begin_index = user_input_len;                                               
+
+                                                printf("the last pointer = %d\n",file_table[i]->last_pointer);
+                                                printf("tracker = %d\n",tracker);
+                                                
                                                 file_table[i]->last_pointer = tracker;      
                                                 file_table[i]->last_pointer_remainder = remainder;      
                                                 file_table[i]->last_block_id = tracking_current_block;
+
+                                                printf("len = [%d]\n",user_input_len);
                                                 //debuging
                                                 return 0;
                                             }
-                                            else if(blocks_need == 0 && remainder == 0)
-                                            { // if the words < size of each block
-                                                // add something here
+                                            if(blocks_need == 0 && remainder == 0){ 
+                                                // nothing inside; 
                                                 block_table[free_block_id_data]->next_block = -1;
+                                                return 0;
+                                            }else if(blocks_need == 1 && remainder == 0){
+
+                                                // connect 
+                                                int connection = file_table[i]->last_block_id;
+                                                blocktable[connection]->next_block = tracking_current_block;
+                                                printf("eneter again!\n");
+                                                // connected;
+                                                
                                                 return 0;
                                             }
                                             
-                                            
+                                                                                      
                                             else
                                             {
+                                                printf("len = [%d]\n",remainder);
                                             // ------- block 2 - n allocation -- free_block_id_data --- begin 
                                                                 printf("block 2 begin: \n");                                                        
                                                                 int end_index_from_loop;// get index from the below loop                    
@@ -919,4 +936,5 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
     //print_list();
     return 0;
 }
+
 
