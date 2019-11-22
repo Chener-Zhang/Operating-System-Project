@@ -453,119 +453,117 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
         //check the current path for the file i want to write;
         if(file_table[i]->below_direction == current_dir->current_index)
         { 
-            // check the file exist
-            if(strcmp(file_table[i]->name,filename) == 0 )
-            {  
-                char user_input[1000]; 
-                fgets(user_input,sizeof(user_input),stdin);                 
-                int free_block_id_data = get_free_space_blocktable(block_table);                
-                int tracking_current_block = free_block_id_data;                
-                if(free_block_id_data == -1)
-                {
-                        printf("Allocation fail\n");
-                        return -1;
-                }
-                else
-                {                    
-                        int user_input_len = (int)strlen(user_input);                                          
-                        int blocks_need = user_input_len/each_block_size;
-                        int remainder = user_input_len % each_block_size; 
-                        char buffer[each_block_size];          
-                        memcpy(buffer, user_input,each_block_size - 1);
+        // check the file exist
+        if(strcmp(file_table[i]->name,filename) == 0 )
+        {  
+            char user_input[1000]; 
+            fgets(user_input,sizeof(user_input),stdin);                 
+            int free_block_id_data = get_free_space_blocktable(block_table);                
+            int tracking_current_block = free_block_id_data;                
+            if(free_block_id_data == -1)
+            {
+                    printf("Allocation fail\n");
+                    return -1;
+            }
+            else
+            {                    
+                    int user_input_len = (int)strlen(user_input);                                          
+                    int blocks_need = user_input_len/each_block_size;
+                    int remainder = user_input_len % each_block_size; 
+                    char buffer[each_block_size];          
+                    memcpy(buffer, user_input,each_block_size - 1);
 
-                        // first entry -- init                                         
-                        blocktable[free_block_id_data]->used = 1;                                                              
-                        file_table[i]->first_block_entry = free_block_id_data;                                      
-                        write_disk(data_block_entry_index + free_block_id_data,buffer); 
-                        // if the words < size of each block
-                        if(blocks_need == 0)
-                        { 
-                            block_table[free_block_id_data]->next_block = -1;
-                        }
-                            
+                    // first entry -- init                                         
+                    blocktable[free_block_id_data]->used = 1;                                                              
+                    file_table[i]->first_block_entry = free_block_id_data;                                      
+                    write_disk(data_block_entry_index + free_block_id_data,buffer); 
+                    // if the words < size of each block
+                    if(blocks_need == 0)
+                    { 
+                        block_table[free_block_id_data]->next_block = -1;
+                    }
+                        
 
-                        else                        
-                        {                                                                                                        
-                        // ------- block 2 - n allocation -- free_block_id_data --- begin 
-                        // get index from the below loop                    
-                        int end_index_from_loop;
-                        for (int i = 1; i < blocks_need; i++)
-                        {            
-                                int index_start = i * each_block_size;
-                                int index_end = index_start + each_block_size;            
-                                memcpy(buffer, &user_input[index_start],each_block_size - 1);                                                                                                                       
-                                // connecting block begin
-                                int free_space = get_free_space_blocktable(block_table);                                                            
-                                block_table[tracking_current_block]->next_block = free_space;
-                                block_table[free_space]->used = 1;
-                                tracking_current_block = free_space;                                
-                                write_disk(data_block_entry_index + tracking_current_block,buffer);                               
-                                end_index_from_loop = index_end;
-                        }                                                    
-
-                        if(remainder == 0)
-                        {
-                            return 0;
-                        }
-                        // ------- block 2 - n allocation -- free_block_id_data --- Finished;
-                            
-                        else                                
-                        {
-                        // ------- last block for remaind words - n allocation -- free_block_id_data                                    
-                            int free_space = get_free_space_blocktable(block_table); 
+                    else                        
+                    {                                                                                                        
+                    // ------- block 2 - n allocation -- free_block_id_data --- begin 
+                    // get index from the below loop                    
+                    int end_index_from_loop;
+                    for (int i = 1; i < blocks_need; i++)
+                    {            
+                            int index_start = i * each_block_size;
+                            int index_end = index_start + each_block_size;            
+                            memcpy(buffer, &user_input[index_start],each_block_size - 1);                                                                                                                       
+                            // connecting block begin
+                            int free_space = get_free_space_blocktable(block_table);                                                            
                             block_table[tracking_current_block]->next_block = free_space;
                             block_table[free_space]->used = 1;
-                            tracking_current_block = free_space;
-                            block_table[tracking_current_block]->next_block = 0;
-                            memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);                            
-                            write_disk(data_block_entry_index + free_space,buffer);                                                        
-                        }                         
+                            tracking_current_block = free_space;                                
+                            write_disk(data_block_entry_index + tracking_current_block,buffer);                               
+                            end_index_from_loop = index_end;
+                    }                                                    
 
-                    printf("\n");                     
-                    }     
-                    return 0;
+                    if(remainder == 0)
+                    {
+                        return 0;
                     }
+                    // ------- block 2 - n allocation -- free_block_id_data --- Finished;
+                        
+                    else                                
+                    {
+                    // ------- last block for remaind words - n allocation -- free_block_id_data                                    
+                        int free_space = get_free_space_blocktable(block_table); 
+                        block_table[tracking_current_block]->next_block = free_space;
+                        block_table[free_space]->used = 1;
+                        tracking_current_block = free_space;
+                        block_table[tracking_current_block]->next_block = 0;
+                        memcpy(buffer, &user_input[end_index_from_loop],each_block_size - 1);                            
+                        write_disk(data_block_entry_index + free_space,buffer);                                                        
+                    }                         
 
-                
-                }else
-            {
-                printf("The file does not exit \n");
-                return -1;
-            }    
+                printf("\n");                     
+                }     
+                return 0;
+                }
+
+            
+            }else
+        {
+            printf("The file does not exit \n");
+            return -1;
+        }    
         }            
     }
     return 0;         
 }
 
+
 // --------------------------------------------- Read a File---------------------------------------------//
 int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
    for (int i = 0; i < file_list; i++)
     {
-            if(file_table[i]->below_direction == current_dir->current_index)
-            {   
-
-                if(strcmp(filename,file_table[i]->name)==0 )
+        if(file_table[i]->below_direction == current_dir->current_index)
+        {   
+            if(strcmp(filename,file_table[i]->name)==0 )
+            {
+                int current = file_table[i]->first_block_entry;            
+                for (int i = 0; i < block_list; i++)
                 {
-                    int current = file_table[i]->first_block_entry;
-                    //printf("current %d\n",current);                            
-                    for (int i = 0; i < block_list; i++)
-                    {
-                        if(current == i)
-                        {   
-
-                            printf("\n");
-                            read_disk(data_block_entry_index + current);
-                            current = blocktable[i]->next_block;
-                            
-                            //update tracker                            
-                        }                                                                               
-                    }                                        
-                    return 0;
-                }else{
-                    printf("The file does not exit\n");
-                    return -1;
-                }
-            }                    
+                    if(current == i)
+                    {   
+                        printf("\n");
+                        read_disk(data_block_entry_index + current);
+                        current = blocktable[i]->next_block;                                                
+                    }                                                                               
+                }                                        
+                return 0;
+            }
+            else
+            {
+                printf("The file does not exit\n");
+                return -1;
+            }
+        }                    
     }        
     printf("Invalid Enter\n");
     return 0;
@@ -576,54 +574,35 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
     
     for (int i = 0; i < file_list; i++)
     {
-
-            if(file_table[i]->below_direction == current_dir->current_index)
-            {   
-
-                if(strcmp(filename,file_table[i]->name)==0 )
+        if(file_table[i]->below_direction == current_dir->current_index)
+        {   
+            if(strcmp(filename,file_table[i]->name)==0 )
+            {
+                memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
+                file_table[i]->below_direction = -1;
+                file_table[i]->used = 0;                            
+                delete_block(file_table[i]->meta_block_entry); 
+                int free_meta_entry = file_table[i]->meta_block_entry;                                    
+                metabloktable[free_meta_entry - meda_block]->used = 0;                
+                int current = file_table[i]->first_block_entry;
+                int previous = file_table[i]->first_block_entry;
+                for (int i = 0; i < block_list; i++)
                 {
-                    memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
-                    file_table[i]->below_direction = -1;
-                    file_table[i]->used = 0;
-
-                    
-                    //printf("%d\n",file_table[i]->meta_block_entry);                    
-                    delete_block(file_table[i]->meta_block_entry); 
-                    int free_meta_entry = file_table[i]->meta_block_entry;                                    
-                    metabloktable[free_meta_entry - meda_block]->used = 0;
-
-                    //delete the block
-                    int current = file_table[i]->first_block_entry;
-                    int previous = file_table[i]->first_block_entry;
-                    for (int i = 0; i < block_list; i++)
-                    {
-                        if(current == i)
-                        {                                                        
-                            printf("\n");                                                        
-                            
-                            delete_block(data_block_entry_index + current);                           
-
-                            current = blocktable[i]->next_block;                            
-                            //printf("current %d\n",current);                            
-                            blocktable[previous]->next_block = 0;
-                            //printf("previous %d\n",previous);
-                            blocktable[previous]->used = 0;                            
-                            previous = current;
-                            //update tracker
-                            //printf("previous %d\n",previous);
-                        }                                                                               
-                    }                    
-                    //delete the block
-
-                //delete direction tracker
-                dir_table[current_dir->current_index]->n_things_inside --;
-                //printf("%d\n",dir_table[current_dir->current_index]->n_things_inside);
-
-                return 0;
-                }
+                    if(current == i)
+                    {                                                        
+                        printf("\n");                                                                                
+                        delete_block(data_block_entry_index + current);                           
+                        current = blocktable[i]->next_block;                                                    
+                        blocktable[previous]->next_block = 0;                        
+                        blocktable[previous]->used = 0;                            
+                        previous = current;                                                
+                    }                                                                               
+                }                                                
+            dir_table[current_dir->current_index]->n_things_inside --;            
+            return 0;
             }
+        }
     }    
-
     return -1;
 }
 
