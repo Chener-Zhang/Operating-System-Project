@@ -510,10 +510,7 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
                                                 
                                                 
                                                 int tracker = data_block_entry_index + free_block_id_data;
-                                                int next_begin_index = user_input_len;                                               
-
-                                                printf("the last pointer = %d\n",file_table[i]->last_pointer);
-                                                printf("tracker = %d\n",tracker);
+                                                int next_begin_index = user_input_len;                                                                                                                                               
                                                 
                                                 file_table[i]->last_pointer = tracker;      
                                                 file_table[i]->last_pointer_remainder = remainder;      
