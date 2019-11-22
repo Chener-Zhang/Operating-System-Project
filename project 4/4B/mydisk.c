@@ -137,7 +137,7 @@ int init_file(struct File *list[]){
         list[i]->below_direction = -1;
         list[i]->size = 0;
         list[i]->used = 0;
-
+        list[i]->last_pointer = 0;
     }
     
     return 0;

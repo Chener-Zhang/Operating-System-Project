@@ -39,7 +39,7 @@ struct File {
     int first_block_entry;
     int meta_block_entry;
     //done
-    // int next_block_entry;    
+    int last_pointer;
 };
 
 struct Direction{    
