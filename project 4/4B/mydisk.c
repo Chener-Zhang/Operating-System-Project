@@ -320,7 +320,7 @@ int create_disk(char *name ){
     /*
     put the test here;
     */
-
+   
     char buf[each_block_size];
     memset(buf, 0, each_block_size);
 
