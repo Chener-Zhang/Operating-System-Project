@@ -6,9 +6,4 @@ all:
 rm:	
 	rm mydisk
 
-main:
-	gcc -o test main.c
-	./test
-	rm test
 
-	
