@@ -41,6 +41,7 @@ struct Direction *dirtable[direction_list];
 struct File *filetable[file_list]; 
 struct Block *blocktable[block_list];
 struct Block *metabloktable[block_list];
+
 struct Direction *traking_dir;
 time_t rawtime;
 struct tm * timeinfo;
@@ -71,8 +72,7 @@ int begin(){
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
-            init_block(blocktable);
-            init_block(metabloktable);
+            init_block(blocktable);            
 
             // while loop
             printf("You are current in the root now\n");
@@ -412,10 +412,7 @@ int close_disk(int fd){
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *meta_block_table[]){
     //Get the free space for data block
     int position = get_free_space_filetable(file_table);
-    //Get the free space for meta block
-    int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
-    //init the meta buffer
-    char meta_buffer[each_block_size];   
+    
 
     if(position < 0){
         perror("fail to create direction\n");
@@ -441,27 +438,13 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     file_table[position]->used = 1;
     
     // assiged meta block, put the imformation to metablock
-    memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
+ 
     // assign the time of creation;    
     time( &rawtime );
     timeinfo = localtime ( &rawtime );
     char *time = asctime (timeinfo);
-    strncat(meta_buffer, time, 30);
     strcpy(filetable[position]->time_of_creation,time);
-    // assign the time of creation, Finished time assigned;    
-
-    
-    /*
-    write the metablock to the disk
-    put the imformation to the disk through the meta block[]
-    */
-    int meta_index = meda_block + free_block_id_meta;                                     
-    int check = write_disk(meta_index, meta_buffer);  
-    if(check < 0){
-        printf("Fail to write into disk\n");
-    }
-    file_table[position]->meta_block_entry = meta_index;    
-    metabloktable[free_block_id_meta]->used = 1;        
+    // assign the time of creation, Finished time assigned;        
     int current_id = current_dir->current_index;   
     dir_table[current_id]->n_things_inside ++;    
     //Success return 0;
@@ -602,10 +585,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
             {
                 memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
                 file_table[i]->below_direction = -1;
-                file_table[i]->used = 0;                            
-                delete_block(file_table[i]->meta_block_entry); 
-                int free_meta_entry = file_table[i]->meta_block_entry;                                    
-                metabloktable[free_meta_entry - meda_block]->used = 0;                
+                file_table[i]->used = 0;                                                                            
                 int current = file_table[i]->first_block_entry;
                 int previous = file_table[i]->first_block_entry;
                 for (int i = 0; i < block_list; i++)
@@ -650,19 +630,11 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 }
             }
     }     
-        int free_block_id_meta = get_free_space_blocktable(metabloktable); 
-        metabloktable[free_block_id_meta]->used = 1;
-        char meta_buffer[each_block_size];   
-        memcpy(meta_buffer,dirname,each_block_size-1);           
-        int meta_index = meda_block + free_block_id_meta;                                     
-        dirtable[position]->meta_block_entry = meta_index;    
         // timing creation    
         time( &rawtime );
         timeinfo = localtime ( &rawtime );
-        char *time = asctime (timeinfo);
-        strncat(meta_buffer, time, 20);
-        strcpy(dirtable[position]->time_of_creation,time);
-        write_disk(meta_index, meta_buffer); 
+        char *time = asctime (timeinfo);        
+        strcpy(dirtable[position]->time_of_creation,time);        
         strcpy(dir_table[position]->name,dirname);
         dir_table[position]->current_index = position;
         dir_table[position]->previous_index = current_dir->current_index;
@@ -720,9 +692,9 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 return -1;
             }else
                     {                                                
-                        int meta_entry = dir_table[i]->meta_block_entry;
-                        delete_block(meta_entry);
-                        metabloktable[meta_entry - meda_block]->used = 0;
+                        
+                        
+                        
                         memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
                         dir_table[i]->current_index = 0;
                         dir_table[i]->previous_index = -1;
