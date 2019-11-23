@@ -40,6 +40,7 @@ int data_block_entry_index = 32 ; // for disk_split() function;
 struct Direction *dirtable[direction_list]; 
 struct File *filetable[file_list]; 
 struct Block *blocktable[block_list];
+
 struct Block *metabloktable[block_list];
 
 struct Direction *traking_dir;
@@ -62,8 +63,7 @@ int begin(){
             printf("\n\n");
             // DISK INITING ----------------------
             char name[] = "disk";
-            mount(name);    
-            write_disk(super_block,"Super block");
+            mount(name);                
             write_disk(meda_block,"Meda block");
             write_disk(data_block_entry_index,"Data block");
 
@@ -299,6 +299,7 @@ int init_root(struct Direction *list[]){
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
 int mount(char *name){
+
     create_disk(name);
     open_disk(name);
     return 0;
@@ -315,7 +316,11 @@ int create_disk(char *name ){
     if(fd < 0){
         printf("creation fail\n");
         return -1;
-    }
+    }      
+    /*
+    put the test here;
+    */
+
     char buf[each_block_size];
     memset(buf, 0, each_block_size);
 
