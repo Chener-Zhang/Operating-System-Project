@@ -563,6 +563,8 @@ int Read_file(char *filename, struct Direction *dir_table[], struct Direction *c
     {
         if(file_table[i]->below_direction == current_dir->current_index)
         {   
+
+            
             if(strcmp(filename,file_table[i]->name)==0 )
             {
                 int current = file_table[i]->first_block_entry;            
