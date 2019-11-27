@@ -358,16 +358,8 @@ int read_disk(int block_index){
     }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    if(strcmp(read_buffer, "\0") == 0)
-    {
-        printf("It is empty\n");
-        return -1;
-    }
-    else
-    {
-        printf("%s\n",read_buffer);
-        return 0;
-    }    
+    printf("%s\n",read_buffer);
+    return 0;  
 }
 
 // --------------------------------------------- Delete a disk/block ---------------------------------------------//
@@ -412,7 +404,8 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     //Get the free space for meta block
     int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
     //init the meta buffer
-    char meta_buffer[each_block_size];   
+    char meta_buffer[each_block_size];
+    
 
     if(position < 0){
         perror("fail to create direction\n");
@@ -436,7 +429,9 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     strcpy(file_table[position]->name,filename);
     file_table[position]->below_direction = current_dir->current_index;   
     file_table[position]->used = 1;
-    
+    memcpy(filename,file_table[position]->name,each_block_size-1); 
+
+
     // assiged meta block, put the imformation to metablock
     memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
     // assign the time of creation;    
@@ -559,34 +554,29 @@ int Write_file(char *filename, struct Direction *current_dir,struct Direction *d
 
 // --------------------------------------------- Read a File---------------------------------------------//
 int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
-   for (int i = 0; i < file_list; i++)
+  for (int i = 0; i < file_list; i++)
     {
-        if(file_table[i]->below_direction == current_dir->current_index)
-        {   
+            if(file_table[i]->below_direction == current_dir->current_index)
+            {   
 
-            
-            if(strcmp(filename,file_table[i]->name)==0 )
-            {
-                int current = file_table[i]->first_block_entry;            
-                for (int i = 0; i < block_list; i++)
+                if(strcmp(filename,file_table[i]->name)==0 )
                 {
-                    if(current == i)
-                    {   
-                        printf("\n");
-                        read_disk(data_block_entry_index + current);
-                        current = blocktable[i]->next_block;                                                
-                    }                                                                               
-                }                                        
-                return 0;
+                    int current = file_table[i]->first_block_entry;
+                    //printf("current %d\n",current);                            
+                    for (int i = 0; i < block_list; i++)
+                    {
+                        if(current == i)
+                        {   
+
+                            printf("\n");
+                            read_disk(data_block_entry_index + current);
+                            current = blocktable[i]->next_block;                           
+                        }                                                                               
+                    }                                        
+                    return 1;
+                }
             }
-            else
-            {
-                printf("The file does not exit\n");
-                return -1;
-            }
-        }                    
     }        
-    printf("Invalid Enter\n");
     return 0;
 }
 
