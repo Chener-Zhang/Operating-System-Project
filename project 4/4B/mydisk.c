@@ -15,7 +15,7 @@
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int number_of_block = 100;
-int each_block_size = 32;
+int each_block_size = 64;
 int fd;
 char command[50];
 char argument[50];
@@ -27,17 +27,30 @@ super - > 1;
 meta -  > 32 - 1 = 31 ; --- 2^5;
 data - > 32 ---> 2^5;
 */
+// Direction ---------
+int current_index_block = 1;
+int previous_direction_block = 2;
+int direction_used_block = 3;
+int n_things_inside_block = 4;
+
+// File   -------
+
+int below_direction_block = 5;
+int used_block = 6;
+int first_block_entry_block = 7;
+
+// Name
+int direction_name_block = 8;
+int file_name_block = 9;
 // --------------------------------------------- Global Var ---------------------------------------------//
 
 int super_block = 0 ; // for disk_split() function;
-int meda_block = 1 ; // for disk_split() function;
 int data_block_entry_index = 32 ; // for disk_split() function;
 
 
 struct Direction *dirtable[direction_list]; 
 struct File *filetable[file_list]; 
 struct Block *blocktable[block_list];
-struct Block *metabloktable[block_list];
 struct Direction *traking_dir;
 time_t rawtime;
 struct tm * timeinfo;
@@ -49,32 +62,48 @@ struct tm * timeinfo;
 
 // --------------------------------------------- Main function---------------------------------------------//
 int main(){
+
+
     begin();
     return 0;
 }
 // --------------------------------------------- Main function---------------------------------------------//
 
 int begin(){
-            printf("\n\n");
-            // DISK INITING ----------------------
-            char name[] = "disk";
-            mount(name);    
-            write_disk(super_block,"Super block");
-            write_disk(meda_block,"Meda block");
-            write_disk(data_block_entry_index,"Data block");
 
-            
-            // FILE INITING ----------------------
+        char name[] = "disk";
+        open_disk(name);      
+        lseek(fd, 0 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        int new_int = atoi(read_buffer);
+        //Mount(name);
+
+        if(new_int == 1){         
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
             init_block(blocktable);
-            init_block(metabloktable);
+            loading(dirtable,filetable);                  
+        }else{
 
-            // while loop
-            printf("You are current in the root now\n");
-            printf("type: help\n");
-            while(1)
+        // DISK INITING ----------------------
+            Mount(name);    
+            write_disk(super_block,"1");
+            write_disk(data_block_entry_index,"Data block");
+            // FILE INITING ----------------------
+            init_dir(dirtable);
+            init_root(dirtable);
+            init_file(filetable);    
+            init_block(blocktable);           
+        }
+  
+        
+
+        // while loop
+        printf("You are current in the root now\n");
+        printf("type: help\n");
+        while(1)
             {
                 parsing();
                 if(strcmp(command,"quit") == 0){
@@ -90,7 +119,7 @@ int begin(){
                     }else if(strcmp(command,"rmr") == 0){
                         Delete_directory(argument,dirtable,traking_dir,filetable);
                     }else if(strcmp(command,"touch") == 0){
-                        Create_file(argument,traking_dir,dirtable,filetable,metabloktable);
+                        Create_file(argument,traking_dir,dirtable,filetable);
                     }else if(strcmp(command,"rm") == 0){
                         Delete_file(argument,dirtable,traking_dir,filetable);
                     }else if(strcmp(command,"write") == 0){
@@ -106,12 +135,14 @@ int begin(){
                 }
                 char_reset();        
             }
-    
+                        
+            updating_metablock(dirtable,filetable);
             // End of while loop    
-            unmount(fd);
+            Unmount(fd);
             printf("\n\n");
             return 0;
         }
+
 
 // --------------------------------------------- Some Useful function for myself---------------------------------------------//
 
@@ -141,7 +172,6 @@ int init_file(struct File *list[]){
         list[i] = (struct File*) malloc(sizeof(struct File));
         memset(list[i]->name, 0, sizeof *list[i]->name);
         list[i]->below_direction = -1;
-        list[i]->size = 0;
         list[i]->used = 0;
     }    
     return 0;
@@ -295,13 +325,13 @@ int init_root(struct Direction *list[]){
 }
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
-int mount(char *name){
+int Mount(char *name){
     create_disk(name);
     open_disk(name);
     return 0;
 }
 
-int unmount(int fd){
+int Unmount(int fd){
     close_disk(fd);
     return 0;
 }
@@ -358,7 +388,7 @@ int read_disk(int block_index){
     }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    printf("%s\n",read_buffer);
+    printf("[%s]\n",read_buffer);
     return 0;  
 }
 
@@ -398,14 +428,10 @@ int close_disk(int fd){
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
-int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *meta_block_table[]){
+int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
     //Get the free space for data block
     int position = get_free_space_filetable(file_table);
-    //Get the free space for meta block
-    int free_block_id_meta = get_free_space_blocktable(meta_block_table); 
-    //init the meta buffer
-    char meta_buffer[each_block_size];
-    
+
 
     if(position < 0){
         perror("fail to create direction\n");
@@ -431,29 +457,6 @@ int Create_file(char *filename, struct Direction *current_dir,struct Direction *
     file_table[position]->used = 1;
     memcpy(filename,file_table[position]->name,each_block_size-1); 
 
-
-    // assiged meta block, put the imformation to metablock
-    memcpy(meta_buffer,file_table[position]->name,each_block_size-1);       
-    // assign the time of creation;    
-    time( &rawtime );
-    timeinfo = localtime ( &rawtime );
-    char *time = asctime (timeinfo);
-    strncat(meta_buffer, time, 30);
-    strcpy(filetable[position]->time_of_creation,time);
-    // assign the time of creation, Finished time assigned;    
-
-    
-    /*
-    write the metablock to the disk
-    put the imformation to the disk through the meta block[]
-    */
-    int meta_index = meda_block + free_block_id_meta;                                     
-    int check = write_disk(meta_index, meta_buffer);  
-    if(check < 0){
-        printf("Fail to write into disk\n");
-    }
-    file_table[position]->meta_block_entry = meta_index;    
-    metabloktable[free_block_id_meta]->used = 1;        
     int current_id = current_dir->current_index;   
     dir_table[current_id]->n_things_inside ++;    
     //Success return 0;
@@ -591,10 +594,9 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
             {
                 memset(file_table[i]->name,0,sizeof(file_table[i]->name));                            
                 file_table[i]->below_direction = -1;
-                file_table[i]->used = 0;                            
-                delete_block(file_table[i]->meta_block_entry); 
-                int free_meta_entry = file_table[i]->meta_block_entry;                                    
-                metabloktable[free_meta_entry - meda_block]->used = 0;                
+                file_table[i]->used = 0;      
+
+     
                 int current = file_table[i]->first_block_entry;
                 int previous = file_table[i]->first_block_entry;
                 for (int i = 0; i < block_list; i++)
@@ -639,19 +641,8 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 }
             }
     }     
-        int free_block_id_meta = get_free_space_blocktable(metabloktable); 
-        metabloktable[free_block_id_meta]->used = 1;
-        char meta_buffer[each_block_size];   
-        memcpy(meta_buffer,dirname,each_block_size-1);           
-        int meta_index = meda_block + free_block_id_meta;                                     
-        dirtable[position]->meta_block_entry = meta_index;    
-        // timing creation    
-        time( &rawtime );
-        timeinfo = localtime ( &rawtime );
-        char *time = asctime (timeinfo);
-        strncat(meta_buffer, time, 20);
-        strcpy(dirtable[position]->time_of_creation,time);
-        write_disk(meta_index, meta_buffer); 
+       
+       
         strcpy(dir_table[position]->name,dirname);
         dir_table[position]->current_index = position;
         dir_table[position]->previous_index = current_dir->current_index;
@@ -709,9 +700,7 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
                 return -1;
             }else
                     {                                                
-                        int meta_entry = dir_table[i]->meta_block_entry;
-                        delete_block(meta_entry);
-                        metabloktable[meta_entry - meda_block]->used = 0;
+                       
                         memset(dir_table[i]->name,0,sizeof(dir_table[i]->name));                            
                         dir_table[i]->current_index = 0;
                         dir_table[i]->previous_index = -1;
@@ -724,5 +713,289 @@ int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direct
         return -1;
         }
     }    
+    return 0;
+}
+
+
+// ADDITIONAL FEATURE --------------------------------------------------------------------------------------------------------
+// NEW ELEMENT FOR MEDA BLOCK FUNCTION 
+int updating_metablock(struct Direction *dirlist[], struct File *filelist[]){
+    // Direction meta block initilization ------------------->
+
+    for (int i = 1; i < 8; i++)
+    {
+        delete_block(i);
+    }
+
+
+    // current index block 1
+    int counter_current_index_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", dirlist[i]->current_index);
+        write_metablock_special(current_index_block,i +counter_current_index_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_current_index_block +=3;
+    }
+   
+
+    
+    // current index block 2
+    int counter_previous_direction_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", dirlist[i]->previous_index);
+        write_metablock_special(previous_direction_block,i + counter_previous_direction_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_previous_direction_block +=3;
+    }
+    
+    // dir used block 3
+    int counter_direction_used_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", dirlist[i]->used);
+        write_metablock_special(direction_used_block,i + counter_direction_used_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_direction_used_block +=3;
+    }
+
+    // n_thing_in_dir_block 4
+    int counter_n_things_inside = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", dirlist[i]->n_things_inside);
+        write_metablock_special(n_things_inside_block,i + counter_n_things_inside ,str);
+        memset(str, 0, sizeof(str));
+        counter_n_things_inside +=3;
+    }
+
+    // Direction meta block Update Finish ------------------->
+
+
+
+    // File meta block initilization ------------------->
+
+
+    //below_direction_block = 5;
+    int counter_below_direction_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", filelist[i]->below_direction);
+        write_metablock_special(below_direction_block,i + counter_below_direction_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_below_direction_block +=3;
+    }
+
+    //int used_block = 6;
+    int counter_used_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", filelist[i]->used);
+        write_metablock_special(used_block,i + counter_used_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_used_block +=3;
+    }
+
+    //int first_block_entry_block = 7;
+    int counter_first_block_entry_block = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%d", filelist[i]->first_block_entry);
+        write_metablock_special(first_block_entry_block,i + counter_first_block_entry_block ,str);
+        memset(str, 0, sizeof(str));
+        counter_first_block_entry_block +=3;
+    }
+    
+    // File meta block Update Finish ------------------->
+
+
+
+    // direction_name_block = 8;
+    int dir_counter = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%s", dirlist[i]->name);
+        write_metablock_special(direction_name_block,i + dir_counter ,str);
+        memset(str, 0, sizeof(str));
+        dir_counter+= 20;
+    
+    }
+    // int file_name_block = 9;
+    int file_counter = 0;
+    for (int i = 0; i <  direction_list; i++)
+    {
+        char str[10];
+        sprintf(str, "%s", filelist[i]->name);
+        write_metablock_special(file_name_block,i + file_counter ,str);
+        memset(str, 0, sizeof(str));
+        file_counter += 20;
+    }
+
+    // Name block finish init;
+
+    return 0;
+}
+
+int write_metablock_special(int block_index,int special, char item[]){
+
+    lseek(fd, block_index * each_block_size + special, SEEK_SET);
+    write(fd,item,strlen(item));
+
+    if(write < 0){
+        printf("write fail\n");
+        return -1;
+    }
+    return 0;
+}
+
+
+int loading(struct Direction *dirtable[], struct File *filetable[]){
+
+    // current_index_block 1
+    for (int i = 0; i < direction_list; i++)
+    {        
+        lseek(fd, current_index_block * each_block_size + i*4 , SEEK_SET);   
+        char read_buffer[each_block_size];        
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);        
+        int new_int = atoi(read_buffer);       
+       // bug here
+        dirtable[i]->current_index = new_int;         
+    }
+    
+    printf("\n");
+
+
+    // int previous_direction_block = 2;
+    for (int i = 0; i < direction_list; i++)
+    {
+         lseek(fd, previous_direction_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+         printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+        dirtable[i]->previous_index = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+     printf("\n");
+
+    //int direction_used_block = 3;
+    for (int i = 0; i < direction_list; i++)
+    {
+         lseek(fd, direction_used_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+        dirtable[i]->used = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+    printf("\n");
+
+
+    //int n_things_inside_block = 4;
+    for (int i = 0; i < direction_list; i++)
+    {
+        lseek(fd, n_things_inside_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+        dirtable[i]->n_things_inside = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+    printf("\n");
+  
+
+
+    // File   -------
+
+    //int below_direction_block = 5;
+    for (int i = 0; i < file_list; i++)
+    {
+        lseek(fd, below_direction_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+
+        filetable[i]->below_direction = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+  
+    printf("\n");
+
+
+
+    //int used_block = 6;
+    for (int i = 0; i < file_list; i++)
+    {
+         lseek(fd, used_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+        filetable[i]->used = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+    printf("\n");
+    printf("\n");
+    //int first_block_entry_block = 7;
+    for (int i = 0; i < file_list; i++)
+    {
+        lseek(fd, first_block_entry_block * each_block_size + i*4 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        printf("[%s]",read_buffer);
+        int new_int = atoi(read_buffer);       
+        filetable[i]->first_block_entry = new_int; 
+        //printf("the len is %d\n",new_int);
+
+    }
+    printf("\n");
+    
+    
+    // Name
+    //int direction_name_block = 8;
+      for (int i = 0; i < file_list; i++)
+        {
+        lseek(fd, direction_name_block * each_block_size + i*21 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        //printf("[%s]",read_buffer);
+             
+        strcpy(dirtable[i]->name,read_buffer);
+        printf(" [%s]",dirtable[i]->name);
+
+        }
+    printf("\n");
+    
+    //int file_name_block = 9;
+
+         for (int i = 0; i < file_list; i++)
+        {
+        lseek(fd, file_name_block * each_block_size + i*21 , SEEK_SET);    
+        char read_buffer[each_block_size];
+        read(fd,read_buffer,sizeof(read_buffer));
+        //printf("[%s]",read_buffer);             
+        strcpy(filetable[i]->name,read_buffer);
+        printf("[%s]",filetable[i]->name);
+
+        }
+    printf("\n");
     return 0;
 }
