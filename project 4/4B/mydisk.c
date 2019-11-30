@@ -21,43 +21,29 @@ char command[50];
 char argument[50];
 
 
-/*
-Just for testing easy to read;
-super - > 1;
-meta -  > 32 - 1 = 31 ; --- 2^5;
-data - > 32 ---> 2^5;
-*/
-// Direction ---------
+// Direction Information ---------
 int current_index_block = 1;
 int previous_direction_block = 2;
 int direction_used_block = 3;
 int n_things_inside_block = 4;
-
-// File   -------
+// File Information ------
 
 int below_direction_block = 5;
 int used_block = 6;
 int first_block_entry_block = 7;
 
-// Name
+// Name Information ---- 
 int direction_name_block = 8;
 int file_name_block = 9;
 // --------------------------------------------- Global Var ---------------------------------------------//
-
 int super_block = 0 ; // for disk_split() function;
 int data_block_entry_index = 32 ; // for disk_split() function;
-
-
 struct Direction *dirtable[direction_list]; 
 struct File *filetable[file_list]; 
 struct Block *blocktable[block_list];
 struct Direction *traking_dir;
-time_t rawtime;
-struct tm * timeinfo;
-
 
 // --------------------------------------------- Global Var ---------------------------------------------//
-
 
 
 // --------------------------------------------- Main function---------------------------------------------//
@@ -70,41 +56,41 @@ int main(){
 // --------------------------------------------- Main function---------------------------------------------//
 
 int begin(){
-
+        // open a disk 
         char name[] = "disk";
         open_disk(name);      
-        lseek(fd, 0 , SEEK_SET);    
+        lseek(fd, 0 , SEEK_SET);
+        //set the pointer    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
         int new_int = atoi(read_buffer);
-        //Mount(name);
-
+        // check whether the disk has open before or not 
         if(new_int == 1){         
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
             init_block(blocktable);
             loading(dirtable,filetable);                  
-        }else{
-
+        }
+        else
+        {
         // DISK INITING ----------------------
             Mount(name);    
             write_disk(super_block,"1");
             write_disk(data_block_entry_index,"Data block");
-            // FILE INITING ----------------------
+        // FILE INITING ----------------------
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
             init_block(blocktable);           
-        }
-  
-        
+        }      
 
         // while loop
         printf("You are current in the root now\n");
         printf("type: help\n");
         while(1)
             {
+                // parsing shell stuff
                 parsing();
                 if(strcmp(command,"quit") == 0){
                     printf("bye - bye : > \n");
@@ -135,9 +121,10 @@ int begin(){
                 }
                 char_reset();        
             }
-                        
+            // saving the data from the previous data;                  
             updating_metablock(dirtable,filetable);
-            // End of while loop    
+            // End of while loop
+            // close the disk    
             Unmount(fd);
             printf("\n\n");
             return 0;
@@ -166,6 +153,8 @@ int help(){
     printf("cd .. will be go to the previous direction \n");    
     return 0;
 }
+
+// initializing the file
 int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {
@@ -302,7 +291,6 @@ int get_free_space_blocktable(struct Block *list[]){
 // --------------------------------------------- Some Useful function for myself Finished ---------------------------------------------//
 
 // initilization of direction struct for all;
-
 int init_dir(struct Direction *list[]){
     for (int i = 0; i < direction_list; i++)
     {
@@ -776,8 +764,6 @@ int updating_metablock(struct Direction *dirlist[], struct File *filelist[]){
 
     // Direction meta block Update Finish ------------------->
 
-
-
     // File meta block initilization ------------------->
 
 
@@ -896,14 +882,14 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
 
-     //   printf("[%s]",read_buffer);
+    //printf("[%s]",read_buffer);
 
         int new_int = atoi(read_buffer);       
         dirtable[i]->used = new_int; 
         //printf("the len is %d\n",new_int);
 
     }
-   // printf("\n");
+    //printf("\n");
 
 
     //int n_things_inside_block = 4;
@@ -912,35 +898,31 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, n_things_inside_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-     //   printf("[%s]",read_buffer);
+    //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         dirtable[i]->n_things_inside = new_int; 
-        //printf("the len is %d\n",new_int);
+    //printf("the len is %d\n",new_int);
 
     }
-   // printf("\n");
+
+    //printf("\n");
   
 
 
     // File   -------
-
-    //int below_direction_block = 5;
+    
     for (int i = 0; i < file_list; i++)
     {
         lseek(fd, below_direction_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-     //   printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
-
         filetable[i]->below_direction = new_int; 
         //printf("the len is %d\n",new_int);
-
     }
   
-   // printf("\n");
-
-
+     // printf("\n");
 
     //int used_block = 6;
     for (int i = 0; i < file_list; i++)
@@ -981,7 +963,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         //printf("[%s]",read_buffer);
              
         strcpy(dirtable[i]->name,read_buffer);
-      //  printf(" [%s]",dirtable[i]->name);
+      //printf(" [%s]",dirtable[i]->name);
 
         }
     //printf("\n");
@@ -995,9 +977,9 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         read(fd,read_buffer,sizeof(read_buffer));
         //printf("[%s]",read_buffer);             
         strcpy(filetable[i]->name,read_buffer);
-       // printf("[%s]",filetable[i]->name);
+    //printf("[%s]",filetable[i]->name);
 
         }
-   // printf("\n");
+    //printf("\n");
     return 0;
 }
