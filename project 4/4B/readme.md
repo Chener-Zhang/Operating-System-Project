@@ -1,27 +1,33 @@
 # Project Description
 
-#define name_size  10   //define
-#define bloc_entry_number  10   // for calculation
-// DIY the var here:
-// These three has to be the same here;
-#define direction_list 10  // [#] plugin number
-#define file_list 10     // [#] plugin number
-#define block_list 10   // [#] plugin number
+
+
+### **Define Global Var**
+
+
+* ### **#define name_size  10**   
+* ### **#define bloc_entry_number  10**   
+* ### **#define direction_list 10**  
+* ### **#define file_list 10**     
+* ### **#define block_list 10**  
 
 
 
-// Note from myself: Assignment requirement;
-// 16,384 blocks total     ---- 2^14
-// 8,192 for data blocks   ----- 2^13
-// 8191 for meda -- 2^13 - 1
-// 1 for super   --- 2^0
-/*
-just for testing easy to read;
-super - > 1;
-meta -  > 32 --- 2^5;
-data - > 32 ---> 2^5;
-*/
-//-------------------------------------------------------------------------------------------------------->
+
+### Note for calculation
+
+*  Note from myself: Assignment requirement;
+*  16,384 blocks total     ---- 2^14
+*  8,192 for data blocks   ----- 2^13
+*  8191 for meda -- 2^13 - 1
+* 1 for super   --- 2^0
+* super - > 1;
+* meta -  > 32 --- 2^5;
+* data - > 32 ---> 2^5;
+
+
+### **Function description**
+
 struct File;
 struct Direction;
 struct Block;
