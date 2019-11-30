@@ -243,7 +243,7 @@ int char_reset(){
 
 //print out the direction easy for my testing and tracking
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){    
-    printf("\tName\t\t Time of creation \n");
+    printf("\tName\t \n");
     for (int i = 0; i < direction_list; i++)
     {
         if(list[i]->previous_index == dir->current_index)
@@ -388,7 +388,7 @@ int read_disk(int block_index){
     }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    printf("[%s]\n",read_buffer);
+    //printf("[%s]\n",read_buffer);
     return 0;  
 }
 
@@ -948,7 +948,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
          lseek(fd, used_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         filetable[i]->used = new_int; 
         //printf("the len is %d\n",new_int);
@@ -962,7 +962,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, first_block_entry_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         filetable[i]->first_block_entry = new_int; 
         //printf("the len is %d\n",new_int);
