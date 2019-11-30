@@ -1,5 +1,0 @@
-  char str[10];
-        sprintf(str, "%d", dirlist[i]->used);
-        write_metablock_special(meda_block,i + counter_used,str);
-        counter_used += 3;
-        memset(str, 0, sizeof(str));   
