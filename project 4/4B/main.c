@@ -78,13 +78,27 @@ int begin(){
         read(fd,read_buffer,sizeof(read_buffer));
         int new_int = atoi(read_buffer);
         //Mount(name);
-
+        
         if(new_int == 1){         
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
             init_block(blocktable);
-            loading(dirtable,filetable);    
+            printf("\n\nLoading the disk\n\n\n");
+            loading(dirtable,filetable);
+
+            // If you don't like this Special Effects you can // it
+            /*
+            for (int i = 0; i < 6; i++)
+            {
+                printf("Loading .......... %d",i*20);
+                printf("%c\n", '%');
+                sleep(1);
+               
+            }
+            */
+            
+            printf("\n\n\nFinished Loading!\n\n\n");
 
                        
         }else{
@@ -327,6 +341,7 @@ int init_root(struct Direction *list[]){
 
 // --------------------------------------------- Partition a disk ---------------------------------------------//
 int Mount(char *name){
+    printf("Mount disk success!\n");
     create_disk(name);
     open_disk(name);
     return 0;
@@ -341,7 +356,7 @@ int create_disk(char *name ){
     int file_size_counter;
     fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);    
     if(fd < 0){
-        printf("creation fail\n");
+        printf("Creation fail\n");
         return -1;
     }
     char buf[each_block_size];
@@ -362,7 +377,7 @@ int open_disk(char *name){
     fd = open(name,O_RDWR,0644);
     if(fd < 0)
     {
-        printf("creation fail\n");
+        //printf("Creation fail\n");
         return -1;
     }
     return 0;
