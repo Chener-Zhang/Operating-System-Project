@@ -83,23 +83,49 @@ struct Block{
 
 ## **---------------- Function declares for shell---------------------------**
 ```
-//reset the char when i parsing the user input while using the shell
 int char_reset(void);
+```
+### reset the char when i parsing the user input while using the shell
 
-// parsing the user input 
+ 
+
+```
 int parsing(void);
-// help -- list the imformation u need you know
+```
+### parsing the user input
+
+```
 int help(void);
 ```
+### help -- list the imformation u need you know
+
 
 ## **---------------- Function declares for disk operation----------------**
 ```
 int Mount(char *name);
+```
+### create the disk, do the partition
+```
 int Unmount(int fd);
+```
+### Close the disk and reset
+```
 int get_free_space_dirtable(struct Direction *list[]);
+```
+### get the free index of array of direction; while the used == 1;
+```
 int get_free_space_filetable(struct File *list[]);
+```
+### get the free index of array of file; while the used == 1;
+```
 int init_dir(struct Direction *list[]);
+```
+### Initializing the direction array of direction;
+```
 int init_root(struct Direction *list[]);
+```
+### Initializing the root in the array[0] of direction;
+```
 int create_disk(char *name);
 int open_disk(char *name);
 int write_disk(int block_index, char* words);
@@ -107,15 +133,36 @@ int read_disk(int block_index);
 int delete_block(int block_index);
 int close_disk(int fd);
 ```
+### Disk manipulation; which provide by the assignment; i change the function name,just wanna make it easy to read;
 
-int init_block_allocation(void);
+```
 int init_block(struct Block *lisk[]);
+```
+### Initializing array of block;
+```
 
 int init_file(struct File *list[]);
+```
+### Initializing the array of file;
+* ****
+
+
+```
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]);
+
 int Write_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[],struct Block *block_table[]);
+
 int Read_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
-int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
+
+int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
+```
+### **File manipulation Function**
+* ### Create_file
+* ### Write_file
+* ### Read_file
+* ### Delete_file
+
+* ****
 
 
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
