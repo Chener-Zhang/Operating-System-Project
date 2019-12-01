@@ -1,6 +1,20 @@
 # Project Description
 
 
+### Before reading:
+* **i m going to roughly explain my technic for making direction and file
+The data structure for making or changing the direction is very similar to
+tree data structure; i have a current path and previous path in myh direction
+structure. but i m not accuratly using the tree data structure; i combine the tree and using the array to represent my data something like heap representation;**
+
+**SO:**
+* **if directionX 's current direction == directionY's previous direction
+    That means there is some relationship or connection between directionX 
+    and directionY
+    So, i can just using the for loop to check the array of direction struct;
+    To figure out which direction's previous equals to one of the direction's current; if there is, just print them out;**
+
+
 
 ### **Define Global Var**
 
