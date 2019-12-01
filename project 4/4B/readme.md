@@ -25,41 +25,70 @@
 * meta -  > 32 --- 2^5;
 * data - > 32 ---> 2^5;
 
-
+* ****
 ### **Function description**
 
-struct File;
-struct Direction;
-struct Block;
+### **struct File;**
+* **Explanation:**
+* **name: the name of the file**
 
+
+* **below_direction: where the file located such as direction1, direction2,...so on;**
+
+
+* **used: whether the file is created, in this case i want to check whether the file block is used; helping me to locate avalaible position for array;**
+
+
+* **first_block_entry: FAT table first entry;**
+* ****
+
+```
 struct File {
-    char name[name_size]; //index of the block which contains the imformation of the file;
+    char name[name_size]; 
+    the file;
     int below_direction;
     int used;
     int first_block_entry;
-    char time_of_creation[30];
 };
+```
 
+### **struct Direction;**
+* **Name: direction name**
+* **current_index: the direction's current index**
+* **previous_index: the direction's previous index or parent direction/ where it is belong**
+* **used: whether the direction entry in the array is used or not; help to allocation the new direction space in the array**
+* **n_thing_inside: number of stuff inside of the direction like how many files, directions, i used this to help me do "ls" command**
+* ****
+
+
+```
 struct Direction{
-    char name[name_size];// name of the direction
+    char name[name_size];
     int current_index;
     int previous_index;
     int used;
     int n_things_inside;
-    char time_of_creation[30];
-    // add additional imformation here
 };
+```
 
+### **struct Block;**
+```
 struct Block{
     int next_block; // the id / the index of the block
     int size_remain; // the size of a single block remain
     int is_full;
     int used;
 };
-// ---------------- Function declares ---------------------------
-int char_reset(void);
-int parsing(void);
+```
 
+## **---------------- Function declares ---------------------------**
+```
+//reset the char when i parsing the user input while using the shell
+int char_reset(void);
+
+// parsing the user input 
+int parsing(void);
+```
 
 
 // ----- NEW ELEMENT FOR META BLOCK FEATURE-----
