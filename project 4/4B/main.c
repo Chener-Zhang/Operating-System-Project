@@ -407,7 +407,7 @@ int read_disk(int block_index){
     }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    printf("[%s]\n",read_buffer);
+    //printf("[%s]\n",read_buffer);
     return 0;  
 }
 
@@ -929,9 +929,9 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, current_index_block * each_block_size + i*4 , SEEK_SET);   
         char read_buffer[each_block_size];        
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);        
+        //printf("[%s]",read_buffer);        
         int new_int = atoi(read_buffer);       
-       // bug here
+
         dirtable[i]->current_index = new_int;         
     }
     
@@ -944,7 +944,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
          lseek(fd, previous_direction_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-         printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         dirtable[i]->previous_index = new_int; 
         //printf("the len is %d\n",new_int);
@@ -958,7 +958,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
          lseek(fd, direction_used_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         dirtable[i]->used = new_int; 
         //printf("the len is %d\n",new_int);
@@ -973,7 +973,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, n_things_inside_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         dirtable[i]->n_things_inside = new_int; 
         //printf("the len is %d\n",new_int);
@@ -991,7 +991,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, below_direction_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
 
         filetable[i]->below_direction = new_int; 
@@ -1009,7 +1009,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
          lseek(fd, used_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         filetable[i]->used = new_int; 
         //printf("the len is %d\n",new_int);
@@ -1023,7 +1023,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         lseek(fd, first_block_entry_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
-        printf("[%s]",read_buffer);
+        //printf("[%s]",read_buffer);
         int new_int = atoi(read_buffer);       
         filetable[i]->first_block_entry = new_int; 
         //printf("the len is %d\n",new_int);
@@ -1042,7 +1042,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         //printf("[%s]",read_buffer);
              
         strcpy(dirtable[i]->name,read_buffer);
-        printf(" [%s]",dirtable[i]->name);
+        //printf(" [%s]",dirtable[i]->name);
 
         }
     printf("\n");
@@ -1056,7 +1056,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
         read(fd,read_buffer,sizeof(read_buffer));
         //printf("[%s]",read_buffer);             
         strcpy(filetable[i]->name,read_buffer);
-        printf("[%s]",filetable[i]->name);
+        //printf("[%s]",filetable[i]->name);
 
         }
     printf("\n");
