@@ -81,37 +81,32 @@ struct Block{
 };
 ```
 
-## **---------------- Function declares ---------------------------**
+## **---------------- Function declares for shell---------------------------**
 ```
 //reset the char when i parsing the user input while using the shell
 int char_reset(void);
 
 // parsing the user input 
 int parsing(void);
+// help -- list the imformation u need you know
+int help(void);
 ```
 
-
-// ----- NEW ELEMENT FOR META BLOCK FEATURE-----
-int updating_metablock(struct Direction *dirlist[], struct File *filelist[]);
-int write_metablock_special(int block_index,int special, char item[]);
-int loading(struct Direction *dirtable[], struct File *filetable[]);
-// ----- NEW ELEMENT FOR META BLOCK-----
-
-
+## **---------------- Function declares for disk operation----------------**
+```
 int Mount(char *name);
 int Unmount(int fd);
-
 int get_free_space_dirtable(struct Direction *list[]);
 int get_free_space_filetable(struct File *list[]);
 int init_dir(struct Direction *list[]);
 int init_root(struct Direction *list[]);
-
 int create_disk(char *name);
 int open_disk(char *name);
 int write_disk(int block_index, char* words);
 int read_disk(int block_index);
 int delete_block(int block_index);
 int close_disk(int fd);
+```
 
 int init_block_allocation(void);
 int init_block(struct Block *lisk[]);
@@ -128,8 +123,15 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]);
 
-int help(void);
+
 int print_livoidst(void);
 int begin(void);
+## **---------------- Function declares for shell---------------------------**
+// ----- NEW ELEMENT FOR META BLOCK FEATURE-----
+int updating_metablock(struct Direction *dirlist[], struct File *filelist[]);
+int write_metablock_special(int block_index,int special, char item[]);
+int loading(struct Direction *dirtable[], struct File *filetable[]);
+// ----- NEW ELEMENT FOR META BLOCK-----
+
 
 // ---------------- Function declares ---------------------------
