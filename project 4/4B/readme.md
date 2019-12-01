@@ -135,6 +135,7 @@ int close_disk(int fd);
 ```
 ### Disk manipulation; which provide by the assignment; i change the function name,just wanna make it easy to read;
 
+
 ```
 int init_block(struct Block *lisk[]);
 ```
@@ -158,6 +159,13 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction
 ```
 ### **File manipulation Function**
 * ### Create_file
+ 
+   * 1: If the position is less than 0; which means the array of file position is *run out of the space;
+   * 2: checking the file is in the correct position rather than in the werid place;
+   * 3: making sure the name will not repeat; it repeat, print out the warning;
+   * 4: if no error occurs, i create a file
+   * 5: once the file is created, i set the attribution such as where this file is *belong to, what is the name;
+
 * ### Write_file
 * ### Read_file
 * ### Delete_file

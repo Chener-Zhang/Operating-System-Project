@@ -62,8 +62,6 @@ struct tm * timeinfo;
 
 // --------------------------------------------- Main function---------------------------------------------//
 int main(){
-
-
     begin();
     return 0;
 }
@@ -181,6 +179,7 @@ int help(){
     printf("cd .. will be go to the previous direction \n");    
     return 0;
 }
+
 int init_file(struct File *list[]){
     for (int i = 0; i < file_list; i++)
     {
@@ -444,6 +443,13 @@ int close_disk(int fd){
 
 
 // --------------------------------------------- Create a File---------------------------------------------//
+/*
+    1: If the position is less than 0; which means the array of file position is run out of the space;
+    2: checking the file is in the correct position rather than in the werid place;
+    3: making sure the name will not repeat; it repeat, print out the warning;
+    4: if no error occurs, i create a file
+    5: once the file is created, i set the attribution such as where this file is belong to, what is the name;
+*/
 int Create_file(char *filename, struct Direction *current_dir,struct Direction *dir_table[],struct File *file_table[]){
     //Get the free space for data block
     int position = get_free_space_filetable(file_table);
