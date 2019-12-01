@@ -84,25 +84,26 @@ int begin(){
             init_root(dirtable);
             init_file(filetable);    
             init_block(blocktable);
-            loading(dirtable,filetable);                  
-        }else{
+            loading(dirtable,filetable);    
 
-        // DISK INITING ----------------------
+                       
+        }else{
+            // DISK INITING ----------------------
             Mount(name);    
-            write_disk(super_block,"1");
+            write_disk(super_block,"1 Super block size of disk 6400!");
             write_disk(data_block_entry_index,"Data block");
             // FILE INITING ----------------------
             init_dir(dirtable);
             init_root(dirtable);
             init_file(filetable);    
-            init_block(blocktable);           
+            init_block(blocktable);  
+                   
         }
-  
-        
-
+          
         // while loop
         printf("You are current in the root now\n");
         printf("type: help\n");
+
         while(1)
             {
                 parsing();
