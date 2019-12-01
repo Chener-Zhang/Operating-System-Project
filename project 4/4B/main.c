@@ -663,7 +663,16 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
 
 
 // --------------------------------------------- Create a Direction---------------------------------------------//
-
+/*
+    1:doing the same as the file array for checking the empty space;
+    2:check whether it is in the correct direction
+    3:check the name is not repeated;
+    4:if everything works well,then init the direction of the array
+    5:set the attribution for the direction arr;
+    6:setup for the meta data for the attribution;
+    7: The only difference between the dir arr and file arr is that the dir
+    has the previous index; which is the parents index;
+*/
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir){
     //check if exist
     int position = get_free_space_dirtable(dir_table);
@@ -694,7 +703,13 @@ int Create_directory(char *dirname, struct Direction *dir_table[], struct Direct
 
 
 // --------------------------------------------- Change a Direction---------------------------------------------//
-
+/*
+    1: Change the tracking direction;
+    2: In my code, when the user type in, there is a current direction which
+    is keep tracking for where the user is;
+    3: change the current direction to the user prefer direction then go inside 
+    that direction;
+*/
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]){        
     if (strcmp(dirname,"..") == 0 ){        
         if(current_dir->current_index == 0)
