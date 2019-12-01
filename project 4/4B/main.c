@@ -619,6 +619,12 @@ int Read_file(char *filename, struct Direction *dir_table[], struct Direction *c
 }
 
 // --------------------------------------------- Delete a File---------------------------------------------//
+/*
+    1: Locating the correct space 
+    2: the method i used here is actually same as write_block
+    3: just over write the data into 0000 by using the memset
+    4: updating the meta block imformation tracking
+*/
 int Delete_file(char *filename, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
     
     for (int i = 0; i < file_list; i++)

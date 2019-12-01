@@ -179,6 +179,10 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction
     * 2: using the read_disk which == read_block; put the array index which will contain the id of the block
     * 3: the read_block function will print the contain in side the disk for certain position;
 * ### Delete_file
+    * 1: Locating the correct space 
+    * 2: the method i used here is actually same as write_block
+    * 3: just over write the data into 0000 by using the memset
+    * 4: updating the meta block imformation tracking
 
 * ****
 
