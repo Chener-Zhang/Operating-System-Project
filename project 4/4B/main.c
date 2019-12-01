@@ -256,6 +256,10 @@ int char_reset(){
 }
 
 //print out the direction easy for my testing and tracking
+/*  
+    1: Using the for loop to print out the data which user type in;
+    2: Checking everysingle array if it contains the datas;
+*/
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]){    
     printf("\tName\t\t Time of creation \n");
     for (int i = 0; i < direction_list; i++)
@@ -743,7 +747,10 @@ int Change_directory(char *dirname,struct Direction *current_dir, struct Directi
 
 
 // --------------------------------------------- Delete a Direction ---------------------------------------------//
-
+/*
+    1: Doing same as the file; which reset the attribution 
+    2: Set the datat in the meta block into 0000
+*/
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]){
     for (int i = 0; i < direction_list; i++)
     {

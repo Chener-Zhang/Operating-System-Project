@@ -212,8 +212,11 @@ void print_direction( struct Direction *dir,struct Direction *list[],struct File
     * 3: change the current direction to the user prefer direction then go inside 
     * that direction;
 * ### delete_directin
+    * 1: Doing same as the file; which reset the attribution 
+    * 2: Set the datat in the meta block into 0000
 * ### print_direction
-
+    * 1: Using the for loop to print out the data which user type in;
+    * 2: Checking everysingle array if it contains the datas;
 
 ```
 int begin(void);
