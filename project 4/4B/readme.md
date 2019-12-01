@@ -167,7 +167,17 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction
    * 5: once the file is created, i set the attribution such as where this file is *belong to, what is the name;
 
 * ### Write_file
+    * 1: checking and making sure in the correct direction
+    * 2: get the free data block and using the fat allocation algorithem
+    * 3: i divide the block into three piece; I: first entry block; II second to  (n-1) block; III : N: the last block;
+    * 4: the reason i divided the blocks into three piece is becasue i need to  calculate which each of the block is full or not; for the calculation
+    * of the size;
+    * 5: write the data to the data block and set the pointer from the meta block; * which need to update;
 * ### Read_file
+
+    * 1：Locating for the correction position
+    * 2: using the read_disk which == read_block; put the array index which will contain the id of the block
+    * 3: the read_block function will print the contain in side the disk for certain position;
 * ### Delete_file
 
 * ****
