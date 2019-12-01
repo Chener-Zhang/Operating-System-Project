@@ -4,7 +4,7 @@
 ### Before reading:
 * **i m going to roughly explain my technic for making direction and file.
 The data structure for making or changing the direction is very similar to
-tree data structure; i have a current path and previous path in myh direction
+tree data structure; i have a current path and previous path in my direction
 structure. but i m not accuratly using the tree data structure; i combine the tree and using the array to represent my data something like heap representation;**
 
 **SO:**
