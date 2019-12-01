@@ -192,6 +192,11 @@ int write_metablock_special(int block_index,int special, char item[]);
 int loading(struct Direction *dirtable[], struct File *filetable[]);
 ```
 ### **----- NEW ELEMENT FOR META BLOCK-----**
+* Every single time the user quit the program, the mata block will record all the data inside of the every array of struct; which make it to read when next time the user open;
 
+* write_metablock_special:for location the certain position of the write pointer in the disk; 
+the formular i have for my self is position * size_of_each_block + certain_index;
+
+* loading: store the value in the disk when the user open help the programm continuing writing;
 
 ###  **---------------- Function declares Finished---------------------------**
