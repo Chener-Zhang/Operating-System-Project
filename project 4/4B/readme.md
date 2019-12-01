@@ -165,20 +165,33 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction
 * ****
 
 
+```
 int Create_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir);
 int Change_directory(char *dirname,struct Direction *current_dir, struct Direction *dir_table[]);
 int Delete_directory(char *dirname, struct Direction *dir_table[], struct Direction *current_dir,struct File *file_table[]);
 void print_direction( struct Direction *dir,struct Direction *list[],struct File *file_table[]);
+```
+### **Direction manipulation Function**
+* ### create_direction
+* ### change_direction
+* ### delete_directin
+* ### print_direction
 
 
-int print_livoidst(void);
+```
 int begin(void);
-## **---------------- Function declares for shell---------------------------**
-// ----- NEW ELEMENT FOR META BLOCK FEATURE-----
+```
+**set up all function in order to process**
+
+### **----- NEW ELEMENT FOR META BLOCK FEATURE-----**
+```
 int updating_metablock(struct Direction *dirlist[], struct File *filelist[]);
+
 int write_metablock_special(int block_index,int special, char item[]);
+
 int loading(struct Direction *dirtable[], struct File *filetable[]);
-// ----- NEW ELEMENT FOR META BLOCK-----
+```
+### **----- NEW ELEMENT FOR META BLOCK-----**
 
 
-// ---------------- Function declares ---------------------------
+###  **---------------- Function declares Finished---------------------------**
