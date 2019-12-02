@@ -941,7 +941,7 @@ int loading(struct Direction *dirtable[], struct File *filetable[]){
     // int previous_direction_block = 2;
     for (int i = 0; i < direction_list; i++)
     {
-         lseek(fd, previous_direction_block * each_block_size + i*4 , SEEK_SET);    
+        lseek(fd, previous_direction_block * each_block_size + i*4 , SEEK_SET);    
         char read_buffer[each_block_size];
         read(fd,read_buffer,sizeof(read_buffer));
         //printf("[%s]",read_buffer);
