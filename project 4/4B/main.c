@@ -407,7 +407,7 @@ int read_disk(int block_index){
     }
     char read_buffer[each_block_size];
     read(fd,read_buffer,each_block_size);
-    //printf("[%s]\n",read_buffer);
+    printf("%s\n",read_buffer);
     return 0;  
 }
 
