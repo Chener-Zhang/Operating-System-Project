@@ -651,6 +651,7 @@ int Delete_file(char *filename, struct Direction *dir_table[], struct Direction 
                         printf("\n");                                                                                
                         delete_block(data_block_entry_index + current);                           
                         // adding...
+                        delete_block(file_name_block * each_block_size + i*21);
                         
                         current = blocktable[i]->next_block;                                                    
                         blocktable[previous]->next_block = 0;                        
